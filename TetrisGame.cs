@@ -79,23 +79,25 @@ namespace Tetris
 		}
 		
 		public DateTime GameStarted, GamePaused;
-		
-		
-		/// <summary>
-		/// Создаёт новый экземпляр TetrisGame, готовый к началу игры
-		/// </summary>
-		public TetrisGame()
+
+
+        /// <summary>
+        /// Создаёт новый экземпляр TetrisGame, готовый к началу игры
+        /// Creates a new TetrisGame instance, ready for the game to start.
+        /// </summary>
+        public TetrisGame()
 		{
 			Score=0; FiguresDropped=0;
 			NextFigure=Figure.RandomFigure();
 			GameOver=false; Paused=false; FigureChanged=false;
 			GameStarted=DateTime.Now;
 		}
-		
-		/// <summary>
-		/// Завершает игру
-		/// </summary>
-		public void Over()
+
+        /// <summary>
+        /// Завершает игру
+        /// End the game.
+        /// </summary>
+        public void Over()
 		{
 			GameOver=true;
 		}
