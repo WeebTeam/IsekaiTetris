@@ -39,16 +39,16 @@ namespace Tetris
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.играToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.новаяИграToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.паузапродолжитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.newgameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.closeshortlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.таблицаРекордовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tableofrecordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.правилаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.обИгреToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.referenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.regulationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutthegameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameFieldPictureBox = new System.Windows.Forms.PictureBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.ElapsedTimeLabel = new System.Windows.Forms.Label();
@@ -74,8 +74,8 @@ namespace Tetris
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.играToolStripMenuItem,
-									this.справкаToolStripMenuItem});
+									this.gameToolStripMenuItem,
+									this.referenceToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(444, 24);
@@ -84,32 +84,32 @@ namespace Tetris
 			// 
 			// играToolStripMenuItem
 			// 
-			this.играToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.новаяИграToolStripMenuItem,
-									this.паузапродолжитьToolStripMenuItem,
+			this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.newgameToolStripMenuItem,
+									this.closeshortlyToolStripMenuItem,
 									this.toolStripSeparator2,
-									this.таблицаРекордовToolStripMenuItem,
+									this.tableofrecordsToolStripMenuItem,
 									this.toolStripSeparator1,
-									this.выходToolStripMenuItem});
-			this.играToolStripMenuItem.Name = "играToolStripMenuItem";
-			this.играToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-			this.играToolStripMenuItem.Text = "Игра";
+									this.outputToolStripMenuItem});
+			this.gameToolStripMenuItem.Name = "GameToolStripMenuItem"; //игра
+			this.gameToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+			this.gameToolStripMenuItem.Text = "Game";//"Игра";
 			// 
 			// новаяИграToolStripMenuItem
 			// 
-			this.новаяИграToolStripMenuItem.Name = "новаяИграToolStripMenuItem";
-			this.новаяИграToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
-			this.новаяИграToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.новаяИграToolStripMenuItem.Text = "Новая игра";
-			this.новаяИграToolStripMenuItem.Click += new System.EventHandler(this.НоваяИграToolStripMenuItemClick);
+			this.newgameToolStripMenuItem.Name = "New Game ToolStripMenuItem";
+			this.newgameToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
+			this.newgameToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+			this.newgameToolStripMenuItem.Text = "New Game"; //"Новая игра";
+			this.newgameToolStripMenuItem.Click += new System.EventHandler(this.НоваяИграToolStripMenuItemClick);
 			// 
 			// паузапродолжитьToolStripMenuItem
 			// 
-			this.паузапродолжитьToolStripMenuItem.Name = "паузапродолжитьToolStripMenuItem";
-			this.паузапродолжитьToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-			this.паузапродолжитьToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.паузапродолжитьToolStripMenuItem.Text = "Пауза/продолжить";
-			this.паузапродолжитьToolStripMenuItem.Click += new System.EventHandler(this.ПаузапродолжитьToolStripMenuItemClick);
+			this.closeshortlyToolStripMenuItem.Name = "closeshortlyToolStripMenuItem";
+			this.closeshortlyToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+			this.closeshortlyToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.closeshortlyToolStripMenuItem.Text = "Pause/Continue"; // "Пауза/продолжить";
+			this.closeshortlyToolStripMenuItem.Click += new System.EventHandler(this.ПаузапродолжитьToolStripMenuItemClick);
 			// 
 			// toolStripSeparator2
 			// 
@@ -118,10 +118,10 @@ namespace Tetris
 			// 
 			// таблицаРекордовToolStripMenuItem
 			// 
-			this.таблицаРекордовToolStripMenuItem.Name = "таблицаРекордовToolStripMenuItem";
-			this.таблицаРекордовToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.таблицаРекордовToolStripMenuItem.Text = "Таблица рекордов...";
-			this.таблицаРекордовToolStripMenuItem.Click += new System.EventHandler(this.ТаблицаРекордовToolStripMenuItemClick);
+			this.tableofrecordsToolStripMenuItem.Name = "tableofrecordsToolStripMenuItem";
+			this.tableofrecordsToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.tableofrecordsToolStripMenuItem.Text = "Table of records"; // "Таблица рекордов...";
+			this.tableofrecordsToolStripMenuItem.Click += new System.EventHandler(this.ТаблицаРекордовToolStripMenuItemClick);
 			// 
 			// toolStripSeparator1
 			// 
@@ -130,35 +130,35 @@ namespace Tetris
 			// 
 			// выходToolStripMenuItem
 			// 
-			this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-			this.выходToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.выходToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-			this.выходToolStripMenuItem.Text = "Выход";
-			this.выходToolStripMenuItem.Click += new System.EventHandler(this.ВыходToolStripMenuItemClick);
+			this.outputToolStripMenuItem.Name = "outputToolStripMenuItem";
+			this.outputToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+			this.outputToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.outputToolStripMenuItem.Text = "Output"; //"Выход";
+			this.outputToolStripMenuItem.Click += new System.EventHandler(this.ВыходToolStripMenuItemClick);
 			// 
 			// справкаToolStripMenuItem
 			// 
-			this.справкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.правилаToolStripMenuItem,
-									this.обИгреToolStripMenuItem});
-			this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
-			this.справкаToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-			this.справкаToolStripMenuItem.Text = "Справка";
+			this.referenceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.regulationsToolStripMenuItem,
+									this.aboutthegameToolStripMenuItem});
+			this.referenceToolStripMenuItem.Name = "referenceToolStripMenuItem";
+			this.referenceToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.referenceToolStripMenuItem.Text = "Reference"; //"Справка";
 			// 
 			// правилаToolStripMenuItem
 			// 
-			this.правилаToolStripMenuItem.Name = "правилаToolStripMenuItem";
-			this.правилаToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-			this.правилаToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.правилаToolStripMenuItem.Text = "Правила";
-			this.правилаToolStripMenuItem.Click += new System.EventHandler(this.ПравилаToolStripMenuItemClick);
+			this.regulationsToolStripMenuItem.Name = "regulationsToolStripMenuItem";
+			this.regulationsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+			this.regulationsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.regulationsToolStripMenuItem.Text = "Regulations";
+			this.regulationsToolStripMenuItem.Click += new System.EventHandler(this.ПравилаToolStripMenuItemClick);
 			// 
 			// обИгреToolStripMenuItem
 			// 
-			this.обИгреToolStripMenuItem.Name = "обИгреToolStripMenuItem";
-			this.обИгреToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.обИгреToolStripMenuItem.Text = "О программе";
-			this.обИгреToolStripMenuItem.Click += new System.EventHandler(this.ОбИгреToolStripMenuItemClick);
+			this.aboutthegameToolStripMenuItem.Name = "aboutthegameToolStripMenuItem";
+			this.aboutthegameToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.aboutthegameToolStripMenuItem.Text = "About the program"; // "О программе";
+			this.aboutthegameToolStripMenuItem.Click += new System.EventHandler(this.ОбИгреToolStripMenuItemClick);
 			// 
 			// GameFieldPictureBox
 			// 
@@ -184,7 +184,7 @@ namespace Tetris
 			this.groupBox1.Size = new System.Drawing.Size(164, 87);
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Счёт";
+            this.groupBox1.Text = "Score"; //"Счёт";
 			// 
 			// ElapsedTimeLabel
 			// 
@@ -200,7 +200,7 @@ namespace Tetris
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(96, 23);
 			this.label5.TabIndex = 4;
-			this.label5.Text = "Времени прошло:";
+            this.label5.Text = "The time passed"; // "Времени прошло:";
 			this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			// 
 			// ScoreLabel
@@ -225,7 +225,7 @@ namespace Tetris
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(96, 23);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "Очки:";
+            this.label2.Text = "Glasses"; // "Очки:";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			// 
 			// label1
@@ -234,7 +234,7 @@ namespace Tetris
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(96, 23);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Фигур сброшено:";
+            this.label1.Text = "Shapes reset"; // "Фигур сброшено:";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			// 
 			// groupBox2
@@ -245,7 +245,7 @@ namespace Tetris
 			this.groupBox2.Size = new System.Drawing.Size(164, 122);
 			this.groupBox2.TabIndex = 3;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Следующая фигура";
+            this.groupBox2.Text = "Next figure";// "Следующая фигура";
 			// 
 			// NextFigurePictureBox
 			// 
@@ -265,7 +265,7 @@ namespace Tetris
 			this.TipsCheckBox.Size = new System.Drawing.Size(164, 24);
 			this.TipsCheckBox.TabIndex = 4;
 			this.TipsCheckBox.TabStop = false;
-			this.TipsCheckBox.Text = "Подсказки";
+            this.TipsCheckBox.Text = "Tips";// "Подсказки";
 			this.TipsCheckBox.UseVisualStyleBackColor = true;
 			this.TipsCheckBox.CheckedChanged += new System.EventHandler(this.TipsCheckBoxCheckedChanged);
 			// 
@@ -282,7 +282,7 @@ namespace Tetris
 			this.groupBox3.Size = new System.Drawing.Size(164, 108);
 			this.groupBox3.TabIndex = 5;
 			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Совет";
+            this.groupBox3.Text = "Advice"; // "Совет";
 			// 
 			// AdviceLabel
 			// 
@@ -293,7 +293,7 @@ namespace Tetris
 			this.AdviceLabel.Name = "AdviceLabel";
 			this.AdviceLabel.Size = new System.Drawing.Size(152, 89);
 			this.AdviceLabel.TabIndex = 0;
-			this.AdviceLabel.Text = "Используйте клавишу Q, чтобы отложить фигуру и воспользоваться следующей";
+            this.AdviceLabel.Text = "Use the Q key to postpone the shape and use the following";// "Используйте клавишу Q, чтобы отложить фигуру и воспользоваться следующей";
 			// 
 			// MainForm
 			// 
@@ -325,7 +325,7 @@ namespace Tetris
 		}
 		private System.Windows.Forms.Label AdviceLabel;
 		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.ToolStripMenuItem таблицаРекордовToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tableofrecordsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.Timer GameTimer;
 		private System.Windows.Forms.CheckBox TipsCheckBox;
@@ -339,14 +339,14 @@ namespace Tetris
 		private System.Windows.Forms.Label ElapsedTimeLabel;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.PictureBox GameFieldPictureBox;
-		private System.Windows.Forms.ToolStripMenuItem обИгреToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem правилаToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem aboutthegameToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem regulationsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem referenceToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem outputToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem паузапродолжитьToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem новаяИграToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem играToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem closeshortlyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem newgameToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 	}
 }

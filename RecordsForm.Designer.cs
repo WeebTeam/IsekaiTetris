@@ -1,10 +1,11 @@
 ﻿/*
- * Сделано в SharpDevelop.
- * Пользователь: user
- * Дата: 31.10.2013
- * Время: 18:59
+ * Created by SharpDevelop.
+ * User: user
+ * Date: 31.10.2013
+ * Time: 18:59
  * 
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
+ * To change this template use Tools | Customize | Coding | Edit standard headers.
  */
 namespace Tetris
 {
@@ -80,7 +81,7 @@ namespace Tetris
 			this.ScoresTabPage.Padding = new System.Windows.Forms.Padding(3);
 			this.ScoresTabPage.Size = new System.Drawing.Size(395, 244);
 			this.ScoresTabPage.TabIndex = 0;
-			this.ScoresTabPage.Text = "По очкам";
+			this.ScoresTabPage.Text = "On Points"; //"По очкам";
 			this.ScoresTabPage.UseVisualStyleBackColor = true;
 			// 
 			// label1
@@ -91,7 +92,7 @@ namespace Tetris
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(383, 23);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Игроки, набравшие наибольшее количество очков:";
+			this.label1.Text = "Players with the most points:"; //"Игроки, набравшие наибольшее количество очков:";
 			// 
 			// ScoresListView
 			// 
@@ -114,22 +115,22 @@ namespace Tetris
 			// 
 			// columnHeader1
 			// 
-			this.columnHeader1.Text = "Игрок";
+			this.columnHeader1.Text = "Player";
 			this.columnHeader1.Width = 84;
 			// 
 			// columnHeader2
 			// 
-			this.columnHeader2.Text = "Очки";
+			this.columnHeader2.Text = "Glasses";  //Очки
 			this.columnHeader2.Width = 72;
 			// 
 			// columnHeader3
 			// 
-			this.columnHeader3.Text = "Время игры";
+			this.columnHeader3.Text = "Play time"; //"Время игры";
 			this.columnHeader3.Width = 99;
 			// 
 			// columnHeader4
 			// 
-			this.columnHeader4.Text = "Дата";
+			this.columnHeader4.Text = "Date"; //"Дата"
 			this.columnHeader4.Width = 107;
 			// 
 			// TimesTabPage
@@ -141,7 +142,7 @@ namespace Tetris
 			this.TimesTabPage.Padding = new System.Windows.Forms.Padding(3);
 			this.TimesTabPage.Size = new System.Drawing.Size(395, 244);
 			this.TimesTabPage.TabIndex = 1;
-			this.TimesTabPage.Text = "По времени";
+			this.TimesTabPage.Text = "By Time"; //"По времени";
 			this.TimesTabPage.UseVisualStyleBackColor = true;
 			// 
 			// label2
@@ -152,7 +153,7 @@ namespace Tetris
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(383, 23);
 			this.label2.TabIndex = 3;
-			this.label2.Text = "Игроки, продержавшиеся наибольшее количество времени:";
+			this.label2.Text = "Players who hold out the most time"; //"Игроки, продержавшиеся наибольшее количество времени:";
 			this.label2.Click += new System.EventHandler(this.Label2Click);
 			// 
 			// TimesListView
@@ -176,24 +177,24 @@ namespace Tetris
 			// 
 			// columnHeader5
 			// 
-			this.columnHeader5.Text = "Игрок";
+			this.columnHeader5.Text = "Player";
 			this.columnHeader5.Width = 84;
 			// 
 			// columnHeader6
 			// 
 			this.columnHeader6.DisplayIndex = 2;
-			this.columnHeader6.Text = "Очки";
+			this.columnHeader6.Text = "Glasses";
 			this.columnHeader6.Width = 72;
 			// 
 			// columnHeader7
 			// 
 			this.columnHeader7.DisplayIndex = 1;
-			this.columnHeader7.Text = "Время игры";
+			this.columnHeader7.Text = "Play time";
 			this.columnHeader7.Width = 99;
 			// 
 			// columnHeader8
 			// 
-			this.columnHeader8.Text = "Дата";
+			this.columnHeader8.Text = "Date";
 			this.columnHeader8.Width = 107;
 			// 
 			// button1
@@ -203,7 +204,7 @@ namespace Tetris
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(80, 23);
 			this.button1.TabIndex = 1;
-			this.button1.Text = "Играть ещё!";
+			this.button1.Text = "Play more!"; //"Играть ещё!";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.Button1Click);
 			// 
@@ -217,7 +218,7 @@ namespace Tetris
 			this.linkLabel1.Size = new System.Drawing.Size(55, 23);
 			this.linkLabel1.TabIndex = 2;
 			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "Закрыть";
+			this.linkLabel1.Text = "Close"; //"Закрыть";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1LinkClicked);
 			// 
 			// RecordsForm
@@ -233,7 +234,7 @@ namespace Tetris
 			this.MaximizeBox = false;
 			this.Name = "RecordsForm";
 			this.ShowIcon = false;
-			this.Text = "Таблица рекордов";
+			this.Text = "Table of Records"; //"Таблица рекордов";
 			this.ListsTabControl.ResumeLayout(false);
 			this.ScoresTabPage.ResumeLayout(false);
 			this.TimesTabPage.ResumeLayout(false);

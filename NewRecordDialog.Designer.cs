@@ -49,7 +49,7 @@ namespace Tetris
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(249, 36);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Поздравляем, вы попали в таблицу рекордов! Введите ваше имя:";
+			this.label1.Text = "Congratulations! You are in the table of records! Enter your name:"; //"Поздравляем, вы попали в таблицу рекордов! Введите ваше имя:";
 			// 
 			// UNameTextBox
 			// 
@@ -68,7 +68,7 @@ namespace Tetris
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 2;
-			this.button1.Text = "Готово!";
+			this.button1.Text = "Done!"; //"Готово!";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.Button1Click);
 			// 
@@ -86,7 +86,7 @@ namespace Tetris
 			this.MinimizeBox = false;
 			this.Name = "NewRecordDialog";
 			this.ShowIcon = false;
-			this.Text = "Новый рекорд!";
+			this.Text = "New record!"; //"Новый рекорд!";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}

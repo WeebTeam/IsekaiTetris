@@ -1,10 +1,11 @@
 ﻿/*
- * Сделано в SharpDevelop.
- * Пользователь: user
- * Дата: 08.11.2013
- * Время: 18:18
+ * Created by SharpDevelop.
+ * User: user
+ * Date: 08.11.2013
+ * Time: 18:18
  * 
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
+ * To change this template use Tools | Customize | Coding | Edit standard headers.
  */
 namespace Tetris
 {
@@ -53,7 +54,7 @@ namespace Tetris
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(147, 25);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Ещё один тетрис";
+			this.label1.Text = "Another tetris"; //"Ещё один тетрис"
 			// 
 			// pictureBox1
 			// 
@@ -72,7 +73,7 @@ namespace Tetris
 			this.linkLabel1.Size = new System.Drawing.Size(182, 23);
 			this.linkLabel1.TabIndex = 3;
 			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "Контакты автора: Иванов Никита";
+			this.linkLabel1.Text = "Author's contacts : Nikita Ivanov";//Контакты автора: Иванов Никита";
 			this.linkLabel1.UseCompatibleTextRendering = true;
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1LinkClicked);
 			// 
@@ -83,7 +84,7 @@ namespace Tetris
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 4;
-			this.button1.Text = "Закрыть";
+			this.button1.Text = "Close"; //"Закрыть";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.Button1Click);
 			// 
@@ -93,7 +94,7 @@ namespace Tetris
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(100, 23);
 			this.label2.TabIndex = 5;
-			this.label2.Text = "Сделано в МИФИ";
+			this.label2.Text = "Made in MEPI"; // "Сделано в МИФИ";
 			// 
 			// linkLabel2
 			// 
@@ -103,7 +104,7 @@ namespace Tetris
 			this.linkLabel2.Size = new System.Drawing.Size(209, 23);
 			this.linkLabel2.TabIndex = 6;
 			this.linkLabel2.TabStop = true;
-			this.linkLabel2.Text = "Иконка приложения -  Everaldo Coelho ";
+			this.linkLabel2.Text = "Application icon - Everaldo Coelho"; //"Иконка приложения -  Everaldo Coelho ";
 			this.linkLabel2.UseCompatibleTextRendering = true;
 			this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel2LinkClicked);
 			// 
@@ -123,7 +124,7 @@ namespace Tetris
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "AboutDialog";
-			this.Text = "О программе";
+			this.Text = "About the program"; //"О программе";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 		}
