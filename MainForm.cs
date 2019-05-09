@@ -16,6 +16,7 @@ namespace Tetris
 {
 	/// <summary>
 	/// Главная форма
+	/// Main Form
 	/// </summary>
 	public partial class MainForm : Form
 	{
@@ -44,6 +45,7 @@ namespace Tetris
 			Random rnd=new Random();
 			
 			// Типа сплэш
+			//Type splash
 			for(int row=0; row<GF.TilesHeight; row++)
 			{
 				for(int col=0; col<GF.TilesWidth; col++)
@@ -99,7 +101,8 @@ namespace Tetris
 			//Refresh();
 		}
 		
-		// Игровой цикл
+		// Игровой цикл //Game cycle
+
 		void GameTimerTick(object sender, EventArgs e)
 		{
 			if(Game.Paused) return;
@@ -108,12 +111,12 @@ namespace Tetris
 			
 			if(!GF.IsFigureFalling) 
 			{
-				//нужно поместить новую фигуру на поле и скрыть полные ряды
+				//нужно поместить новую фигуру на поле и скрыть полные ряды //need to put a figure in the field and hide the full rows
 				SetScore(Game.Score+GF.RemoveFullRows()*10);
 				
 				if(!GF.PlaceFigure(Game.NextFigure))
 				{
-					//игра окончена
+					//игра окончена //game over
 					OnGameOver();
 				}
 				else
@@ -125,7 +128,7 @@ namespace Tetris
 					Preview.SetFigure(Game.NextFigure.MoveTo(1, 1), false);
 					
 					if(Game.FigureChanged && Game.FiguresDropped%5==0) Game.FigureChanged=false;
-					//ускоряем игру при росте количества очков
+					//ускоряем игру при росте количества очков //accelerating the game with the increase of points 
 					if(Game.FiguresDropped%15==0 && Game.Score!=0)
 					{
 						if(GameTimer.Interval>300)
@@ -170,12 +173,18 @@ namespace Tetris
 		
 		private static string[] Advices=new string[]
 		{
-			"Дождитесь, пока исчезнет индикатор вокруг изображения следующей фигуры, чтобы иметь возможность отложить фигуру!",
-			"Используйте клавишу Q, чтобы отложить фигуру и воспользоваться следующей",
-			"Вместе с количеством сброшенных фигур растёт и скорость игры",
-			"Чтобы попасть в таблицу рекордов, вы можете как набрать наибольшее количество очков, так и продержаться в игре дольше всех",
-			"Используйте клавишу F3, чтобы поставить игру на паузу",
-			"Решили начать новую игру? Нажмите F2, чтобы сделать это немедленно!"
+			//"Дождитесь, пока исчезнет индикатор вокруг изображения следующей фигуры, чтобы иметь возможность отложить фигуру!",
+			"Wait until the indicator disappears around the image of the next figure to be able to postpone the figure",
+			//"Используйте клавишу Q, чтобы отложить фигуру и воспользоваться следующей",
+			"Use the Q key to postpone the shape and use the next",
+			//"Вместе с количеством сброшенных фигур растёт и скорость игры",
+			"Along with the number of cleared figures, the speed of the game increases",
+			//"Чтобы попасть в таблицу рекордов, вы можете как набрать наибольшее количество очков, так и продержаться в игре дольше всех",
+			"To get the highscore, hold out the game the longest to gain the most points",
+			//"Используйте клавишу F3, чтобы поставить игру на паузу",
+			"Use F3 to pause the game",
+			//"Решили начать новую игру? Нажмите F2, чтобы сделать это немедленно!"
+			"Decide to start a new game? Press F2, start the game immediately!"
 		};
 		private void ShowAdvice(int advice)
 		{
@@ -186,7 +195,7 @@ namespace Tetris
 			ShowAdvice(new Random().Next(1, Advices.Length));
 		}
 		
-		// Обработка ввода
+		// Обработка ввода //Input Processing
 		void MainFormKeyDown(object sender, KeyEventArgs e)
 		{
 			e.SuppressKeyPress=true;
@@ -256,7 +265,7 @@ namespace Tetris
 				e.Graphics.DrawImage(GameOverImage, img);
 			}
 		}
-		
+		// void newgame
 		void НоваяИграToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			NewGame();
@@ -297,29 +306,32 @@ namespace Tetris
 		{
 			GF.ShowTips=TipsCheckBox.Checked;
 		}
-		
+		//void continue later
 		void ПаузапродолжитьToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			SetPause(!Game.Paused);
 		}
-		
+		//void output
 		void ВыходToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			Close();
 		}
-		
+
+		//void Table of records
 		void ТаблицаРекордовToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			RForm=new RecordsForm(new TetrisSave());
 			if(RForm.ShowDialog()==DialogResult.OK && Game.GameOver)
 				NewGame();
 		}
-		
+
+		//void Aboutthegame
 		void ОбИгреToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			new AboutDialog().ShowDialog();
 		}
-		
+
+		//void rules
 		void ПравилаToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			try
@@ -334,8 +346,10 @@ namespace Tetris
 				}
 				catch
 				{
-					MessageBox.Show("Не удалось открыть файл помощи О_о Попробуйте самостоятельно открыть папку с игрой," +
-					                " а в ней - папку help", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(//"Не удалось открыть файл помощи О_о Попробуйте самостоятельно открыть папку с игрой,"//
+					                "Could not open the file O_o Try open the game in the folder," +
+					                //" а в ней - папку help"//
+					                "and in it, the help folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}

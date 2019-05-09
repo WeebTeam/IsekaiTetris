@@ -1,10 +1,11 @@
 ﻿/*
- * Сделано в SharpDevelop.
- * Пользователь: user
- * Дата: 08.11.2013
- * Время: 18:18
+ * Made by SharpDevelop.
+ * User: user
+ * Date: 08.11.2013
+ * Time: 18:18
  * 
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
+ * To change this template use Tools | Customize | Coding | Edit standard headers.
  */
 using System;
 using System.Drawing;
@@ -14,6 +15,7 @@ namespace Tetris
 {
 	/// <summary>
 	/// Диалог "О программе"
+	/// Dialogue "About the program"
 	/// </summary>
 	public partial class AboutDialog : Form
 	{
@@ -35,8 +37,8 @@ namespace Tetris
 			}
 			catch
 			{
-				MessageBox.Show("Ваша упоротая ОС не смогла открыть ссылку -_-",
-				                "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Your OS has failed to open the link -_-",
+				                "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 		
@@ -48,8 +50,8 @@ namespace Tetris
 			}
 			catch
 			{
-				MessageBox.Show("Ваша упоротая ОС не смогла открыть ссылку -_-",
-				                "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Your OS has failed to open the link -_-",
+				                "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 	}

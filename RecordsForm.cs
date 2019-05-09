@@ -1,10 +1,10 @@
 ﻿/*
- * Сделано в SharpDevelop.
- * Пользователь: user
- * Дата: 31.10.2013
- * Время: 18:59
+ * Created by SharpDevelop.
+ * User : user
+ * Date: 31.10.2013
+ * Time: 18:59
  * 
- * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
 using System.Drawing;
@@ -14,6 +14,7 @@ namespace Tetris
 {
 	/// <summary>
 	/// Форма для отображения списка рекордов
+	/// Form to display highscore
 	/// </summary>
 	public partial class RecordsForm : Form
 	{

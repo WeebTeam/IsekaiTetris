@@ -1,10 +1,10 @@
 ﻿/*
- * Сделано в SharpDevelop.
- * Пользователь: user
- * Дата: 25.10.2013
- * Время: 2:22
+ * Created by SharpDevelop.
+ * User: user
+ * Date: 25.10.2013
+ * Time: 2:22
  * 
- * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
 using System.Drawing;
@@ -14,6 +14,7 @@ namespace Tetris
 {
 	/// <summary>
 	/// Форма ввода имени пользователя
+	/// Username form
 	/// </summary>
 	public partial class NewRecordDialog : Form
 	{
