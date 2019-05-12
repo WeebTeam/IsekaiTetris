@@ -1,115 +1,84 @@
-﻿/*
- * Created by SharpDevelop.
- * User: user
- * Date: 08.10.2013
- * Time: 2:46
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
-	public class TetrisGame
-	{
-		public Figure NextFigure;
-		
-		private int score;
-		public int Score
-		{
-			get { return score; }
-			set
-			{
-				score=value;
-				OnStateChanged();
-			}
-		}
-		
-		private int figDropped;
-		public int FiguresDropped
-		{
-			get { return figDropped; }
-			set
-			{
-				figDropped=value;
-				OnStateChanged();
-			}
-		}
-		
-		private bool gameOver, paused, figChanged;
-		public bool GameOver
-		{
-			get { return gameOver; }
-			set
-			{
-				gameOver=value;
-				OnStateChanged();
-			}
-		}
-		public bool Paused
-		{
-			get { return paused; }
-			set
-			{
-				if(!paused && value)
-				{
-					GamePaused=DateTime.Now;
-					paused=value;
-					OnStateChanged();
-				}
-				if(paused && !value)
-				{
-					GameStarted=GameStarted+(DateTime.Now-GamePaused);
-					paused=value;
-					OnStateChanged();
-				}
-			}
-		}
-		public bool FigureChanged
-		{
-			get { return figChanged; }
-			set
-			{
-				figChanged=value;
-				OnStateChanged();
-			}
-		}
-		
-		public DateTime GameStarted, GamePaused;
+    /// <summary>
+    /// This is the main type for your game
+    /// </summary>
+    public class Game1 : Game
+    {
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
 
+        public Game1()
+            : base()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+        }
 
         /// <summary>
-        /// Создаёт новый экземпляр TetrisGame, готовый к началу игры
-        /// Creates a new TetrisGame instance, ready for the game to start.
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
         /// </summary>
-        public TetrisGame()
-		{
-			Score=0; FiguresDropped=0;
-			NextFigure=Figure.RandomFigure();
-			GameOver=false; Paused=false; FigureChanged=false;
-			GameStarted=DateTime.Now;
-		}
+        protected override void Initialize()
+        {
+            // TODO: Add your initialization logic here
+
+            base.Initialize();
+        }
 
         /// <summary>
-        /// Завершает игру
-        /// End the game.
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
         /// </summary>
-        public void Over()
-		{
-			GameOver=true;
-		}
-		
-		
-		public event EventHandler StateChanged;
-		protected virtual void OnStateChanged()
-		{
-			if (StateChanged != null)
-			{
-				StateChanged(this, new EventArgs());
-			}
-		}
-	}
+        protected override void LoadContent()
+        {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // TODO: use this.Content to load your game content here
+        }
+
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// all content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            // TODO: Unload any non ContentManager content here
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            // TODO: Add your update logic here
+
+            base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // TODO: Add your drawing code here
+
+            base.Draw(gameTime);
+        }
+    }
 }
