@@ -2,4 +2,4 @@ language: csharp
 mono: 
  - latest
 dist: xenial
-solution: Tetris.csproj
+solution: IsekaiTetris.csproj
