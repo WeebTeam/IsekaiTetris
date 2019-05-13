@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,29 +11,25 @@ namespace Tetris
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Engine : Microsoft.Xna.Framework.Game
+    public class Engine : GameState
     {
         // Graphics
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Texture2D tetrisBackground, tetrisTextures;
-        SpriteFont gameFont;
-        readonly Rectangle[] blockRectangles = new Rectangle[7];
+        private Texture2D tetrisBackground, tetrisTextures;
+
+        private SpriteFont gameFont;
+        private readonly Rectangle[] blockRectangles = new Rectangle[7];
+
+        private Stack<GameState> gameState = new Stack<GameState>();
 
         // Game
-        Board board;
-        Score score;
-        bool pause = false;
+        private Board board;
+        private Score score;
+        private bool pause = false;
 
         // Input
         KeyboardState oldKeyboardState = Keyboard.GetState();
-
-        public Engine()
+        public Engine(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
-            graphics = new GraphicsDeviceManager(this);
-            //Content.RootDirectory = "Content";
-            Content.RootDirectory = "Content";
-
             // Create sprite rectangles for each figure in texture file
             // O figure
             blockRectangles[0] = new Rectangle(312, 0, 24, 24);
@@ -55,54 +53,40 @@ namespace Tetris
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize()
+        public override void Initialize()
         {
-            Window.Title = "Jon Loves Tetris!";
 
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.ApplyChanges();
-
-            this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 10.0f);
+            //this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 10.0f);
 
             // Try to open file if it exists, otherwise create it
             using (FileStream fileStream = File.Open("record.dat", FileMode.OpenOrCreate))
             {
                 fileStream.Close();
             }
-
-            base.Initialize();
         }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
+        public override void LoadContent(ContentManager content)
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // Add the SpriteBatch service
-            Services.AddService(typeof(SpriteBatch), spriteBatch);
-
             //Load 2D textures
-            tetrisBackground = Content.Load<Texture2D>("background");
-            tetrisTextures = Content.Load<Texture2D>("tetris");
+            tetrisBackground = content.Load<Texture2D>("Images/gameplaybg");
+            tetrisTextures = content.Load<Texture2D>("Images/tetris");
 
             // Load game font
-            //gameFont = Content.Load<SpriteFont> ("font");
-            gameFont = Content.Load<SpriteFont>("Arial");
+            gameFont = content.Load<SpriteFont>("gameFont");
 
             // Create game field
             board = new Board(this, ref tetrisTextures, blockRectangles);
             board.Initialize();
-            Components.Add(board);
+            //Components.Add(board);
 
             // Save player's score and game level
             score = new Score(this, gameFont);
             score.Initialize();
-            Components.Add(score);
+            //Components.Add(score);
 
             // Load game record
             using (StreamReader streamReader = File.OpenText("record.dat"))
@@ -116,75 +100,79 @@ namespace Tetris
             }
         }
 
+        public override void UnloadContent()
+        {
+            
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
+            // Gets keyboard input
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                this.Exit();
+            MouseState mouseState = Mouse.GetState();
+            //if (keyboardState.IsKeyDown(Keys.Escape))  this.Exit();
 
-            // Check pause
-            bool pauseKey = (oldKeyboardState.IsKeyDown(Keys.P) && (keyboardState.IsKeyUp(Keys.P)));
+                // Check pause
+                bool pauseKey = (oldKeyboardState.IsKeyDown(Keys.P) && (keyboardState.IsKeyUp(Keys.P)));
 
-            oldKeyboardState = keyboardState;
+                oldKeyboardState = keyboardState;
 
-            if (pauseKey)
-                pause = !pause;
+                if (pauseKey)
+                    pause = !pause;
 
-            if (!pause)
-            {
-                // Find dynamic figure position
-                board.FindDynamicFigure();
-
-                // Increase player score
-                int lines = board.DestroyLines();
-                if (lines > 0)
+                if (!pause)
                 {
-                    score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
-                    board.Speed += 0.005f;
-                }
+                    // Find dynamic figure position
+                    board.FindDynamicFigure();
 
-                score.Level = (int)(10 * board.Speed);
-
-                // Create new shape in game
-                if (!board.CreateNewFigure())
-                    GameOver();
-                else
-                {
-                    // If left key is pressed
-                    if (keyboardState.IsKeyDown(Keys.Left))
-                        board.MoveFigureLeft();
-                    // If right key is pressed
-                    if (keyboardState.IsKeyDown(Keys.Right))
-                        board.MoveFigureRight();
-                    // If down key is pressed
-                    if (keyboardState.IsKeyDown(Keys.Down))
-                        board.MoveFigureDown();
-
-                    // Rotate figure
-                    if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Space))
-                        board.RotateFigure();
-
-                    // Moving figure
-                    if (board.Movement >= 1)
+                    // Increase player score
+                    int lines = board.DestroyLines();
+                    if (lines > 0)
                     {
-                        board.Movement = 0;
-                        board.MoveFigureDown();
+                        score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
+                        board.Speed += 0.005f;
                     }
-                    else
-                        board.Movement += board.Speed;
-                }
-            }
 
-            base.Update(gameTime);
+                    score.Level = (int)(10 * board.Speed);
+
+                    // Create new shape in game
+                    if (!board.CreateNewFigure())
+                        GameOver();
+                    else
+                    {
+                        // If left key is pressed
+                        if (keyboardState.IsKeyDown(Keys.Left))
+                            board.MoveFigureLeft();
+                        // If right key is pressed
+                        if (keyboardState.IsKeyDown(Keys.Right))
+                            board.MoveFigureRight();
+                        // If down key is pressed
+                        if (keyboardState.IsKeyDown(Keys.Down))
+                            board.MoveFigureDown();
+
+                        // Rotate figure
+                        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Space))
+                            board.RotateFigure();
+
+                        // Moving figure
+                        if (board.Movement >= 1)
+                        {
+                            board.Movement = 0;
+                            board.MoveFigureDown();
+                        }
+                        else
+                            board.Movement += board.Speed;
+                    }
+                
+            }
         }
 
-        private void GameOver()
+        public void GameOver()
         {
             if (score.Value > score.RecordScore)
             {
@@ -209,16 +197,10 @@ namespace Tetris
             score.Initialize();
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             spriteBatch.Draw(tetrisBackground, Vector2.Zero, Color.White);
-
-            base.Draw(gameTime);
             spriteBatch.End();
         }
     }

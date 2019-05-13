@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
-	class Board : Microsoft.Xna.Framework.DrawableGameComponent
+	class Board : DrawableGameComponent
 	{
 		SpriteBatch sBatch;
 		Texture2D textures;
@@ -46,8 +46,8 @@ namespace Tetris
 			get { return speed; }
 		}
 
-		public Board (Game game, ref Texture2D textures, Rectangle[] rectangles) 
-		: base(game)		{
+		public Board (GameState game, ref Texture2D textures, Rectangle[] rectangles) : base(game)
+{
 			sBatch = (SpriteBatch)Game.Services.GetService (typeof(SpriteBatch));
 
 			// Load textures for blocks

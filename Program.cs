@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Tetris
 {
@@ -14,7 +15,7 @@ namespace Tetris
         [STAThread]
         static void Main()
         {
-            using (var game = new Engine())
+            using (var game = new Tetris())
                 game.Run();
         }
     }

@@ -6,7 +6,7 @@ namespace Tetris
 	/// <summary>
 	/// This is a game component that implements IUpdateable.
 	/// </summary>
-	public class Score : Microsoft.Xna.Framework.DrawableGameComponent
+	public class Score : DrawableGameComponent
 	{
 		// Graphic
 		protected SpriteBatch sBatch;
@@ -18,8 +18,8 @@ namespace Tetris
 		protected int recordScore = 0;
 		protected string recordPlayer = "Player 1";
 
-		public Score (Game game,SpriteFont font)
-		: base(game)		{
+		public Score (GameState game,SpriteFont font) : base(game)
+        {
 			sBatch = (SpriteBatch)Game.Services.GetService (typeof(SpriteBatch));
 			this.font = font;
 		}
