@@ -5,9 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
-	class Board : DrawableGameComponent
+	class Board
 	{
-		SpriteBatch sBatch;
 		Texture2D textures;
 		Rectangle[] rectangles;
 		enum FieldState
@@ -46,10 +45,8 @@ namespace Tetris
 			get { return speed; }
 		}
 
-		public Board (GameState game, ref Texture2D textures, Rectangle[] rectangles) : base(game)
+		public Board (ref Texture2D textures, Rectangle[] rectangles)
 {
-			sBatch = (SpriteBatch)Game.Services.GetService (typeof(SpriteBatch));
-
 			// Load textures for blocks
 			this.textures = textures;
 
@@ -169,7 +166,7 @@ namespace Tetris
 			nextFiguresModification.Enqueue (random.Next (4));
 		}
 
-		public override void Initialize ()
+		public void Initialize ()
 		{
 			showNewBlock = true;
 			movement = 0;
@@ -179,7 +176,6 @@ namespace Tetris
 				for (int j = 0; j < height; j++)
 					ClearBoardField (i, j);
 
-			base.Initialize ();
 		}
 
 		public void FindDynamicFigure ()
@@ -439,7 +435,7 @@ namespace Tetris
 			BoardColor [i, j] = -1;
 		}
 
-		public override void Draw (GameTime gameTime)
+		public void Draw (SpriteBatch sBatch)
 		{
 			Vector2 startPosition;
 			// Draw the blocks
@@ -464,8 +460,6 @@ namespace Tetris
 			rectangles [figure.Current], Color.White);
 				}
 			}
-
-			base.Draw (gameTime);
 		}
 	}
 }

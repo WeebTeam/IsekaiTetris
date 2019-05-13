@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
@@ -10,8 +9,8 @@ namespace Tetris
     /// </summary>
     public class Tetris : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public GraphicsDeviceManager graphics;
+        public SpriteBatch spriteBatch;
 
         public Tetris()
         {
@@ -35,6 +34,8 @@ namespace Tetris
             graphics.PreferredBackBufferWidth = 1280;
             graphics.ApplyChanges();
 
+            TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 10.0f);
+
             base.Initialize();
         }
 
@@ -52,6 +53,7 @@ namespace Tetris
 
             GameStateManager.Instance.SetContent(Content);
 
+            //add menu
             GameStateManager.Instance.AddScreen(new Menu(GraphicsDevice));
         }
 
@@ -69,6 +71,11 @@ namespace Tetris
         protected override void Update(GameTime gameTime)
         {
             GameStateManager.Instance.Update(gameTime);
+
+            if (GameStateManager.Instance.Empty)
+            {
+                this.Exit();
+            }
             base.Update(gameTime);
         }
 
@@ -78,10 +85,12 @@ namespace Tetris
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             GameStateManager.Instance.Draw(spriteBatch);
             base.Draw(gameTime);
+            spriteBatch.End();
         }
     }
 }

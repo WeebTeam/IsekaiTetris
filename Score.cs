@@ -6,10 +6,9 @@ namespace Tetris
 	/// <summary>
 	/// This is a game component that implements IUpdateable.
 	/// </summary>
-	public class Score : DrawableGameComponent
+	public class Score
 	{
 		// Graphic
-		protected SpriteBatch sBatch;
 		protected SpriteFont font;
 
 		// Counters
@@ -18,9 +17,8 @@ namespace Tetris
 		protected int recordScore = 0;
 		protected string recordPlayer = "Player 1";
 
-		public Score (GameState game,SpriteFont font) : base(game)
+		public Score (SpriteFont font)
         {
-			sBatch = (SpriteBatch)Game.Services.GetService (typeof(SpriteBatch));
 			this.font = font;
 		}
 
@@ -28,11 +26,10 @@ namespace Tetris
 		/// Allows the game component to perform any initialization it needs to before starting
 		/// to run.  This is where it can query for any required services and load content.
 		/// </summary>
-		public override void Initialize ()
+		public void Initialize ()
 		{
 			value = 0;
 			level = 1;
-			base.Initialize ();
 		}
 
 		public int Value {
@@ -59,13 +56,11 @@ namespace Tetris
 		/// This is called when the game should draw itself.
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		public override void Draw (GameTime gameTime)
+		public void Draw (SpriteBatch sBatch)
 		{
 			sBatch.DrawString (font, "Score:\n" + value + "\nLevel: " + level, new Vector2 (1.5f * 24, 3 * 24), Color.Green);
 
 			sBatch.DrawString (font, "Record:\n" + recordPlayer + "\n" + recordScore, new Vector2 (1.5f * 24, 13 * 24), Color.Orange);
-
-			base.Draw (gameTime);
 		}
 	}
 }

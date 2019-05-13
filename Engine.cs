@@ -19,8 +19,6 @@ namespace Tetris
         private SpriteFont gameFont;
         private readonly Rectangle[] blockRectangles = new Rectangle[7];
 
-        private Stack<GameState> gameState = new Stack<GameState>();
-
         // Game
         private Board board;
         private Score score;
@@ -55,9 +53,6 @@ namespace Tetris
         /// </summary>
         public override void Initialize()
         {
-
-            //this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 10.0f);
-
             // Try to open file if it exists, otherwise create it
             using (FileStream fileStream = File.Open("record.dat", FileMode.OpenOrCreate))
             {
@@ -79,12 +74,12 @@ namespace Tetris
             gameFont = content.Load<SpriteFont>("gameFont");
 
             // Create game field
-            board = new Board(this, ref tetrisTextures, blockRectangles);
+            board = new Board(ref tetrisTextures, blockRectangles);
             board.Initialize();
             //Components.Add(board);
 
             // Save player's score and game level
-            score = new Score(this, gameFont);
+            score = new Score(gameFont);
             score.Initialize();
             //Components.Add(score);
 
@@ -102,7 +97,7 @@ namespace Tetris
 
         public override void UnloadContent()
         {
-            
+
         }
 
         /// <summary>
@@ -117,58 +112,56 @@ namespace Tetris
             MouseState mouseState = Mouse.GetState();
             //if (keyboardState.IsKeyDown(Keys.Escape))  this.Exit();
 
-                // Check pause
-                bool pauseKey = (oldKeyboardState.IsKeyDown(Keys.P) && (keyboardState.IsKeyUp(Keys.P)));
+            // Check pause
+            bool pauseKey = (oldKeyboardState.IsKeyDown(Keys.P) && (keyboardState.IsKeyUp(Keys.P)));
 
-                oldKeyboardState = keyboardState;
+            if (pauseKey)
+                pause = !pause;
 
-                if (pauseKey)
-                    pause = !pause;
+            if (!pause)
+            {
+                // Find dynamic figure position
+                board.FindDynamicFigure();
 
-                if (!pause)
+                // Increase player score
+                int lines = board.DestroyLines();
+                if (lines > 0)
                 {
-                    // Find dynamic figure position
-                    board.FindDynamicFigure();
+                    score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
+                    board.Speed += 0.005f;
+                }
 
-                    // Increase player score
-                    int lines = board.DestroyLines();
-                    if (lines > 0)
+                score.Level = (int)(10 * board.Speed);
+
+                // Create new shape in game
+                if (!board.CreateNewFigure())
+                    GameOver();
+                else
+                {
+                    // If left key is pressed
+                    if (keyboardState.IsKeyDown(Keys.Left))
+                        board.MoveFigureLeft();
+                    // If right key is pressed
+                    if (keyboardState.IsKeyDown(Keys.Right))
+                        board.MoveFigureRight();
+                    // If down key is pressed
+                    if (keyboardState.IsKeyDown(Keys.Down))
+                        board.MoveFigureDown();
+
+                    // Rotate figure
+                    if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Space))
+                        board.RotateFigure();
+
+                    // Moving figure
+                    if (board.Movement >= 1)
                     {
-                        score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
-                        board.Speed += 0.005f;
+                        board.Movement = 0;
+                        board.MoveFigureDown();
                     }
-
-                    score.Level = (int)(10 * board.Speed);
-
-                    // Create new shape in game
-                    if (!board.CreateNewFigure())
-                        GameOver();
                     else
-                    {
-                        // If left key is pressed
-                        if (keyboardState.IsKeyDown(Keys.Left))
-                            board.MoveFigureLeft();
-                        // If right key is pressed
-                        if (keyboardState.IsKeyDown(Keys.Right))
-                            board.MoveFigureRight();
-                        // If down key is pressed
-                        if (keyboardState.IsKeyDown(Keys.Down))
-                            board.MoveFigureDown();
+                        board.Movement += board.Speed;
+                }
 
-                        // Rotate figure
-                        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Space))
-                            board.RotateFigure();
-
-                        // Moving figure
-                        if (board.Movement >= 1)
-                        {
-                            board.Movement = 0;
-                            board.MoveFigureDown();
-                        }
-                        else
-                            board.Movement += board.Speed;
-                    }
-                
             }
         }
 
@@ -199,9 +192,9 @@ namespace Tetris
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(tetrisBackground, Vector2.Zero, Color.White);
-            spriteBatch.End();
+            board.Draw(spriteBatch);
+            score.Draw(spriteBatch);
         }
     }
 }

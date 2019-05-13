@@ -12,6 +12,7 @@ namespace Tetris
         // Instance of the game state manager     
         private static GameStateManager _instance;
         private ContentManager _content;
+        private SpriteBatch _spriteBatch;
 
         // Stack for the screens     
         private Stack<GameState> _screens = new Stack<GameState>();
@@ -136,5 +137,30 @@ namespace Tetris
                 state.UnloadContent();
             }
         }
+
+        public bool Empty
+        {
+            get
+            {
+                if (_screens.Count < 1) //if 0 or less
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
+
+        public SpriteBatch SpriteBatch
+        {
+            get
+            {
+                return _spriteBatch;
+            }
+            set
+            {
+                _spriteBatch = value;
+            }
+        }
+
     }
 }

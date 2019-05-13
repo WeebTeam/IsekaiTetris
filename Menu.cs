@@ -8,6 +8,7 @@ namespace Tetris
     public class Menu : GameState
     {
         private Texture2D background;
+        private GraphicsDevice _graphicsDevice;
 
         //buttons (and button textures)
         private Button playButton, settingButton, quitButton;
@@ -19,6 +20,7 @@ namespace Tetris
         public Menu(GraphicsDevice graphicsDevice)
         : base(graphicsDevice)
         {
+            _graphicsDevice = graphicsDevice;
         }
 
         public override void Initialize()
@@ -66,24 +68,24 @@ namespace Tetris
             if (playButton.State == Button.GuiButtonState.Released)
             {
                 //run game
+                GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice));
             }
 
             if (quitButton.State == Button.GuiButtonState.Released)
             {
                 //quit game
+                GameStateManager.Instance.ClearScreens();
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.DrawString(menuFont, "Main Menu", new Vector2(200, 100), Color.Black);
 
             playButton.Draw(spriteBatch);
             settingButton.Draw(spriteBatch);
             quitButton.Draw(spriteBatch);
-            spriteBatch.End();
         }
     }
 }
