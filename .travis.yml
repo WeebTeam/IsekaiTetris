@@ -9,4 +9,4 @@ global:
 install:
 - wget -O monogame-sdk.run "https://github.com/MonoGame/MonoGame/releases/download/v3.7.1/monogame-sdk.run"
 - chmod +x monogame-sdk.run
-- sudo ./monogame-sdk.run
+- yes | sudo ./monogame-sdk.run
