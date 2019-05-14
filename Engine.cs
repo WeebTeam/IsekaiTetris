@@ -148,8 +148,12 @@ namespace Tetris
                     if (keyboardState.IsKeyDown(Keys.Down))
                         board.MoveFigureDown();
 
+                    // Hard drop
+                    if (keyboardState.IsKeyDown(Keys.Space))
+                        board.HardDrop();
+
                     // Rotate figure
-                    if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Space))
+                    if (keyboardState.IsKeyDown(Keys.Up))
                         board.RotateFigure();
 
                     // Moving figure
@@ -161,7 +165,6 @@ namespace Tetris
                     else
                         board.Movement += board.Speed;
                 }
-
             }
         }
 

@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="Button.cs" />
+    <Compile Include="CharacterSelection.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="GameState.cs" />
     <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
     <Compile Include="GameStates\IGameState.cs" />

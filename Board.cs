@@ -11,11 +11,11 @@ namespace Tetris
 		Rectangle[] rectangles;
 		enum FieldState
 		{
-			Free,
-			Static,
-			Dynamic
+			Free, //empty?
+			Static, //has placed block?
+			Dynamic //moving block?
 		};
-		FieldState[,] boardFields;
+		FieldState[,] boardFields; // field to hold all the pieces etc
 		Vector2[, ,] Figures;
 		readonly Vector2 StartPositionForNewFigure = new Vector2 (3, 0);
 		Vector2 PositionForDynamicFigure;
@@ -261,6 +261,7 @@ namespace Tetris
 			return true;
 		}
 
+        // check if figure fits on the current board
 		bool TryPlaceFigureOnBoard (Vector2[] vector)
 		{
 			for (int i = 0; i <= vector.GetUpperBound(0); i++)
@@ -325,41 +326,61 @@ namespace Tetris
 			PositionForDynamicFigure.X++;
 		}
 
-		public void MoveFigureDown ()
+        private bool CheckCollisions()
+        {
+            // Check colisions
+            for (int i = 0; i < BlocksCountInFigure; i++) //cycle through every block in a piece (1 piece = 4 blocks)
+            {
+                if ((DynamicFigure[i].Y == height - 1)) //if one block of the piece touches the floor
+                {
+                    for (int k = 0; k < BlocksCountInFigure; k++)
+                        boardFields[(int)DynamicFigure[k].X, (int)DynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
+                    return true;
+                }
+                if (boardFields[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y + 1] == FieldState.Static) //if one block of the piece touches a Static field/a placed piece
+                {
+                    for (int k = 0; k < BlocksCountInFigure; k++)
+                        boardFields[(int)DynamicFigure[k].X, (int)DynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
+                    return true;
+                }
+            }
+            return false;
+        }
+
+		public bool MoveFigureDown ()
 		{
-			// Sorting blocks fro dynamic figure to correct moving
+			// Sorting blocks for dynamic figure to correct moving
 			SortingVector2 (ref DynamicFigure, false, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
-			// Check colisions
-			for (int i = 0; i < BlocksCountInFigure; i++) {
-				if ((DynamicFigure [i].Y == height - 1)) {
-					for (int k = 0; k < BlocksCountInFigure; k++)
-						boardFields [(int)DynamicFigure [k].X, (int)DynamicFigure [k].Y] = FieldState.Static;
-					showNewBlock = true;
-					return;
-				}
-				if (boardFields [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y + 1] == FieldState.Static) {
-					for (int k = 0; k < BlocksCountInFigure; k++)
-						boardFields [(int)DynamicFigure [k].X, (int)DynamicFigure [k].Y] = FieldState.Static;
-					showNewBlock = true;
-					return;
-				}
-			}
-			// Move figure on board
-			for (int i = BlocksCountInFigure - 1; i >= 0; i--) {
-				boardFields [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y + 1] = 
-			boardFields [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y];
-				BoardColor [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y + 1] = 
-			BoardColor [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y];
-				ClearBoardField ((int)DynamicFigure [i].X, (int)DynamicFigure [i].Y);
-				// Change position for blocks in DynamicFigure
-				DynamicFigure [i].Y = DynamicFigure [i].Y + 1;
-			}
-			// Change position vector
-			//if (PositionForDynamicFigure.Y < height - 1)
-			PositionForDynamicFigure.Y++;
+            
+            if (CheckCollisions())// Check colisions
+            {
+                showNewBlock = true;
+                return true; //return true if we collided
+            }
+            // Move figure on board
+            for (int i = BlocksCountInFigure - 1; i >= 0; i--) //cycle through each block
+            {
+                boardFields[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y + 1] = boardFields[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y]; //copy current block value to next block
+                BoardColor[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y + 1] = BoardColor[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y];
+                ClearBoardField((int)DynamicFigure[i].X, (int)DynamicFigure[i].Y); //change previous board location to free (as we moved down alr)
+                // Change position for blocks in DynamicFigure
+                DynamicFigure[i].Y = DynamicFigure[i].Y + 1; //move down
+            }
+            // Change position vector
+            //if (PositionForDynamicFigure.Y < height - 1)
+            PositionForDynamicFigure.Y++;
+            return false; //return false if theres no collision
 		}
 
-		public void RotateFigure ()
+        public void HardDrop()
+        {
+            while (true)
+            {
+                if (MoveFigureDown()) break; //move the piece down until it hits something
+            }
+        }
+
+        public void RotateFigure ()
 		{
 			// Check colisions for next modification
 			Vector2[] TestDynamicFigure = new Vector2[DynamicFigure.GetUpperBound (0) + 1];
