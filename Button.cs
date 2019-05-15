@@ -2,88 +2,89 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-/// <summary>
-/// taken from http://community.monogame.net/t/mouse-and-buttons-how-to-simplify/7726/2
-/// </summary>
+
 namespace Tetris
 {
+    /// <summary>
+    /// taken from http://community.monogame.net/t/mouse-and-buttons-how-to-simplify/7726/2
+    /// Momentary button
+    /// State changes based on if user is clicking it
+    /// basically a momentary switch
+    /// </summary>
     public class Button
     {
         public enum GuiButtonState
         {
             None,
-            Pressed,
             Hover,
+            Pressed,
             Released
         }
 
-        public Color _buttonColor { get; set; }
+        public Color _textColor { get; set; }
 
-        private Rectangle _rectangle;
-        private GuiButtonState _state;
+        protected Rectangle _rectangle;
+        protected GuiButtonState _state;
 
-        private string _buttonText;
-        private SpriteFont _buttonFont;
+        protected string _buttonText = null;
+        protected SpriteFont _buttonFont = null;
 
-        public GuiButtonState State
+        public virtual GuiButtonState State
         {
             get { return _state; }
             set { _state = value; } // you can throw some events here if you'd like
         }
 
-        private Dictionary<GuiButtonState, Texture2D> _textures;
+        protected Dictionary<GuiButtonState, Texture2D> _textures;
 
-        public Button(Rectangle rectangle, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture)
+        protected Button() { }
+
+        //released texture same as hover texture
+        public Button(Rectangle rect, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture)
         {
-            _rectangle = rectangle;
-            _buttonText = null;
-            _buttonFont = null;
+            _rectangle = rect;
+            _textColor = Color.Black;
+
             _textures = new Dictionary<GuiButtonState, Texture2D>{
                 { GuiButtonState.None, noneTexture },
                 { GuiButtonState.Hover, hoverTexture },
                 { GuiButtonState.Pressed, pressedTexture },
-                { GuiButtonState.Released, hoverTexture }
+                { GuiButtonState.Released, hoverTexture },
             };
-            _buttonColor = Color.Black;
+        }
+
+        //with saparate released texture
+        public Button(Rectangle rect, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture, Texture2D releasedTexture)
+            : this(rect, noneTexture, hoverTexture, pressedTexture)
+        {
+            //set custom released texture
+            _textures[GuiButtonState.Released] = releasedTexture;
+
         }
 
         //with text
-        public Button(Rectangle rectangle, SpriteFont font, string text, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture)
+        public Button(Rectangle rect, SpriteFont font, string text, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture) 
+            : this(rect, noneTexture, hoverTexture, pressedTexture)
         {
-            _rectangle = rectangle;
             _buttonText = text;
             _buttonFont = font;
-            _textures = new Dictionary<GuiButtonState, Texture2D>{
-                { GuiButtonState.None, noneTexture },
-                { GuiButtonState.Hover, hoverTexture },
-                { GuiButtonState.Pressed, pressedTexture },
-                { GuiButtonState.Released, hoverTexture }
-            };
-            _buttonColor = Color.Black;
         }
 
-        //overloader with text color
-        public Button(Rectangle rectangle, SpriteFont font, string text, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture, Color newColor)
+        //with text, text color
+        public Button(Rectangle rect, SpriteFont font, string text, Color textColor, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture):
+            this(rect, font, text, noneTexture, hoverTexture, pressedTexture)
         {
-            _rectangle = rectangle;
-            _buttonText = text;
-            _buttonFont = font;
-            _textures = new Dictionary<GuiButtonState, Texture2D>{
-                { GuiButtonState.None, noneTexture },
-                { GuiButtonState.Hover, hoverTexture },
-                { GuiButtonState.Pressed, pressedTexture },
-                { GuiButtonState.Released, hoverTexture }
-            };
-            _buttonColor = newColor;
+            _textColor = textColor;
         }
 
-        public void Update(MouseState mouseState)
+        public virtual void Update(MouseState mouseState)
         {
             if (_rectangle.Contains(mouseState.X, mouseState.Y))
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                     State = GuiButtonState.Pressed;
                 else
+                    //(condition) ? [true path] : [false path];
                     State = State == GuiButtonState.Pressed ? GuiButtonState.Released : GuiButtonState.Hover;
             }
             else
@@ -93,7 +94,7 @@ namespace Tetris
         }
 
         // Make sure Begin is called on s before you call this function
-        public void Draw(SpriteBatch s)
+        public virtual void Draw(SpriteBatch s)
         {
             s.Draw(_textures[State], _rectangle, Color.White);
 
@@ -105,7 +106,7 @@ namespace Tetris
                 center.X -= textBox.X / 2;
                 center.Y -= textBox.Y / 2;
 
-                s.DrawString(_buttonFont, _buttonText, center, _buttonColor);
+                s.DrawString(_buttonFont, _buttonText, center, _textColor);
             }
             
         }

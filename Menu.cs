@@ -44,10 +44,10 @@ namespace Tetris
             menuFont = content.Load<SpriteFont>("menuFont");
 
             // Load buttons 
-            playButton = new Button(new Rectangle(440, 400, 400, 50), gameFont, "Start Game", buttonNone, buttonHover, buttonNone, Color.White);
-            scoreButton = new Button(new Rectangle(440, 460, 400, 50), gameFont, "High Score", buttonNone, buttonHover, buttonNone, Color.White);
-            settingButton = new Button(new Rectangle(440, 520, 400, 50), gameFont, "Settings", buttonNone, buttonHover, buttonNone, Color.White);
-            quitButton = new Button(new Rectangle(440, 580, 400, 50), gameFont, "Quit", buttonNone, buttonHover, buttonNone, Color.White);
+            playButton = new Button(new Rectangle(440, 400, 400, 50), gameFont, "Start Game", Color.White, buttonNone, buttonHover, buttonNone);
+            scoreButton = new Button(new Rectangle(440, 460, 400, 50), gameFont, "High Score", Color.White, buttonNone, buttonHover, buttonNone);
+            settingButton = new Button(new Rectangle(440, 520, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
+            quitButton = new Button(new Rectangle(440, 580, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone);
 
             /* 1280 x 720
             buttons are 400 x 50
@@ -94,17 +94,16 @@ namespace Tetris
             else if (quitButton.State == Button.GuiButtonState.Released)
             {
                 //quit game
-                GameStateManager.Instance.ClearScreens();
+                GameStateManager.Instance.QuitGame = true;
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            //spriteBatch.DrawString(menuFont, "Main Menu", new Vector2(200, 100), Color.Black);
 
-            spriteBatch.Draw(title, new Vector2(280, 50), Color.White);
+            spriteBatch.Draw(title, new Vector2(280, 50), Color.White); //draw title/logo
 
+            //draw buttons
             playButton.Draw(spriteBatch);
             scoreButton.Draw(spriteBatch);
             settingButton.Draw(spriteBatch);

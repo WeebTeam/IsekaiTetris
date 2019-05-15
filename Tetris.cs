@@ -72,7 +72,7 @@ namespace Tetris
         {
             GameStateManager.Instance.Update(gameTime);
 
-            if (GameStateManager.Instance.Empty)
+            if (GameStateManager.Instance.QuitGame)
             {
                 this.Exit();
             }

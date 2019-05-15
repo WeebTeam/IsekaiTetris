@@ -10,7 +10,8 @@ namespace Tetris
         private Texture2D background;
 
         //buttons (and button textures)
-        private Button kazumaButton, aquaButton, meguminButton, darknessButton, nextButton;
+        private Button nextButton;
+        private TButton kazumaButton, aquaButton, meguminButton, darknessButton; //these are toggleable buttons
         private Texture2D kazuma, kazumahover, aqua, aquahover, megumin, meguminhover, darkness, darknesshover, buttonNone, buttonHover;
 
         //fonts
@@ -52,12 +53,12 @@ namespace Tetris
             menuFont = content.Load<SpriteFont>("menuFont");
 
             // Load buttons 
-            kazumaButton = new Button(new Rectangle(120, 150, 260, 470), kazuma, kazumahover, kazumahover);
-            aquaButton = new Button(new Rectangle(380, 150, 260, 470), aqua, aquahover, aquahover);
-            meguminButton = new Button(new Rectangle(640, 150, 260, 470), megumin, meguminhover, meguminhover);
-            darknessButton = new Button(new Rectangle(900, 150, 260, 470), darkness, darknesshover, darknesshover);
+            kazumaButton = new TButton(new Rectangle(120, 150, 260, 470), kazuma, kazumahover, kazumahover);
+            aquaButton = new TButton(new Rectangle(380, 150, 260, 470), aqua, aquahover, aquahover);
+            meguminButton = new TButton(new Rectangle(640, 150, 260, 470), megumin, meguminhover, meguminhover);
+            darknessButton = new TButton(new Rectangle(900, 150, 260, 470), darkness, darknesshover, darknesshover);
 
-            nextButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Next", buttonNone, buttonHover, buttonNone, Color.White);
+            nextButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Next", Color.White, buttonNone, buttonHover, buttonNone);
 
             /* 1280 x 720
             buttons are 400 x 50
@@ -80,25 +81,46 @@ namespace Tetris
             MouseState mouseState = Mouse.GetState();
             //if (keyboardState.IsKeyDown(Keys.Escape))  this.Exit();
 
-            //menu input checking?
+            //check if character is selected, then deselects other characters
             kazumaButton.Update(mouseState);
+            if (kazumaButton.Selected)
+            {
+                aquaButton.Selected = false;
+                meguminButton.Selected = false;
+                darknessButton.Selected = false;
+            }
+
             aquaButton.Update(mouseState);
+            if (aquaButton.Selected)
+            {
+                kazumaButton.Selected = false;
+                meguminButton.Selected = false;
+                darknessButton.Selected = false;
+            }
+
             meguminButton.Update(mouseState);
+            if (meguminButton.Selected)
+            {
+                aquaButton.Selected = false;
+                kazumaButton.Selected = false;
+                darknessButton.Selected = false;
+            }
+
             darknessButton.Update(mouseState);
+            if (darknessButton.Selected)
+            {
+                aquaButton.Selected = false;
+                meguminButton.Selected = false;
+                kazumaButton.Selected = false;
+            }
 
             nextButton.Update(mouseState);
 
-
-            if (kazumaButton.State == Button.GuiButtonState.Released)
+            if (nextButton.State == Button.GuiButtonState.Released)
             {
                 //run game
-                GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice));
-            }
-
-            if (aquaButton.State == Button.GuiButtonState.Released)
-            {
-                //quit game
-                //GameStateManager.Instance.ClearScreens();
+                if (kazumaButton.Selected)
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice));
             }
         }
 

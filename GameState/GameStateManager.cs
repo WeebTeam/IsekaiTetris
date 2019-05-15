@@ -13,6 +13,7 @@ namespace Tetris
         private static GameStateManager _instance;
         private ContentManager _content;
         private SpriteBatch _spriteBatch;
+        private bool _quit = false;
 
         // Stack for the screens     
         private Stack<GameState> _screens = new Stack<GameState>();
@@ -138,19 +139,13 @@ namespace Tetris
             }
         }
 
-        public bool Empty
+        public bool QuitGame //let gamestates quit the game
         {
-            get
-            {
-                if (_screens.Count < 1) //if 0 or less
-                {
-                    return true;
-                }
-                else return false;
-            }
+            get { return _quit; }
+            set { _quit = value; }
         }
 
-        public SpriteBatch SpriteBatch
+        public SpriteBatch SpriteBatch //let gamestates access the spritebatch (remove if not needed)
         {
             get
             {
