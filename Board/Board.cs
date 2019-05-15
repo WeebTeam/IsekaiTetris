@@ -8,47 +8,47 @@ namespace Tetris
     /// <summary>
     /// class whereby all the information about the blocks are implemented here
     /// </summary>
-	class Board
+	public class Board
 	{
-		Texture2D textures;
-		Rectangle[] rectangles;
-		enum FieldState
+        protected Texture2D textures;
+        protected Rectangle[] rectangles;
+		protected enum FieldState
 		{
 			Free, //empty?
 			Static, //has placed block?
 			Dynamic //moving block?
 		};
-		FieldState[,] boardFields; // field to hold all the pieces etc
-		Vector2[, ,] Figures;
-		readonly Vector2 StartPositionForNewFigure = new Vector2 (3, 0);
-		Vector2 PositionForDynamicFigure;
-		Vector2[] DynamicFigure = new Vector2[BlocksCountInFigure];
-		Random random = new Random ();
-		int[,] BoardColor;
-		const int height = 20;
-		const int width = 10;
-		const int BlocksCountInFigure = 4;
-		int DynamicFigureNumber;
-		int DynamicFigureModificationNumber;
-		int DynamicFigureColor;
-		bool BlockLine;
-		bool showNewBlock;
-		float movement;
-		float speed;
-		Queue<int> nextFigures = new Queue<int> ();
-		Queue<int> nextFiguresModification = new Queue<int> ();
+        protected FieldState[,] boardFields; // field to hold all the pieces etc
+        protected Vector2[, ,] Figures;
+        protected readonly Vector2 StartPositionForNewFigure = new Vector2 (3, 0);
+        protected Vector2 PositionForDynamicFigure;
+        protected Vector2[] DynamicFigure = new Vector2[BlocksCountInFigure];
+        protected Random random = new Random ();
+        protected int[,] BoardColor;
+        protected const int height = 20;
+        protected const int width = 10;
+        protected const int BlocksCountInFigure = 4;
+        protected int DynamicFigureNumber;
+        protected int DynamicFigureModificationNumber;
+        protected int DynamicFigureColor;
+        protected bool BlockLine;
+        protected bool showNewBlock;
+        protected float movement;
+        protected float speed;
+        protected Queue<int> nextFigures = new Queue<int> ();
+        protected Queue<int> nextFiguresModification = new Queue<int> ();
 
-		public float Movement {
+		public virtual float Movement {
 			set { movement = value; }
 			get { return movement; }
 		}
 
-		public float Speed {
+		public virtual float Speed {
 			set { speed = value; }
 			get { return speed; }
 		}
 
-		public Board (ref Texture2D textures, Rectangle[] rectangles)
+		public Board(ref Texture2D textures, Rectangle[] rectangles)
 {
 			// Load textures for blocks
 			this.textures = textures;
@@ -169,7 +169,7 @@ namespace Tetris
 			nextFiguresModification.Enqueue (random.Next (4));
 		}
 
-		public void Initialize ()
+		public virtual void Initialize ()
 		{
 			showNewBlock = true;
 			movement = 0;
@@ -181,7 +181,7 @@ namespace Tetris
 
 		}
 
-		public void FindDynamicFigure ()
+		public virtual void FindDynamicFigure ()
 		{
 			int BlockNumberInDynamicFigure = 0;
 			for (int i = 0; i < width; i++)
@@ -194,7 +194,7 @@ namespace Tetris
 		/// Find, destroy and save lines's count
 		/// </summary>
 		/// <returns>Number of destoyed lines</returns>
-		public int DestroyLines ()
+		public virtual int DestroyLines ()
 		{
 			// Find total lines
 			int BlockLineCount = 0;
@@ -227,7 +227,7 @@ namespace Tetris
 		/// <summary>
 		/// Create new shape in the game, if need it
 		/// </summary>
-		public bool CreateNewFigure ()
+		public virtual bool CreateNewFigure ()
 		{
 			if (showNewBlock) {
 				// Generate new figure's shape
@@ -253,7 +253,7 @@ namespace Tetris
 			return true;
 		}
 
-		bool DrawFigureOnBoard (Vector2[] vector, int color)
+		protected virtual bool DrawFigureOnBoard (Vector2[] vector, int color)
 		{
 			if (!TryPlaceFigureOnBoard (vector))
 				return false;
@@ -265,7 +265,7 @@ namespace Tetris
 		}
 
         // check if figure fits on the current board
-		bool TryPlaceFigureOnBoard (Vector2[] vector)
+		protected virtual bool TryPlaceFigureOnBoard (Vector2[] vector)
 		{
 			for (int i = 0; i <= vector.GetUpperBound(0); i++)
 				if ((vector [i].X < 0) || (vector [i].X >= width) || 
@@ -277,7 +277,7 @@ namespace Tetris
 			return true;
 		}
 
-		public void MoveFigureLeft ()
+		public virtual void MoveFigureLeft ()
 		{
 			// Sorting blocks fro dynamic figure to correct moving
 			SortingVector2 (ref DynamicFigure, true, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
@@ -303,7 +303,7 @@ namespace Tetris
 			PositionForDynamicFigure.X--;
 		}
 
-		public void MoveFigureRight ()
+		public virtual void MoveFigureRight ()
 		{
 			// Sorting blocks fro dynamic figure to correct moving
 			SortingVector2 (ref DynamicFigure, true, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
@@ -329,7 +329,7 @@ namespace Tetris
 			PositionForDynamicFigure.X++;
 		}
 
-        private bool CheckCollisions()
+        protected virtual bool CheckCollisions()
         {
             // Check colisions
             for (int i = 0; i < BlocksCountInFigure; i++) //cycle through every block in a piece (1 piece = 4 blocks)
@@ -350,7 +350,7 @@ namespace Tetris
             return false;
         }
 
-		public bool MoveFigureDown ()
+		public virtual bool MoveFigureDown ()
 		{
 			// Sorting blocks for dynamic figure to correct moving
 			SortingVector2 (ref DynamicFigure, false, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
@@ -375,7 +375,7 @@ namespace Tetris
             return false; //return false if theres no collision
 		}
 
-        public void HardDrop()
+        public virtual void HardDrop()
         {
             while (true)
             {
@@ -383,7 +383,7 @@ namespace Tetris
             }
         }
 
-        public void RotateFigure ()
+        public virtual void RotateFigure ()
 		{
 			// Check colisions for next modification
 			Vector2[] TestDynamicFigure = new Vector2[DynamicFigure.GetUpperBound (0) + 1];
@@ -426,7 +426,7 @@ namespace Tetris
 			}
 		}
 
-		public void SortingVector2 (ref Vector2[] vector, bool sortByX, int a, int b)
+		public virtual void SortingVector2 (ref Vector2[] vector, bool sortByX, int a, int b)
 		{
 			if (a >= b)
 				return;
@@ -453,13 +453,13 @@ namespace Tetris
 			SortingVector2 (ref vector, sortByX, c + 1, b);
 		}
 
-		void ClearBoardField (int i, int j)
+		protected virtual void ClearBoardField(int i, int j)
 		{
 			boardFields [i, j] = FieldState.Free;
 			BoardColor [i, j] = -1;
 		}
 
-		public void Draw (SpriteBatch sBatch)
+		public virtual void Draw (SpriteBatch sBatch)
 		{
 			Vector2 startPosition;
 			// Draw the blocks

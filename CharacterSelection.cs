@@ -11,8 +11,7 @@ namespace Tetris
 
         //buttons (and button textures)
         private Button nextButton;
-        //private TButton kazuma, aqua, megumin, darkness; //these are toggleable buttons
-        private Character kazuma, aqua, megumin, darkness;
+        private CharacterProfile kazuma, aqua, megumin, darkness;
         private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover;
 
         //fonts
@@ -53,10 +52,10 @@ namespace Tetris
             menuFont = content.Load<SpriteFont>("menuFont");
 
             //load characters
-            kazuma = new Character(new Rectangle(120, 150, 260, 470), kazumaNormal, kazumaHover);
-            aqua = new Character(new Rectangle(380, 150, 260, 470), aquaNormal, aquaHover);
-            megumin = new Character(new Rectangle(640, 150, 260, 470), meguminNormal, meguminHover);
-            darkness = new Character(new Rectangle(900, 150, 260, 470), darknessNormal, darknessHover);
+            kazuma = new CharacterProfile(new Rectangle(120, 150, 260, 470), kazumaNormal, kazumaHover);
+            aqua = new CharacterProfile(new Rectangle(380, 150, 260, 470), aquaNormal, aquaHover);
+            megumin = new CharacterProfile(new Rectangle(640, 150, 260, 470), meguminNormal, meguminHover);
+            darkness = new CharacterProfile(new Rectangle(900, 150, 260, 470), darknessNormal, darknessHover);
 
             // Load buttons 
             nextButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Next", Color.White, buttonNone, buttonHover, buttonNone);
@@ -112,7 +111,13 @@ namespace Tetris
             {
                 //run game
                 if (kazuma.Selected)
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                if (aqua.Selected)
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                if (megumin.Selected)
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                if (darkness.Selected)
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
             }
 
             if (keyboardState.IsKeyDown(Keys.Escape))

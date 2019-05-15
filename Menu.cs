@@ -29,7 +29,6 @@ namespace Tetris
 
         public override void LoadContent(ContentManager content)
         {
-
             //Load 2D textures
             background = content.Load<Texture2D>("Images/mainmenubg");
             title = content.Load<Texture2D>("Images/title");
