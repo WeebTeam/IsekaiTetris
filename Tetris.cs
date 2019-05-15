@@ -34,7 +34,7 @@ namespace Tetris
             graphics.PreferredBackBufferWidth = 1280;
             graphics.ApplyChanges();
 
-            TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 10.0f);
+            //TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 10.0f);
 
             base.Initialize();
         }

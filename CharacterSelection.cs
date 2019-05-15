@@ -11,8 +11,9 @@ namespace Tetris
 
         //buttons (and button textures)
         private Button nextButton;
-        private TButton kazumaButton, aquaButton, meguminButton, darknessButton; //these are toggleable buttons
-        private Texture2D kazuma, kazumahover, aqua, aquahover, megumin, meguminhover, darkness, darknesshover, buttonNone, buttonHover;
+        //private TButton kazuma, aqua, megumin, darkness; //these are toggleable buttons
+        private Character kazuma, aqua, megumin, darkness;
+        private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover;
 
         //fonts
         private SpriteFont gameFont, menuFont;
@@ -35,39 +36,30 @@ namespace Tetris
             background = content.Load<Texture2D>("Images/mainmenubg");
 
             //Load button textures
-            kazuma = content.Load<Texture2D>("Images/kazuButton");
-            kazumahover = content.Load<Texture2D>("Images/kazuHover");
-            aqua = content.Load<Texture2D>("Images/aquaButton");
-            aquahover = content.Load<Texture2D>("Images/aquaHover");
-            megumin = content.Load<Texture2D>("Images/meguButton");
-            meguminhover = content.Load<Texture2D>("Images/meguHover");
-            darkness = content.Load<Texture2D>("Images/darknessButton");
-            darknesshover = content.Load<Texture2D>("Images/darknessHover");
+            kazumaNormal = content.Load<Texture2D>("Images/kazuButton");
+            kazumaHover = content.Load<Texture2D>("Images/kazuHover");
+            aquaNormal = content.Load<Texture2D>("Images/aquaButton");
+            aquaHover = content.Load<Texture2D>("Images/aquaHover");
+            meguminNormal = content.Load<Texture2D>("Images/meguButton");
+            meguminHover = content.Load<Texture2D>("Images/meguHover");
+            darknessNormal = content.Load<Texture2D>("Images/darknessButton");
+            darknessHover = content.Load<Texture2D>("Images/darknessHover");
 
             buttonNone = content.Load<Texture2D>("Buttons/buttonTemplate");
             buttonHover = content.Load<Texture2D>("Buttons/buttonTemplateHover");
-
 
             // Load font
             gameFont = content.Load<SpriteFont>("gameFont");
             menuFont = content.Load<SpriteFont>("menuFont");
 
+            //load characters
+            kazuma = new Character(new Rectangle(120, 150, 260, 470), kazumaNormal, kazumaHover);
+            aqua = new Character(new Rectangle(380, 150, 260, 470), aquaNormal, aquaHover);
+            megumin = new Character(new Rectangle(640, 150, 260, 470), meguminNormal, meguminHover);
+            darkness = new Character(new Rectangle(900, 150, 260, 470), darknessNormal, darknessHover);
+
             // Load buttons 
-            kazumaButton = new TButton(new Rectangle(120, 150, 260, 470), kazuma, kazumahover, kazumahover);
-            aquaButton = new TButton(new Rectangle(380, 150, 260, 470), aqua, aquahover, aquahover);
-            meguminButton = new TButton(new Rectangle(640, 150, 260, 470), megumin, meguminhover, meguminhover);
-            darknessButton = new TButton(new Rectangle(900, 150, 260, 470), darkness, darknesshover, darknesshover);
-
             nextButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Next", Color.White, buttonNone, buttonHover, buttonNone);
-
-            /* 1280 x 720
-            buttons are 400 x 50
-            to center them:
-
-            440 - 400 - 440
-
-
-            */
         }
 
         public override void UnloadContent()
@@ -82,36 +74,36 @@ namespace Tetris
             //if (keyboardState.IsKeyDown(Keys.Escape))  this.Exit();
 
             //check if character is selected, then deselects other characters
-            kazumaButton.Update(mouseState);
-            if (kazumaButton.Selected)
+            kazuma.Update(mouseState);
+            if (kazuma.Selected)
             {
-                aquaButton.Selected = false;
-                meguminButton.Selected = false;
-                darknessButton.Selected = false;
+                aqua.Selected = false;
+                megumin.Selected = false;
+                darkness.Selected = false;
             }
 
-            aquaButton.Update(mouseState);
-            if (aquaButton.Selected)
+            aqua.Update(mouseState);
+            if (aqua.Selected)
             {
-                kazumaButton.Selected = false;
-                meguminButton.Selected = false;
-                darknessButton.Selected = false;
+                kazuma.Selected = false;
+                megumin.Selected = false;
+                darkness.Selected = false;
             }
 
-            meguminButton.Update(mouseState);
-            if (meguminButton.Selected)
+            megumin.Update(mouseState);
+            if (megumin.Selected)
             {
-                aquaButton.Selected = false;
-                kazumaButton.Selected = false;
-                darknessButton.Selected = false;
+                aqua.Selected = false;
+                kazuma.Selected = false;
+                darkness.Selected = false;
             }
 
-            darknessButton.Update(mouseState);
-            if (darknessButton.Selected)
+            darkness.Update(mouseState);
+            if (darkness.Selected)
             {
-                aquaButton.Selected = false;
-                meguminButton.Selected = false;
-                kazumaButton.Selected = false;
+                aqua.Selected = false;
+                megumin.Selected = false;
+                kazuma.Selected = false;
             }
 
             nextButton.Update(mouseState);
@@ -119,9 +111,15 @@ namespace Tetris
             if (nextButton.State == Button.GuiButtonState.Released)
             {
                 //run game
-                if (kazumaButton.Selected)
+                if (kazuma.Selected)
                     GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice));
             }
+
+            if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                GameStateManager.Instance.RemoveScreen();
+            }
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -129,10 +127,10 @@ namespace Tetris
             //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             //spriteBatch.DrawString(menuFont, "Main Menu", new Vector2(200, 100), Color.Black);
 
-            kazumaButton.Draw(spriteBatch);
-            aquaButton.Draw(spriteBatch);
-            meguminButton.Draw(spriteBatch);
-            darknessButton.Draw(spriteBatch);
+            kazuma.Draw(spriteBatch);
+            aqua.Draw(spriteBatch);
+            megumin.Draw(spriteBatch);
+            darkness.Draw(spriteBatch);
 
             nextButton.Draw(spriteBatch);
         }

@@ -81,18 +81,6 @@
 /processorParam:TextureFormat=Compressed
 /build:gameFont.spritefont
 
-#begin Images/aqua.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/aqua.png
-
 #begin Images/aquaButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -177,18 +165,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/back5Refined.png
 
-#begin Images/darkness.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/darkness.png
-
 #begin Images/darknessButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -249,30 +225,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/kazuHover.png
 
-#begin Images/kazuma.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/kazuma.png
-
-#begin Images/kazuma_hover.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/kazuma_hover.png
-
 #begin Images/mainmenubg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -308,18 +260,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/meguHover.png
-
-#begin Images/megumin.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/megumin.png
 
 #begin Images/score.png
 /importer:TextureImporter
