@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
+    /// <summary>
+    /// class whereby all the information about the blocks are implemented here
+    /// </summary>
 	class Board
 	{
 		Texture2D textures;

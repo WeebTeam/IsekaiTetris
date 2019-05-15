@@ -17,6 +17,8 @@ namespace Tetris
             Released
         }
 
+        public Color _buttonColor { get; set; }
+
         private Rectangle _rectangle;
         private GuiButtonState _state;
 
@@ -42,6 +44,7 @@ namespace Tetris
                 { GuiButtonState.Pressed, pressedTexture },
                 { GuiButtonState.Released, hoverTexture }
             };
+            _buttonColor = Color.Black;
         }
 
         //with text
@@ -56,6 +59,22 @@ namespace Tetris
                 { GuiButtonState.Pressed, pressedTexture },
                 { GuiButtonState.Released, hoverTexture }
             };
+            _buttonColor = Color.Black;
+        }
+
+        //overloader with text color
+        public Button(Rectangle rectangle, SpriteFont font, string text, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture, Color newColor)
+        {
+            _rectangle = rectangle;
+            _buttonText = text;
+            _buttonFont = font;
+            _textures = new Dictionary<GuiButtonState, Texture2D>{
+                { GuiButtonState.None, noneTexture },
+                { GuiButtonState.Hover, hoverTexture },
+                { GuiButtonState.Pressed, pressedTexture },
+                { GuiButtonState.Released, hoverTexture }
+            };
+            _buttonColor = newColor;
         }
 
         public void Update(MouseState mouseState)
@@ -86,7 +105,7 @@ namespace Tetris
                 center.X -= textBox.X / 2;
                 center.Y -= textBox.Y / 2;
 
-                s.DrawString(_buttonFont, _buttonText, center, Color.Black);
+                s.DrawString(_buttonFont, _buttonText, center, _buttonColor);
             }
             
         }

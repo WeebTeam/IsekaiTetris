@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Tetris
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This is the engine part of the game (controls, score)
     /// </summary>
     public class Engine : GameState
     {
@@ -67,7 +67,7 @@ namespace Tetris
         public override void LoadContent(ContentManager content)
         {
             //Load 2D textures
-            tetrisBackground = content.Load<Texture2D>("Images/gameplaybg");
+            tetrisBackground = content.Load<Texture2D>("Images/back1Refined"); //gameplaybg
             tetrisTextures = content.Load<Texture2D>("Images/tetris");
 
             // Load game font

@@ -7,7 +7,7 @@ namespace Tetris
 {
     public class Menu : GameState
     {
-        private Texture2D background;
+        private Texture2D background, title;
 
         //buttons (and button textures)
         private Button playButton, scoreButton, settingButton, quitButton;
@@ -32,21 +32,22 @@ namespace Tetris
 
             //Load 2D textures
             background = content.Load<Texture2D>("Images/mainmenubg");
+            title = content.Load<Texture2D>("Images/title");
 
             //Load button textures
-            buttonNone = content.Load<Texture2D>("Buttons/button");
+            buttonNone = content.Load<Texture2D>("Buttons/buttonTemplate");
             buttonPressed = content.Load<Texture2D>("Buttons/pressed");
-            buttonHover = content.Load<Texture2D>("Buttons/hover");
+            buttonHover = content.Load<Texture2D>("Buttons/buttonTemplateHover");
 
             // Load font
             gameFont = content.Load<SpriteFont>("gameFont");
             menuFont = content.Load<SpriteFont>("menuFont");
 
             // Load buttons 
-            playButton = new Button(new Rectangle(440, 400, 400, 50), gameFont, "Start Game", buttonNone, buttonHover, buttonPressed);
-            scoreButton = new Button(new Rectangle(440, 460, 400, 50), gameFont, "High Score", buttonNone, buttonHover, buttonPressed);
-            settingButton = new Button(new Rectangle(440, 520, 400, 50), gameFont, "Settings", buttonNone, buttonHover, buttonPressed);
-            quitButton = new Button(new Rectangle(440, 580, 400, 50), gameFont, "Quit", buttonNone, buttonHover, buttonPressed);
+            playButton = new Button(new Rectangle(440, 400, 400, 50), gameFont, "Start Game", buttonNone, buttonHover, buttonNone, Color.White);
+            scoreButton = new Button(new Rectangle(440, 460, 400, 50), gameFont, "High Score", buttonNone, buttonHover, buttonNone, Color.White);
+            settingButton = new Button(new Rectangle(440, 520, 400, 50), gameFont, "Settings", buttonNone, buttonHover, buttonNone, Color.White);
+            quitButton = new Button(new Rectangle(440, 580, 400, 50), gameFont, "Quit", buttonNone, buttonHover, buttonNone, Color.White);
 
             /* 1280 x 720
             buttons are 400 x 50
@@ -101,6 +102,8 @@ namespace Tetris
         {
             //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             //spriteBatch.DrawString(menuFont, "Main Menu", new Vector2(200, 100), Color.Black);
+
+            spriteBatch.Draw(title, new Vector2(280, 50), Color.White);
 
             playButton.Draw(spriteBatch);
             scoreButton.Draw(spriteBatch);
