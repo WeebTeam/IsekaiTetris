@@ -113,11 +113,11 @@ namespace Tetris
                 if (kazuma.Selected)
                     GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
                 if (aqua.Selected)
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Aqua));
                 if (megumin.Selected)
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Megumin));
                 if (darkness.Selected)
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Darkness));
             }
 
             if (keyboardState.IsKeyDown(Keys.Escape))

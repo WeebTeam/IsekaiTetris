@@ -9,371 +9,382 @@ namespace Tetris
     /// class whereby all the information about the blocks are implemented here
     /// </summary>
 	public class Board
-	{
-        protected Texture2D textures;
-        protected Rectangle[] rectangles;
-		protected enum FieldState
-		{
-			Free, //empty?
-			Static, //has placed block?
-			Dynamic //moving block?
-		};
-        protected FieldState[,] boardFields; // field to hold all the pieces etc
-        protected Vector2[, ,] Figures;
-        protected readonly Vector2 StartPositionForNewFigure = new Vector2 (3, 0);
-        protected Vector2 PositionForDynamicFigure;
-        protected Vector2[] DynamicFigure = new Vector2[BlocksCountInFigure];
-        protected Random random = new Random ();
-        protected int[,] BoardColor;
-        protected const int height = 20;
-        protected const int width = 10;
-        protected const int BlocksCountInFigure = 4;
-        protected int DynamicFigureNumber;
-        protected int DynamicFigureModificationNumber;
-        protected int DynamicFigureColor;
-        protected bool BlockLine;
-        protected bool showNewBlock;
-        protected float movement;
-        protected float speed;
-        protected Queue<int> nextFigures = new Queue<int> ();
-        protected Queue<int> nextFiguresModification = new Queue<int> ();
+    {
+        protected Texture2D _textures;
+        protected Rectangle[] _rectangles;
+        protected enum FieldState
+        {
+            Free, //empty?
+            Static, //has placed block?
+            Dynamic //moving block?
+        };
+        protected FieldState[,] _boardFields; // field to hold all the pieces etc
+        protected Vector2[,,] _figures;
+        protected readonly Vector2 _startPositionForNewFigure = new Vector2(3, 0);
+        protected Vector2 _positionForDynamicFigure;
+        protected Vector2[] _dynamicFigure = new Vector2[_blocksCountInFigure];
+        protected Random _random = new Random();
+        protected int[,] _boardColor;
+        protected const int _height = 20;
+        protected const int _width = 10;
+        protected const int _blocksCountInFigure = 4;
+        protected int _dynamicFigureNumber;
+        protected int _dynamicFigureModificationNumber;
+        protected int _dynamicFigureColor;
+        protected bool _blockLine;
+        protected bool _showNewBlock;
+        protected float _movement;
+        protected float _speed;
+        protected Queue<int> _nextFigures = new Queue<int>();
+        protected Queue<int> _nextFiguresModification = new Queue<int>();
 
-		public virtual float Movement {
-			set { movement = value; }
-			get { return movement; }
-		}
+        public virtual float Movement
+        {
+            set { _movement = value; }
+            get { return _movement; }
+        }
 
-		public virtual float Speed {
-			set { speed = value; }
-			get { return speed; }
-		}
+        public virtual float Speed
+        {
+            set { _speed = value; }
+            get { return _speed; }
+        }
 
-		public Board(ref Texture2D textures, Rectangle[] rectangles)
-{
-			// Load textures for blocks
-			this.textures = textures;
+        public Board(ref Texture2D textures, Rectangle[] rectangles)
+        {
+            // Load textures for blocks
+            _textures = textures;
 
-			// Rectangles to draw figures
-			this.rectangles = rectangles;
+            // Rectangles to draw figures
+            _rectangles = rectangles;
 
-			// Create tetris board
-			boardFields = new FieldState[width, height];
-			BoardColor = new int[width, height];
+            // Create tetris board
+            _boardFields = new FieldState[_width, _height];
+            _boardColor = new int[_width, _height];
 
-		#region Creating figures
-			// Figures[figure's number, figure's modification, figure's block number] = Vector2
-			// At all figures is 7, every has 4 modifications (for cube all modifications the same)
-			// and every figure consists from 4 blocks
-			Figures = new Vector2[7, 4, 4];
-			// O-figure
-			for (int i = 0; i < 4; i++) {
-				Figures [0, i, 0] = new Vector2 (1, 0);
-				Figures [0, i, 1] = new Vector2 (2, 0);
-				Figures [0, i, 2] = new Vector2 (1, 1);
-				Figures [0, i, 3] = new Vector2 (2, 1);
-			}
-			// I-figures
-			for (int i = 0; i < 4; i += 2) {
-				Figures [1, i, 0] = new Vector2 (0, 0);
-				Figures [1, i, 1] = new Vector2 (1, 0);
-				Figures [1, i, 2] = new Vector2 (2, 0);
-				Figures [1, i, 3] = new Vector2 (3, 0);
-				Figures [1, i + 1, 0] = new Vector2 (1, 0);
-				Figures [1, i + 1, 1] = new Vector2 (1, 1);
-				Figures [1, i + 1, 2] = new Vector2 (1, 2);
-				Figures [1, i + 1, 3] = new Vector2 (1, 3);
-			}
-			// J-figures
-			Figures [2, 0, 0] = new Vector2 (0, 0);
-			Figures [2, 0, 1] = new Vector2 (1, 0);
-			Figures [2, 0, 2] = new Vector2 (2, 0);
-			Figures [2, 0, 3] = new Vector2 (2, 1);
-			Figures [2, 1, 0] = new Vector2 (2, 0);
-			Figures [2, 1, 1] = new Vector2 (2, 1);
-			Figures [2, 1, 2] = new Vector2 (1, 2);
-			Figures [2, 1, 3] = new Vector2 (2, 2);
-			Figures [2, 2, 0] = new Vector2 (0, 0);
-			Figures [2, 2, 1] = new Vector2 (0, 1);
-			Figures [2, 2, 2] = new Vector2 (1, 1);
-			Figures [2, 2, 3] = new Vector2 (2, 1);
-			Figures [2, 3, 0] = new Vector2 (1, 0);
-			Figures [2, 3, 1] = new Vector2 (2, 0);
-			Figures [2, 3, 2] = new Vector2 (1, 1);
-			Figures [2, 3, 3] = new Vector2 (1, 2);
-			// L-figures
-			Figures [3, 0, 0] = new Vector2 (0, 0);
-			Figures [3, 0, 1] = new Vector2 (1, 0);
-			Figures [3, 0, 2] = new Vector2 (2, 0);
-			Figures [3, 0, 3] = new Vector2 (0, 1);
-			Figures [3, 1, 0] = new Vector2 (2, 0);
-			Figures [3, 1, 1] = new Vector2 (2, 1);
-			Figures [3, 1, 2] = new Vector2 (1, 0);
-			Figures [3, 1, 3] = new Vector2 (2, 2);
-			Figures [3, 2, 0] = new Vector2 (0, 1);
-			Figures [3, 2, 1] = new Vector2 (1, 1);
-			Figures [3, 2, 2] = new Vector2 (2, 1);
-			Figures [3, 2, 3] = new Vector2 (2, 0);
-			Figures [3, 3, 0] = new Vector2 (1, 0);
-			Figures [3, 3, 1] = new Vector2 (2, 2);
-			Figures [3, 3, 2] = new Vector2 (1, 1);
-			Figures [3, 3, 3] = new Vector2 (1, 2);
-			// S-figures
-			for (int i = 0; i < 4; i += 2) {
-				Figures [4, i, 0] = new Vector2 (0, 1);
-				Figures [4, i, 1] = new Vector2 (1, 1);
-				Figures [4, i, 2] = new Vector2 (1, 0);
-				Figures [4, i, 3] = new Vector2 (2, 0);
-				Figures [4, i + 1, 0] = new Vector2 (1, 0);
-				Figures [4, i + 1, 1] = new Vector2 (1, 1);
-				Figures [4, i + 1, 2] = new Vector2 (2, 1);
-				Figures [4, i + 1, 3] = new Vector2 (2, 2);
-			}
-			// Z-figures
-			for (int i = 0; i < 4; i += 2) {
-				Figures [5, i, 0] = new Vector2 (0, 0);
-				Figures [5, i, 1] = new Vector2 (1, 0);
-				Figures [5, i, 2] = new Vector2 (1, 1);
-				Figures [5, i, 3] = new Vector2 (2, 1);
-				Figures [5, i + 1, 0] = new Vector2 (2, 0);
-				Figures [5, i + 1, 1] = new Vector2 (1, 1);
-				Figures [5, i + 1, 2] = new Vector2 (2, 1);
-				Figures [5, i + 1, 3] = new Vector2 (1, 2);
-			}
-			// T-figures
-			Figures [6, 0, 0] = new Vector2 (0, 1);
-			Figures [6, 0, 1] = new Vector2 (1, 1);
-			Figures [6, 0, 2] = new Vector2 (2, 1);
-			Figures [6, 0, 3] = new Vector2 (1, 0);
-			Figures [6, 1, 0] = new Vector2 (1, 0);
-			Figures [6, 1, 1] = new Vector2 (1, 1);
-			Figures [6, 1, 2] = new Vector2 (1, 2);
-			Figures [6, 1, 3] = new Vector2 (2, 1);
-			Figures [6, 2, 0] = new Vector2 (0, 0);
-			Figures [6, 2, 1] = new Vector2 (1, 0);
-			Figures [6, 2, 2] = new Vector2 (2, 0);
-			Figures [6, 2, 3] = new Vector2 (1, 1);
-			Figures [6, 3, 0] = new Vector2 (2, 0);
-			Figures [6, 3, 1] = new Vector2 (2, 1);
-			Figures [6, 3, 2] = new Vector2 (2, 2);
-			Figures [6, 3, 3] = new Vector2 (1, 1);
-		#endregion
+            #region Creating figures
+            // Figures[figure's number, figure's modification, figure's block number] = Vector2
+            // At all figures is 7, every has 4 modifications (for cube all modifications the same)
+            // and every figure consists from 4 blocks
+            _figures = new Vector2[7, 4, 4];
+            // O-figure
+            for (int i = 0; i < 4; i++)
+            {
+                _figures[0, i, 0] = new Vector2(1, 0);
+                _figures[0, i, 1] = new Vector2(2, 0);
+                _figures[0, i, 2] = new Vector2(1, 1);
+                _figures[0, i, 3] = new Vector2(2, 1);
+            }
+            // I-figures
+            for (int i = 0; i < 4; i += 2)
+            {
+                _figures[1, i, 0] = new Vector2(0, 0);
+                _figures[1, i, 1] = new Vector2(1, 0);
+                _figures[1, i, 2] = new Vector2(2, 0);
+                _figures[1, i, 3] = new Vector2(3, 0);
+                _figures[1, i + 1, 0] = new Vector2(1, 0);
+                _figures[1, i + 1, 1] = new Vector2(1, 1);
+                _figures[1, i + 1, 2] = new Vector2(1, 2);
+                _figures[1, i + 1, 3] = new Vector2(1, 3);
+            }
+            // J-figures
+            _figures[2, 0, 0] = new Vector2(0, 0);
+            _figures[2, 0, 1] = new Vector2(1, 0);
+            _figures[2, 0, 2] = new Vector2(2, 0);
+            _figures[2, 0, 3] = new Vector2(2, 1);
+            _figures[2, 1, 0] = new Vector2(2, 0);
+            _figures[2, 1, 1] = new Vector2(2, 1);
+            _figures[2, 1, 2] = new Vector2(1, 2);
+            _figures[2, 1, 3] = new Vector2(2, 2);
+            _figures[2, 2, 0] = new Vector2(0, 0);
+            _figures[2, 2, 1] = new Vector2(0, 1);
+            _figures[2, 2, 2] = new Vector2(1, 1);
+            _figures[2, 2, 3] = new Vector2(2, 1);
+            _figures[2, 3, 0] = new Vector2(1, 0);
+            _figures[2, 3, 1] = new Vector2(2, 0);
+            _figures[2, 3, 2] = new Vector2(1, 1);
+            _figures[2, 3, 3] = new Vector2(1, 2);
+            // L-figures
+            _figures[3, 0, 0] = new Vector2(0, 0);
+            _figures[3, 0, 1] = new Vector2(1, 0);
+            _figures[3, 0, 2] = new Vector2(2, 0);
+            _figures[3, 0, 3] = new Vector2(0, 1);
+            _figures[3, 1, 0] = new Vector2(2, 0);
+            _figures[3, 1, 1] = new Vector2(2, 1);
+            _figures[3, 1, 2] = new Vector2(1, 0);
+            _figures[3, 1, 3] = new Vector2(2, 2);
+            _figures[3, 2, 0] = new Vector2(0, 1);
+            _figures[3, 2, 1] = new Vector2(1, 1);
+            _figures[3, 2, 2] = new Vector2(2, 1);
+            _figures[3, 2, 3] = new Vector2(2, 0);
+            _figures[3, 3, 0] = new Vector2(1, 0);
+            _figures[3, 3, 1] = new Vector2(2, 2);
+            _figures[3, 3, 2] = new Vector2(1, 1);
+            _figures[3, 3, 3] = new Vector2(1, 2);
+            // S-figures
+            for (int i = 0; i < 4; i += 2)
+            {
+                _figures[4, i, 0] = new Vector2(0, 1);
+                _figures[4, i, 1] = new Vector2(1, 1);
+                _figures[4, i, 2] = new Vector2(1, 0);
+                _figures[4, i, 3] = new Vector2(2, 0);
+                _figures[4, i + 1, 0] = new Vector2(1, 0);
+                _figures[4, i + 1, 1] = new Vector2(1, 1);
+                _figures[4, i + 1, 2] = new Vector2(2, 1);
+                _figures[4, i + 1, 3] = new Vector2(2, 2);
+            }
+            // Z-figures
+            for (int i = 0; i < 4; i += 2)
+            {
+                _figures[5, i, 0] = new Vector2(0, 0);
+                _figures[5, i, 1] = new Vector2(1, 0);
+                _figures[5, i, 2] = new Vector2(1, 1);
+                _figures[5, i, 3] = new Vector2(2, 1);
+                _figures[5, i + 1, 0] = new Vector2(2, 0);
+                _figures[5, i + 1, 1] = new Vector2(1, 1);
+                _figures[5, i + 1, 2] = new Vector2(2, 1);
+                _figures[5, i + 1, 3] = new Vector2(1, 2);
+            }
+            // T-figures
+            _figures[6, 0, 0] = new Vector2(0, 1);
+            _figures[6, 0, 1] = new Vector2(1, 1);
+            _figures[6, 0, 2] = new Vector2(2, 1);
+            _figures[6, 0, 3] = new Vector2(1, 0);
+            _figures[6, 1, 0] = new Vector2(1, 0);
+            _figures[6, 1, 1] = new Vector2(1, 1);
+            _figures[6, 1, 2] = new Vector2(1, 2);
+            _figures[6, 1, 3] = new Vector2(2, 1);
+            _figures[6, 2, 0] = new Vector2(0, 0);
+            _figures[6, 2, 1] = new Vector2(1, 0);
+            _figures[6, 2, 2] = new Vector2(2, 0);
+            _figures[6, 2, 3] = new Vector2(1, 1);
+            _figures[6, 3, 0] = new Vector2(2, 0);
+            _figures[6, 3, 1] = new Vector2(2, 1);
+            _figures[6, 3, 2] = new Vector2(2, 2);
+            _figures[6, 3, 3] = new Vector2(1, 1);
+            #endregion
 
-			nextFigures.Enqueue (random.Next (7));
-			nextFigures.Enqueue (random.Next (7));
-			nextFigures.Enqueue (random.Next (7));
-			nextFigures.Enqueue (random.Next (7));
+            _nextFigures.Enqueue(_random.Next(7));
+            _nextFigures.Enqueue(_random.Next(7));
+            _nextFigures.Enqueue(_random.Next(7));
+            _nextFigures.Enqueue(_random.Next(7));
 
-			nextFiguresModification.Enqueue (random.Next (4));
-			nextFiguresModification.Enqueue (random.Next (4));
-			nextFiguresModification.Enqueue (random.Next (4));
-			nextFiguresModification.Enqueue (random.Next (4));
-		}
+            _nextFiguresModification.Enqueue(_random.Next(4));
+            _nextFiguresModification.Enqueue(_random.Next(4));
+            _nextFiguresModification.Enqueue(_random.Next(4));
+            _nextFiguresModification.Enqueue(_random.Next(4));
+        }
 
-		public virtual void Initialize ()
-		{
-			showNewBlock = true;
-			movement = 0;
-			speed = 0.1f;
+        public virtual void Initialize()
+        {
+            _showNewBlock = true;
+            _movement = 0;
+            _speed = 0.0167f;
 
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					ClearBoardField (i, j);
+            for (int i = 0; i < _width; i++)
+                for (int j = 0; j < _height; j++)
+                    ClearBoardField(i, j);
 
-		}
+        }
 
-		public virtual void FindDynamicFigure ()
-		{
-			int BlockNumberInDynamicFigure = 0;
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					if (boardFields [i, j] == FieldState.Dynamic)
-						DynamicFigure [BlockNumberInDynamicFigure++] = new Vector2 (i, j);
-		}
+        public virtual void FindDynamicFigure()
+        {
+            int BlockNumberInDynamicFigure = 0;
+            for (int i = 0; i < _width; i++)
+                for (int j = 0; j < _height; j++)
+                    if (_boardFields[i, j] == FieldState.Dynamic)
+                        _dynamicFigure[BlockNumberInDynamicFigure++] = new Vector2(i, j);
+        }
 
-		/// <summary>
-		/// Find, destroy and save lines's count
-		/// </summary>
-		/// <returns>Number of destoyed lines</returns>
-		public virtual int DestroyLines ()
-		{
-			// Find total lines
-			int BlockLineCount = 0;
-			for (int j = 0; j < height; j++) {
-				for (int i = 0; i < width; i++)
-					if (boardFields [i, j] == FieldState.Static)
-						BlockLine = true;
-					else {
-						BlockLine = false;
-						break;
-					}
-				//Destroy total lines
-				if (BlockLine) {
-					// Save number of total lines
-					BlockLineCount++;
-					for (int l = j; l > 0; l--)
-						for (int k = 0; k < width; k++) {
-							boardFields [k, l] = boardFields [k, l - 1];
-							BoardColor [k, l] = BoardColor [k, l - 1];
-						}
-					for (int l = 0; l < width; l++) {
-						boardFields [l, 0] = FieldState.Free;
-						BoardColor [l, 0] = -1;
-					}
-				}
-			}
-			return BlockLineCount;
-		}
+        /// <summary>
+        /// Find, destroy and save lines's count
+        /// </summary>
+        /// <returns>Number of destoyed lines</returns>
+        public virtual int DestroyLines()
+        {
+            // Find total lines
+            int _blockLineCount = 0;
+            for (int j = 0; j < _height; j++)
+            {
+                for (int i = 0; i < _width; i++)
+                    if (_boardFields[i, j] == FieldState.Static)
+                        _blockLine = true;
+                    else
+                    {
+                        _blockLine = false;
+                        break;
+                    }
+                //Destroy total lines
+                if (_blockLine)
+                {
+                    // Save number of total lines
+                    _blockLineCount++;
+                    for (int l = j; l > 0; l--)
+                        for (int k = 0; k < _width; k++)
+                        {
+                            _boardFields[k, l] = _boardFields[k, l - 1];
+                            _boardColor[k, l] = _boardColor[k, l - 1];
+                        }
+                    for (int l = 0; l < _width; l++)
+                    {
+                        _boardFields[l, 0] = FieldState.Free;
+                        _boardColor[l, 0] = -1;
+                    }
+                }
+            }
+            return _blockLineCount;
+        }
 
-		/// <summary>
-		/// Create new shape in the game, if need it
-		/// </summary>
-		public virtual bool CreateNewFigure ()
-		{
-			if (showNewBlock) {
-				// Generate new figure's shape
-				DynamicFigureNumber = nextFigures.Dequeue ();
-				nextFigures.Enqueue (random.Next (7));
+        /// <summary>
+        /// Create new shape in the game, if need it
+        /// </summary>
+        public virtual bool CreateNewFigure()
+        {
+            if (_showNewBlock)
+            {
+                // Generate new figure's shape
+                _dynamicFigureNumber = _nextFigures.Dequeue();
+                _nextFigures.Enqueue(_random.Next(7));
 
-				DynamicFigureModificationNumber = nextFiguresModification.Dequeue ();
-				nextFiguresModification.Enqueue (random.Next (4));
+                _dynamicFigureModificationNumber = _nextFiguresModification.Dequeue();
+                _nextFiguresModification.Enqueue(_random.Next(4));
 
-				DynamicFigureColor = DynamicFigureNumber;
+                _dynamicFigureColor = _dynamicFigureNumber;
 
-				// Position and coordinates for new dynamic figure
-				PositionForDynamicFigure = StartPositionForNewFigure;
-				for (int i = 0; i < BlocksCountInFigure; i++)
-					DynamicFigure [i] = Figures [DynamicFigureNumber, DynamicFigureModificationNumber, i] + 
-					PositionForDynamicFigure;
+                // Position and coordinates for new dynamic figure
+                _positionForDynamicFigure = _startPositionForNewFigure;
+                for (int i = 0; i < _blocksCountInFigure; i++)
+                    _dynamicFigure[i] = _figures[_dynamicFigureNumber, _dynamicFigureModificationNumber, i] +
+                    _positionForDynamicFigure;
 
-				if (!DrawFigureOnBoard (DynamicFigure, DynamicFigureColor))
-					return false;
+                if (!DrawFigureOnBoard(_dynamicFigure, _dynamicFigureColor))
+                    return false;
 
-				showNewBlock = false;
-			}
-			return true;
-		}
+                _showNewBlock = false;
+            }
+            return true;
+        }
 
-		protected virtual bool DrawFigureOnBoard (Vector2[] vector, int color)
-		{
-			if (!TryPlaceFigureOnBoard (vector))
-				return false;
-			for (int i = 0; i <= vector.GetUpperBound(0); i++) {
-				boardFields [(int)vector [i].X, (int)vector [i].Y] = FieldState.Dynamic;
-				BoardColor [(int)vector [i].X, (int)vector [i].Y] = color;
-			}
-			return true;
-		}
+        protected virtual bool DrawFigureOnBoard(Vector2[] vector, int color)
+        {
+            if (!TryPlaceFigureOnBoard(vector))
+                return false;
+            for (int i = 0; i <= vector.GetUpperBound(0); i++)
+            {
+                _boardFields[(int)vector[i].X, (int)vector[i].Y] = FieldState.Dynamic;
+                _boardColor[(int)vector[i].X, (int)vector[i].Y] = color;
+            }
+            return true;
+        }
 
         // check if figure fits on the current board
-		protected virtual bool TryPlaceFigureOnBoard (Vector2[] vector)
-		{
-			for (int i = 0; i <= vector.GetUpperBound(0); i++)
-				if ((vector [i].X < 0) || (vector [i].X >= width) || 
-			(vector [i].Y >= height))
-					return false;
-			for (int i = 0; i <= vector.GetUpperBound(0); i++)
-				if (boardFields [(int)vector [i].X, (int)vector [i].Y] == FieldState.Static)
-					return false;
-			return true;
-		}
+        protected virtual bool TryPlaceFigureOnBoard(Vector2[] vector)
+        {
+            for (int i = 0; i <= vector.GetUpperBound(0); i++)
+                if ((vector[i].X < 0) || (vector[i].X >= _width) ||
+            (vector[i].Y >= _height))
+                    return false;
+            for (int i = 0; i <= vector.GetUpperBound(0); i++)
+                if (_boardFields[(int)vector[i].X, (int)vector[i].Y] == FieldState.Static)
+                    return false;
+            return true;
+        }
 
-		public virtual void MoveFigureLeft ()
-		{
-			// Sorting blocks fro dynamic figure to correct moving
-			SortingVector2 (ref DynamicFigure, true, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
-			// Check colisions
-			for (int i = 0; i < BlocksCountInFigure; i++) {
-				if ((DynamicFigure [i].X == 0))
-					return;
-				if (boardFields [(int)DynamicFigure [i].X - 1, (int)DynamicFigure [i].Y] == FieldState.Static)
-					return;
-			}
-			// Move figure on board
-			for (int i = 0; i < BlocksCountInFigure; i++) {
-				boardFields [(int)DynamicFigure [i].X - 1, (int)DynamicFigure [i].Y] = 
-			boardFields [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y];
-				BoardColor [(int)DynamicFigure [i].X - 1, (int)DynamicFigure [i].Y] = 
-			BoardColor [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y];
-				ClearBoardField ((int)DynamicFigure [i].X, (int)DynamicFigure [i].Y);
-				// Change position for blocks in DynamicFigure
-				DynamicFigure [i].X = DynamicFigure [i].X - 1;
-			}
-			// Change position vector
-			//if (PositionForDynamicFigure.X > 0)
-			PositionForDynamicFigure.X--;
-		}
+        public virtual void MoveFigureLeft()
+        {
+            // Sorting blocks fro dynamic figure to correct moving
+            SortingVector2(ref _dynamicFigure, true, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
 
-		public virtual void MoveFigureRight ()
-		{
-			// Sorting blocks fro dynamic figure to correct moving
-			SortingVector2 (ref DynamicFigure, true, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
-			// Check colisions
-			for (int i = 0; i < BlocksCountInFigure; i++) {
-				if ((DynamicFigure [i].X == width - 1))
-					return;
-				if (boardFields [(int)DynamicFigure [i].X + 1, (int)DynamicFigure [i].Y] == FieldState.Static)
-					return;
-			}
-			// Move figure on board
-			for (int i = BlocksCountInFigure - 1; i >=0; i--) {
-				boardFields [(int)DynamicFigure [i].X + 1, (int)DynamicFigure [i].Y] = 
-			boardFields [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y];
-				BoardColor [(int)DynamicFigure [i].X + 1, (int)DynamicFigure [i].Y] = 
-			BoardColor [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y];
-				ClearBoardField ((int)DynamicFigure [i].X, (int)DynamicFigure [i].Y);
-				// Change position for blocks in DynamicFigure
-				DynamicFigure [i].X = DynamicFigure [i].X + 1;
-			}
-			// Change position vector
-			//if (PositionForDynamicFigure.X < width - 1)
-			PositionForDynamicFigure.X++;
-		}
+            if (CheckCollisions())// Check colisions
+            {
+                return; //return true if we collided
+            }
+            // Move figure on board
+            for (int i = 0; i < _blocksCountInFigure; i++)
+            {
+                _boardFields[(int)_dynamicFigure[i].X - 1, (int)_dynamicFigure[i].Y] =
+            _boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y];
+                _boardColor[(int)_dynamicFigure[i].X - 1, (int)_dynamicFigure[i].Y] =
+            _boardColor[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y];
+                ClearBoardField((int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y);
+                // Change position for blocks in _dynamicFigure
+                _dynamicFigure[i].X = _dynamicFigure[i].X - 1;
+            }
+            // Change position vector
+            //if (_positionForDynamicFigure.X > 0)
+            _positionForDynamicFigure.X--;
+        }
+
+        public virtual void MoveFigureRight()
+        {
+            // Sorting blocks fro dynamic figure to correct moving
+            SortingVector2(ref _dynamicFigure, true, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
+
+            if (CheckCollisions())// Check colisions
+            {
+                return; //return true if we collided
+            }
+            // Move figure on board
+            for (int i = _blocksCountInFigure - 1; i >= 0; i--)
+            {
+                _boardFields[(int)_dynamicFigure[i].X + 1, (int)_dynamicFigure[i].Y] =
+            _boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y];
+                _boardColor[(int)_dynamicFigure[i].X + 1, (int)_dynamicFigure[i].Y] =
+            _boardColor[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y];
+                ClearBoardField((int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y);
+                // Change position for blocks in _dynamicFigure
+                _dynamicFigure[i].X = _dynamicFigure[i].X + 1;
+            }
+            // Change position vector
+            //if (_positionForDynamicFigure.X < _width - 1)
+            _positionForDynamicFigure.X++;
+        }
 
         protected virtual bool CheckCollisions()
         {
             // Check colisions
-            for (int i = 0; i < BlocksCountInFigure; i++) //cycle through every block in a piece (1 piece = 4 blocks)
+            for (int i = 0; i < _blocksCountInFigure; i++) //cycle through every block in a piece (1 piece = 4 blocks)
             {
-                if ((DynamicFigure[i].Y == height - 1)) //if one block of the piece touches the floor
+                if ((_dynamicFigure[i].Y == _height - 1)) //if one block of the piece touches the floor
                 {
-                    for (int k = 0; k < BlocksCountInFigure; k++)
-                        boardFields[(int)DynamicFigure[k].X, (int)DynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
+                    for (int k = 0; k < _blocksCountInFigure; k++)
+                        _boardFields[(int)_dynamicFigure[k].X, (int)_dynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
                     return true;
                 }
-                if (boardFields[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y + 1] == FieldState.Static) //if one block of the piece touches a Static field/a placed piece
+                if (_boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y + 1] == FieldState.Static) //if one block of the piece touches a Static field/a placed piece
                 {
-                    for (int k = 0; k < BlocksCountInFigure; k++)
-                        boardFields[(int)DynamicFigure[k].X, (int)DynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
+                    for (int k = 0; k < _blocksCountInFigure; k++)
+                        _boardFields[(int)_dynamicFigure[k].X, (int)_dynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
                     return true;
                 }
             }
             return false;
         }
 
-		public virtual bool MoveFigureDown ()
-		{
-			// Sorting blocks for dynamic figure to correct moving
-			SortingVector2 (ref DynamicFigure, false, DynamicFigure.GetLowerBound (0), DynamicFigure.GetUpperBound (0));
-            
+        public virtual bool MoveFigureDown()
+        {
+            // Sorting blocks for dynamic figure to correct moving
+            SortingVector2(ref _dynamicFigure, false, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
+
             if (CheckCollisions())// Check colisions
             {
-                showNewBlock = true;
+                _showNewBlock = true;
                 return true; //return true if we collided
             }
             // Move figure on board
-            for (int i = BlocksCountInFigure - 1; i >= 0; i--) //cycle through each block
+            for (int i = _blocksCountInFigure - 1; i >= 0; i--) //cycle through each block
             {
-                boardFields[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y + 1] = boardFields[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y]; //copy current block value to next block
-                BoardColor[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y + 1] = BoardColor[(int)DynamicFigure[i].X, (int)DynamicFigure[i].Y];
-                ClearBoardField((int)DynamicFigure[i].X, (int)DynamicFigure[i].Y); //change previous board location to free (as we moved down alr)
-                // Change position for blocks in DynamicFigure
-                DynamicFigure[i].Y = DynamicFigure[i].Y + 1; //move down
+                _boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y + 1] = _boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y]; //copy current block value to next block
+                _boardColor[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y + 1] = _boardColor[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y];
+                ClearBoardField((int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y); //change previous board location to free (as we moved down alr)
+                // Change position for blocks in _dynamicFigure
+                _dynamicFigure[i].Y = _dynamicFigure[i].Y + 1; //move down
             }
             // Change position vector
-            //if (PositionForDynamicFigure.Y < height - 1)
-            PositionForDynamicFigure.Y++;
+            //if (_positionForDynamicFigure.Y < _height - 1)
+            _positionForDynamicFigure.Y++;
             return false; //return false if theres no collision
-		}
+        }
 
         public virtual void HardDrop()
         {
@@ -383,107 +394,119 @@ namespace Tetris
             }
         }
 
-        public virtual void RotateFigure ()
-		{
-			// Check colisions for next modification
-			Vector2[] TestDynamicFigure = new Vector2[DynamicFigure.GetUpperBound (0) + 1];
-			for (int i = 0; i < BlocksCountInFigure; i++)
-				TestDynamicFigure [i] = Figures [DynamicFigureNumber, (DynamicFigureModificationNumber + 1) % 4, i] + PositionForDynamicFigure;
+        public virtual void RotateFigure()
+        {
+            // Check colisions for next modification
+            Vector2[] TestDynamicFigure = new Vector2[_dynamicFigure.GetUpperBound(0) + 1];
+            for (int i = 0; i < _blocksCountInFigure; i++)
+                TestDynamicFigure[i] = _figures[_dynamicFigureNumber, (_dynamicFigureModificationNumber + 1) % 4, i] + _positionForDynamicFigure;
 
-			// Make sure that figure can rotate if she stand near left and right borders
-			SortingVector2 (ref TestDynamicFigure, true, TestDynamicFigure.GetLowerBound (0), TestDynamicFigure.GetUpperBound (0));
-			int leftFigureBound;
-			int rightFigureBound;
-			if ((leftFigureBound = (int)TestDynamicFigure [0].X) < 0) {
-				//int leftFigureBound = (int)TestDynamicFigure[0].X;
-				for (int i = 0; i < BlocksCountInFigure; i++) {
-					TestDynamicFigure [i] += new Vector2 (0 - leftFigureBound, 0);
-				}
-				if (TryPlaceFigureOnBoard (TestDynamicFigure))
-					PositionForDynamicFigure += 
-			new Vector2 (0 - leftFigureBound, 0);
-			}
-			if ((rightFigureBound = (int)TestDynamicFigure [BlocksCountInFigure - 1].X) >= width) {
-				//int rightFigureBound = (int)TestDynamicFigure[BlocksCountInFigure - 1].X;
-				for (int i = 0; i < BlocksCountInFigure; i++) {
-					TestDynamicFigure [i] -= new Vector2 (rightFigureBound - width + 1, 0);
-				}
-				if (TryPlaceFigureOnBoard (TestDynamicFigure))
-					PositionForDynamicFigure -= 
-			new Vector2 (rightFigureBound - width + 1, 0);
-			}
+            // Make sure that figure can rotate if she stand near left and right borders
+            SortingVector2(ref TestDynamicFigure, true, TestDynamicFigure.GetLowerBound(0), TestDynamicFigure.GetUpperBound(0));
+            int leftFigureBound;
+            int rightFigureBound;
+            if ((leftFigureBound = (int)TestDynamicFigure[0].X) < 0)
+            {
+                //int leftFigureBound = (int)TestDynamicFigure[0].X;
+                for (int i = 0; i < _blocksCountInFigure; i++)
+                {
+                    TestDynamicFigure[i] += new Vector2(0 - leftFigureBound, 0);
+                }
+                if (TryPlaceFigureOnBoard(TestDynamicFigure))
+                    _positionForDynamicFigure +=
+            new Vector2(0 - leftFigureBound, 0);
+            }
+            if ((rightFigureBound = (int)TestDynamicFigure[_blocksCountInFigure - 1].X) >= _width)
+            {
+                //int rightFigureBound = (int)TestDynamicFigure[_blocksCountInFigure - 1].X;
+                for (int i = 0; i < _blocksCountInFigure; i++)
+                {
+                    TestDynamicFigure[i] -= new Vector2(rightFigureBound - _width + 1, 0);
+                }
+                if (TryPlaceFigureOnBoard(TestDynamicFigure))
+                    _positionForDynamicFigure -=
+            new Vector2(rightFigureBound - _width + 1, 0);
+            }
 
-			if (TryPlaceFigureOnBoard (TestDynamicFigure)) {
-				DynamicFigureModificationNumber = (DynamicFigureModificationNumber + 1) % 4;
-				// Clear dynamic fields
-				for (int i = 0; i <= DynamicFigure.GetUpperBound(0); i++)
-					ClearBoardField ((int)DynamicFigure [i].X, (int)DynamicFigure [i].Y);
-				DynamicFigure = TestDynamicFigure;
-				for (int i = 0; i <= DynamicFigure.GetUpperBound(0); i++) {
-					boardFields [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y] = FieldState.Dynamic;
-					BoardColor [(int)DynamicFigure [i].X, (int)DynamicFigure [i].Y] = DynamicFigureColor;
-				}
-			}
-		}
+            if (TryPlaceFigureOnBoard(TestDynamicFigure))
+            {
+                _dynamicFigureModificationNumber = (_dynamicFigureModificationNumber + 1) % 4;
+                // Clear dynamic fields
+                for (int i = 0; i <= _dynamicFigure.GetUpperBound(0); i++)
+                    ClearBoardField((int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y);
+                _dynamicFigure = TestDynamicFigure;
+                for (int i = 0; i <= _dynamicFigure.GetUpperBound(0); i++)
+                {
+                    _boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y] = FieldState.Dynamic;
+                    _boardColor[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y] = _dynamicFigureColor;
+                }
+            }
+        }
 
-		public virtual void SortingVector2 (ref Vector2[] vector, bool sortByX, int a, int b)
-		{
-			if (a >= b)
-				return;
-			int i = a;
-			for (int j = a; j <= b; j++) {
-				if (sortByX) {
-					if (vector [j].X <= vector [b].X) {
-						Vector2 tempVector = vector [i];
-						vector [i] = vector [j];
-						vector [j] = tempVector;
-						i++;
-					}
-				} else {
-					if (vector [j].Y <= vector [b].Y) {
-						Vector2 tempVector = vector [i];
-						vector [i] = vector [j];
-						vector [j] = tempVector;
-						i++;
-					}
-				}
-			}
-			int c = i - 1;
-			SortingVector2 (ref vector, sortByX, a, c - 1);
-			SortingVector2 (ref vector, sortByX, c + 1, b);
-		}
+        public virtual void SortingVector2(ref Vector2[] vector, bool sortByX, int a, int b)
+        {
+            if (a >= b)
+                return;
+            int i = a;
+            for (int j = a; j <= b; j++)
+            {
+                if (sortByX)
+                {
+                    if (vector[j].X <= vector[b].X)
+                    {
+                        Vector2 tempVector = vector[i];
+                        vector[i] = vector[j];
+                        vector[j] = tempVector;
+                        i++;
+                    }
+                }
+                else
+                {
+                    if (vector[j].Y <= vector[b].Y)
+                    {
+                        Vector2 tempVector = vector[i];
+                        vector[i] = vector[j];
+                        vector[j] = tempVector;
+                        i++;
+                    }
+                }
+            }
+            int c = i - 1;
+            SortingVector2(ref vector, sortByX, a, c - 1);
+            SortingVector2(ref vector, sortByX, c + 1, b);
+        }
 
-		protected virtual void ClearBoardField(int i, int j)
-		{
-			boardFields [i, j] = FieldState.Free;
-			BoardColor [i, j] = -1;
-		}
+        protected virtual void ClearBoardField(int i, int j)
+        {
+            _boardFields[i, j] = FieldState.Free;
+            _boardColor[i, j] = -1;
+        }
 
-		public virtual void Draw (SpriteBatch sBatch)
-		{
-			Vector2 startPosition;
-			// Draw the blocks
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					if (boardFields [i, j] != FieldState.Free) {
-						startPosition = new Vector2 ((10 + i) * rectangles [0].Width,
-				(2 + j) * rectangles [0].Height);
-						sBatch.Draw (textures, startPosition, rectangles [BoardColor [i, j]], Color.White);
-					}
+        public virtual void Draw(SpriteBatch sBatch)
+        {
+            Vector2 startPosition;
+            // Draw the blocks
+            for (int i = 0; i < _width; i++)
+                for (int j = 0; j < _height; j++)
+                    if (_boardFields[i, j] != FieldState.Free)
+                    {
+                        startPosition = new Vector2((10 + i) * _rectangles[0].Width, (2 + j) * _rectangles[0].Height);
+                        sBatch.Draw(_textures, startPosition, _rectangles[_boardColor[i, j]], Color.White);
+                    }
 
-			// Draw next figures
-			Queue<int>.Enumerator figure = nextFigures.GetEnumerator ();
-			Queue<int>.Enumerator modification = nextFiguresModification.GetEnumerator ();
-			for (int i = 0; i < nextFigures.Count; i++) {
-				figure.MoveNext ();
-				modification.MoveNext ();
-				for (int j = 0; j < BlocksCountInFigure; j++) {
-					startPosition = rectangles [0].Height * (new Vector2 (24, 3 + 5 * i) + 
-			Figures [figure.Current, modification.Current, j]);
-					sBatch.Draw (textures, startPosition, 
-			rectangles [figure.Current], Color.White);
-				}
-			}
-		}
-	}
+            // Draw next figures
+            Queue<int>.Enumerator figure = _nextFigures.GetEnumerator();
+            Queue<int>.Enumerator modification = _nextFiguresModification.GetEnumerator();
+            for (int i = 0; i < _nextFigures.Count; i++)
+            {
+                figure.MoveNext();
+                modification.MoveNext();
+                for (int j = 0; j < _blocksCountInFigure; j++)
+                {
+                    startPosition = _rectangles[0].Height * (new Vector2(24, 3 + 5 * i) + _figures[figure.Current, modification.Current, j]);
+                    sBatch.Draw(_textures, startPosition, _rectangles[figure.Current], Color.White);
+                }
+            }
+        }
+    }
 }

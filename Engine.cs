@@ -76,8 +76,18 @@ namespace Tetris
             gameFont = content.Load<SpriteFont>("gameFont");
 
             // Create game field
-            board = new KazumaBoard(ref tetrisTextures, pieces);
-            board.Initialize();
+            if (_character == Character.Kazuma)
+                board = new KazumaBoard(ref tetrisTextures, pieces);
+            if (_character == Character.Aqua)
+                board = new AquaBoard(ref tetrisTextures, pieces);
+            if (_character == Character.Megumin)
+                board = new MeguminBoard(ref tetrisTextures, pieces);
+            if (_character == Character.Darkness)
+                board = new DarknessBoard(ref tetrisTextures, pieces);
+
+            
+
+            board.Initialize(); // init the board
 
         }
 
@@ -100,7 +110,7 @@ namespace Tetris
 
             // Check pause
             bool pauseKey = (oldKeyboardState.IsKeyDown(Keys.P) && (keyboardState.IsKeyUp(Keys.P)));
-            
+
             if (pauseKey)
                 pause = !pause;
 
@@ -111,35 +121,36 @@ namespace Tetris
 
                 // Increase player score
                 int lines = board.DestroyLines();
-                if (lines > 0)
-                {
-                    score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
-                    board.Speed += 0.005f;
-                }
+                //if (lines > 0)
+                //{
+                //    score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
+                //    board.Speed += 0.005f;
+                //}
 
-                score.Level = (int)(10 * board.Speed);
+                //score.Level = (int)(10 * board.Speed);
 
                 // Create new shape in game
                 if (!board.CreateNewFigure())
                     GameOver();
                 else
                 {
+
                     // If left key is pressed
-                    if (keyboardState.IsKeyDown(Keys.Left))
+                    if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
                         board.MoveFigureLeft();
                     // If right key is pressed
-                    if (keyboardState.IsKeyDown(Keys.Right))
+                    if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
                         board.MoveFigureRight();
                     // If down key is pressed
-                    if (keyboardState.IsKeyDown(Keys.Down))
+                    if (oldKeyboardState.IsKeyDown(Keys.Down) && (keyboardState.IsKeyUp(Keys.Down)))
                         board.MoveFigureDown();
 
                     // Hard drop
-                    if (keyboardState.IsKeyDown(Keys.Space))
+                    if (oldKeyboardState.IsKeyDown(Keys.Space) && (keyboardState.IsKeyUp(Keys.Space)))
                         board.HardDrop();
 
                     // Rotate figure
-                    if (keyboardState.IsKeyDown(Keys.Up))
+                    if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
                         board.RotateFigure();
 
                     // Moving figure
@@ -157,15 +168,15 @@ namespace Tetris
 
         public void GameOver()
         {
-            board.Initialize();
-            score.Initialize();
+            //board.Initialize();
+            //score.Initialize();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             //draw character background
             if (_character == Character.Kazuma)
-            spriteBatch.Draw(_kazumaBackground, Vector2.Zero, Color.White);
+                spriteBatch.Draw(_kazumaBackground, Vector2.Zero, Color.White);
             else if (_character == Character.Aqua)
                 spriteBatch.Draw(_aquaBackground, Vector2.Zero, Color.White);
             else if (_character == Character.Megumin)
@@ -174,7 +185,7 @@ namespace Tetris
                 spriteBatch.Draw(_darknessBackground, Vector2.Zero, Color.White);
 
             board.Draw(spriteBatch);
-            score.Draw(spriteBatch);
+            //score.Draw(spriteBatch);
         }
     }
 }
