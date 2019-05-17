@@ -33,7 +33,10 @@ namespace Tetris
 
         public Engine(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
-            // Create sprite rectangles for each figure in texture file
+            // rectangles that refers to the tetris.png file
+            // each rectangle references one (out of 4) blocks of
+            // every piece
+            // used to generate the actual pieces in game
             // O figure
             pieces[0] = new Rectangle(312, 0, 24, 24);
             // I figure
@@ -67,10 +70,10 @@ namespace Tetris
             tetrisTextures = content.Load<Texture2D>("Images/tetris"); //the 7 pieces
 
             //character backgrounds
-            _kazumaBackground = content.Load<Texture2D>("Images/back1Refined");
-            _aquaBackground = content.Load<Texture2D>("Images/back2Refined");
-            _meguminBackground = content.Load<Texture2D>("Images/back3Refined");
-            _darknessBackground = content.Load<Texture2D>("Images/back4Refined");
+            _kazumaBackground = content.Load<Texture2D>("Images/board");
+            _aquaBackground = content.Load<Texture2D>("Images/board");
+            _meguminBackground = content.Load<Texture2D>("Images/board");
+            _darknessBackground = content.Load<Texture2D>("Images/board");
 
             // Load game font
             gameFont = content.Load<SpriteFont>("gameFont");

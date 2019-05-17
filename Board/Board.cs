@@ -10,17 +10,26 @@ namespace Tetris
     /// </summary>
 	public class Board
     {
-        protected Texture2D _textures;
-        protected Rectangle[] _rectangles;
+        public enum BoardPosition
+        {
+            Left, //player1
+            Center, //single player
+            Right //player 2
+        };
         protected enum FieldState
         {
             Free, //empty?
             Static, //has placed block?
             Dynamic //moving block?
         };
+
+        protected Vector2 _absoluteStartPos = Vector2.Zero; //set start x, y position to draw the board
+        protected BoardPosition _boardPosition;
+        protected Texture2D _textures;
+        protected Rectangle[] _rectangles;
         protected FieldState[,] _boardFields; // field to hold all the pieces etc
         protected Vector2[,,] _figures;
-        protected readonly Vector2 _startPositionForNewFigure = new Vector2(3, 0);
+        protected readonly Vector2 _absoluteStartPositionForNewFigure = new Vector2(3, 0);
         protected Vector2 _positionForDynamicFigure;
         protected Vector2[] _dynamicFigure = new Vector2[_blocksCountInFigure];
         protected Random _random = new Random();
@@ -37,6 +46,12 @@ namespace Tetris
         protected float _speed;
         protected Queue<int> _nextFigures = new Queue<int>();
         protected Queue<int> _nextFiguresModification = new Queue<int>();
+
+        public virtual BoardPosition BoardPlacement
+        {
+            set { _boardPosition = value; }
+            get { return _boardPosition; }
+        }
 
         public virtual float Movement
         {
@@ -55,7 +70,7 @@ namespace Tetris
             // Load textures for blocks
             _textures = textures;
 
-            // Rectangles to draw figures
+            // Rectangles of each figure
             _rectangles = rectangles;
 
             // Create tetris board
@@ -63,7 +78,7 @@ namespace Tetris
             _boardColor = new int[_width, _height];
 
             #region Creating figures
-            // Figures[figure's number, figure's modification, figure's block number] = Vector2
+            // figures[inxed of figure in array, figure's rotation, figure's block number] = Vector2
             // At all figures is 7, every has 4 modifications (for cube all modifications the same)
             // and every figure consists from 4 blocks
             _figures = new Vector2[7, 4, 4];
@@ -179,7 +194,7 @@ namespace Tetris
         {
             _showNewBlock = true;
             _movement = 0;
-            _speed = 0.0167f;
+            _speed = 0.0167f; //assuming 60fps so 1/60
 
             for (int i = 0; i < _width; i++)
                 for (int j = 0; j < _height; j++)
@@ -252,7 +267,7 @@ namespace Tetris
                 _dynamicFigureColor = _dynamicFigureNumber;
 
                 // Position and coordinates for new dynamic figure
-                _positionForDynamicFigure = _startPositionForNewFigure;
+                _positionForDynamicFigure = _absoluteStartPositionForNewFigure;
                 for (int i = 0; i < _blocksCountInFigure; i++)
                     _dynamicFigure[i] = _figures[_dynamicFigureNumber, _dynamicFigureModificationNumber, i] +
                     _positionForDynamicFigure;
@@ -295,9 +310,13 @@ namespace Tetris
             // Sorting blocks fro dynamic figure to correct moving
             SortingVector2(ref _dynamicFigure, true, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
 
-            if (CheckCollisions())// Check colisions
+            // Check colisions
+            for (int i = 0; i < _blocksCountInFigure; i++)
             {
-                return; //return true if we collided
+                if ((_dynamicFigure[i].X == 0))
+                    return;
+                if (_boardFields[(int)_dynamicFigure[i].X - 1, (int)_dynamicFigure[i].Y] == FieldState.Static)
+                    return;
             }
             // Move figure on board
             for (int i = 0; i < _blocksCountInFigure; i++)
@@ -320,9 +339,13 @@ namespace Tetris
             // Sorting blocks fro dynamic figure to correct moving
             SortingVector2(ref _dynamicFigure, true, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
 
-            if (CheckCollisions())// Check colisions
+            // Check colisions
+            for (int i = 0; i < _blocksCountInFigure; i++)
             {
-                return; //return true if we collided
+                if ((_dynamicFigure[i].X == _width - 1))
+                    return;
+                if (_boardFields[(int)_dynamicFigure[i].X + 1, (int)_dynamicFigure[i].Y] == FieldState.Static)
+                    return;
             }
             // Move figure on board
             for (int i = _blocksCountInFigure - 1; i >= 0; i--)
@@ -340,8 +363,11 @@ namespace Tetris
             _positionForDynamicFigure.X++;
         }
 
-        protected virtual bool CheckCollisions()
+        public virtual bool MoveFigureDown()
         {
+            // Sorting blocks for dynamic figure to correct moving
+            SortingVector2(ref _dynamicFigure, false, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
+
             // Check colisions
             for (int i = 0; i < _blocksCountInFigure; i++) //cycle through every block in a piece (1 piece = 4 blocks)
             {
@@ -349,28 +375,18 @@ namespace Tetris
                 {
                     for (int k = 0; k < _blocksCountInFigure; k++)
                         _boardFields[(int)_dynamicFigure[k].X, (int)_dynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
-                    return true;
+                    _showNewBlock = true;
+                    return true; //return true if we collided
                 }
                 if (_boardFields[(int)_dynamicFigure[i].X, (int)_dynamicFigure[i].Y + 1] == FieldState.Static) //if one block of the piece touches a Static field/a placed piece
                 {
                     for (int k = 0; k < _blocksCountInFigure; k++)
                         _boardFields[(int)_dynamicFigure[k].X, (int)_dynamicFigure[k].Y] = FieldState.Static; //change this piece to static (count as dropped)
-                    return true;
+                    _showNewBlock = true;
+                    return true; //return true if we collided
                 }
             }
-            return false;
-        }
 
-        public virtual bool MoveFigureDown()
-        {
-            // Sorting blocks for dynamic figure to correct moving
-            SortingVector2(ref _dynamicFigure, false, _dynamicFigure.GetLowerBound(0), _dynamicFigure.GetUpperBound(0));
-
-            if (CheckCollisions())// Check colisions
-            {
-                _showNewBlock = true;
-                return true; //return true if we collided
-            }
             // Move figure on board
             for (int i = _blocksCountInFigure - 1; i >= 0; i--) //cycle through each block
             {
@@ -484,27 +500,29 @@ namespace Tetris
 
         public virtual void Draw(SpriteBatch sBatch)
         {
-            Vector2 startPosition;
-            // Draw the blocks
+            Vector2 relativeStartPos; //start position to draw stuff (relative to 0,0 of board) (idk board resolution tho)
+            // Cycle through the board, print em all
             for (int i = 0; i < _width; i++)
                 for (int j = 0; j < _height; j++)
-                    if (_boardFields[i, j] != FieldState.Free)
+                    if (_boardFields[i, j] != FieldState.Free) //draw ze board
                     {
-                        startPosition = new Vector2((10 + i) * _rectangles[0].Width, (2 + j) * _rectangles[0].Height);
-                        sBatch.Draw(_textures, startPosition, _rectangles[_boardColor[i, j]], Color.White);
+                        //                             *24px                             *24px
+                        relativeStartPos = new Vector2((1 + i) * _rectangles[0].Width, (5 + j) * _rectangles[0].Height); //rectangles[0] = area of a block(of a piece) (24x24px)
+                        sBatch.Draw(_textures, _absoluteStartPos + relativeStartPos, _rectangles[_boardColor[i, j]], Color.White);
                     }
 
-            // Draw next figures
+            // Draw next figures (previews)
             Queue<int>.Enumerator figure = _nextFigures.GetEnumerator();
             Queue<int>.Enumerator modification = _nextFiguresModification.GetEnumerator();
             for (int i = 0; i < _nextFigures.Count; i++)
             {
                 figure.MoveNext();
                 modification.MoveNext();
-                for (int j = 0; j < _blocksCountInFigure; j++)
+                for (int j = 0; j < _blocksCountInFigure; j++) //draw previews
                 {
-                    startPosition = _rectangles[0].Height * (new Vector2(24, 3 + 5 * i) + _figures[figure.Current, modification.Current, j]);
-                    sBatch.Draw(_textures, startPosition, _rectangles[figure.Current], Color.White);
+                    //                                      new Vector2(x, y + 5 * i) as left starts with 24* blah 1x = 24, 1y=24px
+                    relativeStartPos = _rectangles[0].Height * (new Vector2(15, 5 + 5 * i) + _figures[figure.Current, modification.Current, j]); //todo, figure out how to make this relative
+                    sBatch.Draw(_textures, _absoluteStartPos + relativeStartPos, _rectangles[figure.Current], Color.White);
                 }
             }
         }

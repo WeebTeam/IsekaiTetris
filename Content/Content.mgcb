@@ -141,18 +141,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/back3Refined.png
 
-#begin Images/back3Refined.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/back3Refined.png
-
 #begin Images/back4Refined.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -176,6 +164,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/back5Refined.png
+
+#begin Images/board.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/board.png
 
 #begin Images/darknessButton.png
 /importer:TextureImporter
