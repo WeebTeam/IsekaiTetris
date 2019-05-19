@@ -23,7 +23,7 @@ namespace Tetris
             Dynamic //moving block?
         };
 
-        protected Vector2 _absoluteStartPos = Vector2.Zero; //set start x, y position to draw the board
+        protected Vector2 _absoluteStartPos = new Vector2(262, 78); //set start x, y position to draw the board
         protected BoardPosition _boardPosition;
         protected Texture2D _textures;
         protected Rectangle[] _rectangles;
@@ -507,7 +507,7 @@ namespace Tetris
                     if (_boardFields[i, j] != FieldState.Free) //draw ze board
                     {
                         //                             *24px                             *24px
-                        relativeStartPos = new Vector2((1 + i) * _rectangles[0].Width, (5 + j) * _rectangles[0].Height); //rectangles[0] = area of a block(of a piece) (24x24px)
+                        relativeStartPos = new Vector2(255 + i * _rectangles[0].Width, 90 + j * _rectangles[0].Height); //rectangles[0] = area of a block(of a piece) (24x24px)
                         sBatch.Draw(_textures, _absoluteStartPos + relativeStartPos, _rectangles[_boardColor[i, j]], Color.White);
                     }
 
@@ -521,7 +521,7 @@ namespace Tetris
                 for (int j = 0; j < _blocksCountInFigure; j++) //draw previews
                 {
                     //                                      new Vector2(x, y + 5 * i) as left starts with 24* blah 1x = 24, 1y=24px
-                    relativeStartPos = _rectangles[0].Height * (new Vector2(15, 5 + 5 * i) + _figures[figure.Current, modification.Current, j]); //todo, figure out how to make this relative
+                    relativeStartPos = _rectangles[0].Height * (new Vector2(23.5f, 3.5f + 5 * i) + _figures[figure.Current, modification.Current, j]); //todo, figure out how to make this relative
                     sBatch.Draw(_textures, _absoluteStartPos + relativeStartPos, _rectangles[figure.Current], Color.White);
                 }
             }

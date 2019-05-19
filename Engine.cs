@@ -18,7 +18,7 @@ namespace Tetris
         private Texture2D tetrisBackground, tetrisTextures;
 
         //character backgrounds (possibly have different ones for single/multiplayer)
-        private Texture2D _kazumaBackground, _aquaBackground, _meguminBackground, _darknessBackground;
+        private Texture2D _boardSingle, _topBar;
 
         private SpriteFont gameFont;
         private readonly Rectangle[] pieces = new Rectangle[7];
@@ -66,17 +66,17 @@ namespace Tetris
         public override void LoadContent(ContentManager content)
         {
             //Load 2D textures
-            tetrisBackground = content.Load<Texture2D>("Images/back1Refined"); //gameplaybg
-            tetrisTextures = content.Load<Texture2D>("Images/tetris"); //the 7 pieces
+            tetrisBackground = content.Load<Texture2D>("textures/background/back1Refined"); //gameplaybg
+            tetrisTextures = content.Load<Texture2D>("textures/tetris"); //the 7 pieces
 
-            //character backgrounds
-            _kazumaBackground = content.Load<Texture2D>("Images/board");
-            _aquaBackground = content.Load<Texture2D>("Images/board");
-            _meguminBackground = content.Load<Texture2D>("Images/board");
-            _darknessBackground = content.Load<Texture2D>("Images/board");
+            //top bar
+            _topBar = content.Load<Texture2D>("textures/gameplay/topbar");
+
+            //board backgrounds
+            _boardSingle = content.Load<Texture2D>("textures/gameplay/board_single");
 
             // Load game font
-            gameFont = content.Load<SpriteFont>("gameFont");
+            gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
 
             // Create game field
             if (_character == Character.Kazuma)
@@ -88,7 +88,7 @@ namespace Tetris
             if (_character == Character.Darkness)
                 board = new DarknessBoard(ref tetrisTextures, pieces);
 
-            
+
 
             board.Initialize(); // init the board
 
@@ -177,15 +177,12 @@ namespace Tetris
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //draw character background
-            if (_character == Character.Kazuma)
-                spriteBatch.Draw(_kazumaBackground, Vector2.Zero, Color.White);
-            else if (_character == Character.Aqua)
-                spriteBatch.Draw(_aquaBackground, Vector2.Zero, Color.White);
-            else if (_character == Character.Megumin)
-                spriteBatch.Draw(_meguminBackground, Vector2.Zero, Color.White);
-            else if (_character == Character.Darkness)
-                spriteBatch.Draw(_darknessBackground, Vector2.Zero, Color.White);
+            //draw board texture
+            //vector coords calculated based on resolution of board bg
+            spriteBatch.Draw(_boardSingle, new Vector2(262, 78), Color.White);
+
+            //draw top bar (MUST BE after board texture)
+            spriteBatch.Draw(_topBar, new Vector2(112, 0), Color.White);
 
             board.Draw(spriteBatch);
             //score.Draw(spriteBatch);

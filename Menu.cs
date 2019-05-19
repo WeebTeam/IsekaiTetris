@@ -30,17 +30,16 @@ namespace Tetris
         public override void LoadContent(ContentManager content)
         {
             //Load 2D textures
-            background = content.Load<Texture2D>("Images/mainmenubg");
-            title = content.Load<Texture2D>("Images/title");
+            //background = content.Load<Texture2D>("textures/background/mainmenubg");
+            title = content.Load<Texture2D>("textures/title");
 
             //Load button textures
-            buttonNone = content.Load<Texture2D>("Buttons/buttonTemplate");
-            buttonPressed = content.Load<Texture2D>("Buttons/pressed");
-            buttonHover = content.Load<Texture2D>("Buttons/buttonTemplateHover");
+            buttonNone = content.Load<Texture2D>("textures/button_normal");
+            buttonHover = content.Load<Texture2D>("textures/button_hover");
 
             // Load font
-            gameFont = content.Load<SpriteFont>("gameFont");
-            menuFont = content.Load<SpriteFont>("menuFont");
+            gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
+            menuFont = content.Load<SpriteFont>("spritefonts/menuFont");
 
             // Load buttons 
             playButton = new Button(new Rectangle(440, 400, 400, 50), gameFont, "Start Game", Color.White, buttonNone, buttonHover, buttonNone);

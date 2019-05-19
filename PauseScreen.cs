@@ -31,9 +31,9 @@ namespace Tetris
         {
 
             //Load 2D textures
-            background = content.Load<Texture2D>("Images/pause");
+            background = content.Load<Texture2D>("textures/pause");
 
-            menuFont = content.Load<SpriteFont>("menuFont");
+            menuFont = content.Load<SpriteFont>("spritefonts/menuFont");
 
             // Load buttons 
             resumeButton = new Button(new Rectangle(440, 245, 400, 50), gameFont, "Resume Game", Color.White, buttonNone, buttonHover, buttonNone);

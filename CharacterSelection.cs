@@ -32,24 +32,24 @@ namespace Tetris
         {
 
             //Load 2D textures
-            background = content.Load<Texture2D>("Images/mainmenubg");
+            //background = content.Load<Texture2D>("textures/mainmenubg");
 
             //Load button textures
-            kazumaNormal = content.Load<Texture2D>("Images/kazuButton");
-            kazumaHover = content.Load<Texture2D>("Images/kazuHover");
-            aquaNormal = content.Load<Texture2D>("Images/aquaButton");
-            aquaHover = content.Load<Texture2D>("Images/aquaHover");
-            meguminNormal = content.Load<Texture2D>("Images/meguButton");
-            meguminHover = content.Load<Texture2D>("Images/meguHover");
-            darknessNormal = content.Load<Texture2D>("Images/darknessButton");
-            darknessHover = content.Load<Texture2D>("Images/darknessHover");
+            kazumaNormal = content.Load<Texture2D>("textures/character/kazumaButton");
+            kazumaHover = content.Load<Texture2D>("textures/character/kazumaHover");
+            aquaNormal = content.Load<Texture2D>("textures/character/aquaButton");
+            aquaHover = content.Load<Texture2D>("textures/character/aquaHover");
+            meguminNormal = content.Load<Texture2D>("textures/character/meguminButton");
+            meguminHover = content.Load<Texture2D>("textures/character/meguminHover");
+            darknessNormal = content.Load<Texture2D>("textures/character/darknessButton");
+            darknessHover = content.Load<Texture2D>("textures/character/darknessHover");
 
-            buttonNone = content.Load<Texture2D>("Buttons/buttonTemplate");
-            buttonHover = content.Load<Texture2D>("Buttons/buttonTemplateHover");
+            buttonNone = content.Load<Texture2D>("textures/button_normal");
+            buttonHover = content.Load<Texture2D>("textures/button_hover");
 
             // Load font
-            gameFont = content.Load<SpriteFont>("gameFont");
-            menuFont = content.Load<SpriteFont>("menuFont");
+            gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
+            menuFont = content.Load<SpriteFont>("spritefonts/menuFont");
 
             //load characters
             kazuma = new CharacterProfile(new Rectangle(120, 150, 260, 470), kazumaNormal, kazumaHover);
