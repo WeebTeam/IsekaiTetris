@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
@@ -46,6 +47,7 @@ namespace Tetris
         protected float _speed;
         protected Queue<int> _nextFigures = new Queue<int>();
         protected Queue<int> _nextFiguresModification = new Queue<int>();
+        protected List<SoundEffect> _soundEffects;
 
         public virtual BoardPosition BoardPlacement
         {
@@ -63,6 +65,12 @@ namespace Tetris
         {
             set { _speed = value; }
             get { return _speed; }
+        }
+
+        public virtual List<SoundEffect> SoundEffects
+        {
+            set { _soundEffects = value; }
+            get { return _soundEffects; }
         }
 
         public Board(ref Texture2D textures, Rectangle[] rectangles)
@@ -188,6 +196,135 @@ namespace Tetris
             _nextFiguresModification.Enqueue(_random.Next(4));
             _nextFiguresModification.Enqueue(_random.Next(4));
             _nextFiguresModification.Enqueue(_random.Next(4));
+
+            _soundEffects = null;
+        }
+
+        public Board(ref Texture2D textures, Rectangle[] rectangles, ref List<SoundEffect> soundEffects)
+        {
+            // Load textures for blocks
+            _textures = textures;
+
+            // Rectangles of each figure
+            _rectangles = rectangles;
+
+            // Create tetris board
+            _boardFields = new FieldState[_width, _height];
+            _boardColor = new int[_width, _height];
+
+            #region Creating figures
+            // figures[inxed of figure in array, figure's rotation, figure's block number] = Vector2
+            // At all figures is 7, every has 4 modifications (for cube all modifications the same)
+            // and every figure consists from 4 blocks
+            _figures = new Vector2[7, 4, 4];
+            // O-figure
+            for (int i = 0; i < 4; i++)
+            {
+                _figures[0, i, 0] = new Vector2(1, 0);
+                _figures[0, i, 1] = new Vector2(2, 0);
+                _figures[0, i, 2] = new Vector2(1, 1);
+                _figures[0, i, 3] = new Vector2(2, 1);
+            }
+            // I-figures
+            for (int i = 0; i < 4; i += 2)
+            {
+                _figures[1, i, 0] = new Vector2(0, 0);
+                _figures[1, i, 1] = new Vector2(1, 0);
+                _figures[1, i, 2] = new Vector2(2, 0);
+                _figures[1, i, 3] = new Vector2(3, 0);
+                _figures[1, i + 1, 0] = new Vector2(1, 0);
+                _figures[1, i + 1, 1] = new Vector2(1, 1);
+                _figures[1, i + 1, 2] = new Vector2(1, 2);
+                _figures[1, i + 1, 3] = new Vector2(1, 3);
+            }
+            // J-figures
+            _figures[2, 0, 0] = new Vector2(0, 0);
+            _figures[2, 0, 1] = new Vector2(1, 0);
+            _figures[2, 0, 2] = new Vector2(2, 0);
+            _figures[2, 0, 3] = new Vector2(2, 1);
+            _figures[2, 1, 0] = new Vector2(2, 0);
+            _figures[2, 1, 1] = new Vector2(2, 1);
+            _figures[2, 1, 2] = new Vector2(1, 2);
+            _figures[2, 1, 3] = new Vector2(2, 2);
+            _figures[2, 2, 0] = new Vector2(0, 0);
+            _figures[2, 2, 1] = new Vector2(0, 1);
+            _figures[2, 2, 2] = new Vector2(1, 1);
+            _figures[2, 2, 3] = new Vector2(2, 1);
+            _figures[2, 3, 0] = new Vector2(1, 0);
+            _figures[2, 3, 1] = new Vector2(2, 0);
+            _figures[2, 3, 2] = new Vector2(1, 1);
+            _figures[2, 3, 3] = new Vector2(1, 2);
+            // L-figures
+            _figures[3, 0, 0] = new Vector2(0, 0);
+            _figures[3, 0, 1] = new Vector2(1, 0);
+            _figures[3, 0, 2] = new Vector2(2, 0);
+            _figures[3, 0, 3] = new Vector2(0, 1);
+            _figures[3, 1, 0] = new Vector2(2, 0);
+            _figures[3, 1, 1] = new Vector2(2, 1);
+            _figures[3, 1, 2] = new Vector2(1, 0);
+            _figures[3, 1, 3] = new Vector2(2, 2);
+            _figures[3, 2, 0] = new Vector2(0, 1);
+            _figures[3, 2, 1] = new Vector2(1, 1);
+            _figures[3, 2, 2] = new Vector2(2, 1);
+            _figures[3, 2, 3] = new Vector2(2, 0);
+            _figures[3, 3, 0] = new Vector2(1, 0);
+            _figures[3, 3, 1] = new Vector2(2, 2);
+            _figures[3, 3, 2] = new Vector2(1, 1);
+            _figures[3, 3, 3] = new Vector2(1, 2);
+            // S-figures
+            for (int i = 0; i < 4; i += 2)
+            {
+                _figures[4, i, 0] = new Vector2(0, 1);
+                _figures[4, i, 1] = new Vector2(1, 1);
+                _figures[4, i, 2] = new Vector2(1, 0);
+                _figures[4, i, 3] = new Vector2(2, 0);
+                _figures[4, i + 1, 0] = new Vector2(1, 0);
+                _figures[4, i + 1, 1] = new Vector2(1, 1);
+                _figures[4, i + 1, 2] = new Vector2(2, 1);
+                _figures[4, i + 1, 3] = new Vector2(2, 2);
+            }
+            // Z-figures
+            for (int i = 0; i < 4; i += 2)
+            {
+                _figures[5, i, 0] = new Vector2(0, 0);
+                _figures[5, i, 1] = new Vector2(1, 0);
+                _figures[5, i, 2] = new Vector2(1, 1);
+                _figures[5, i, 3] = new Vector2(2, 1);
+                _figures[5, i + 1, 0] = new Vector2(2, 0);
+                _figures[5, i + 1, 1] = new Vector2(1, 1);
+                _figures[5, i + 1, 2] = new Vector2(2, 1);
+                _figures[5, i + 1, 3] = new Vector2(1, 2);
+            }
+            // T-figures
+            _figures[6, 0, 0] = new Vector2(0, 1);
+            _figures[6, 0, 1] = new Vector2(1, 1);
+            _figures[6, 0, 2] = new Vector2(2, 1);
+            _figures[6, 0, 3] = new Vector2(1, 0);
+            _figures[6, 1, 0] = new Vector2(1, 0);
+            _figures[6, 1, 1] = new Vector2(1, 1);
+            _figures[6, 1, 2] = new Vector2(1, 2);
+            _figures[6, 1, 3] = new Vector2(2, 1);
+            _figures[6, 2, 0] = new Vector2(0, 0);
+            _figures[6, 2, 1] = new Vector2(1, 0);
+            _figures[6, 2, 2] = new Vector2(2, 0);
+            _figures[6, 2, 3] = new Vector2(1, 1);
+            _figures[6, 3, 0] = new Vector2(2, 0);
+            _figures[6, 3, 1] = new Vector2(2, 1);
+            _figures[6, 3, 2] = new Vector2(2, 2);
+            _figures[6, 3, 3] = new Vector2(1, 1);
+            #endregion
+
+            _nextFigures.Enqueue(_random.Next(7));
+            _nextFigures.Enqueue(_random.Next(7));
+            _nextFigures.Enqueue(_random.Next(7));
+            _nextFigures.Enqueue(_random.Next(7));
+
+            _nextFiguresModification.Enqueue(_random.Next(4));
+            _nextFiguresModification.Enqueue(_random.Next(4));
+            _nextFiguresModification.Enqueue(_random.Next(4));
+            _nextFiguresModification.Enqueue(_random.Next(4));
+
+            _soundEffects = soundEffects;
         }
 
         public virtual void Initialize()

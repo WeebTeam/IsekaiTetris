@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -28,6 +30,8 @@ namespace Tetris
         private Score score;
         private bool pause = false;
 
+        public List<SoundEffect> _aquaInGameSE, _meguminInGameSE;
+
         // Keyboard Input (for debouncing)
         KeyboardState oldKeyboardState = Keyboard.GetState();
 
@@ -51,6 +55,9 @@ namespace Tetris
             pieces[5] = new Rectangle(240, 72, 24, 24);
             // T figure
             pieces[6] = new Rectangle(144, 96, 24, 24);
+            
+            _meguminInGameSE = new List<SoundEffect>();
+            _aquaInGameSE = new List<SoundEffect>();
         }
 
         public Engine(GraphicsDevice graphicsDevice, Character character) : this(graphicsDevice)
@@ -65,7 +72,7 @@ namespace Tetris
 
         public override void LoadContent(ContentManager content)
         {
-            //Load 2D textures
+            //Load backgrounds
             if (_character == Character.Kazuma)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back1Refined"); //gameplaybg
             if (_character == Character.Aqua)
@@ -84,6 +91,12 @@ namespace Tetris
             //board backgrounds
             _boardSingle = content.Load<Texture2D>("textures/gameplay/board_single");
 
+
+            // Load individual characters sound effects
+            _meguminInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/explosion"));
+
+            _aquaInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/blessing"));
+
             // Load game font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
 
@@ -91,9 +104,9 @@ namespace Tetris
             if (_character == Character.Kazuma)
                 board = new KazumaBoard(ref tetrisTextures, pieces);
             if (_character == Character.Aqua)
-                board = new AquaBoard(ref tetrisTextures, pieces);
+                board = new AquaBoard(ref tetrisTextures, pieces, ref _aquaInGameSE);
             if (_character == Character.Megumin)
-                board = new MeguminBoard(ref tetrisTextures, pieces);
+                board = new MeguminBoard(ref tetrisTextures, pieces, ref _meguminInGameSE);
             if (_character == Character.Darkness)
                 board = new DarknessBoard(ref tetrisTextures, pieces);
 
