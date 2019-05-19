@@ -137,24 +137,45 @@ namespace Tetris
                     GameOver();
                 else
                 {
+                    if(_character == Character.Darkness)
+                    {
+                        if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
+                            board.MoveFigureLeft();
+                        // If right key is pressed
+                        if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
+                            board.MoveFigureRight();
+                        // If down key is pressed
+                        if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
+                            board.MoveFigureDown();
+                        // Rotate figure
+                        if (oldKeyboardState.IsKeyDown(Keys.Down) && (keyboardState.IsKeyUp(Keys.Down)))
+                            board.RotateFigure();
+                    }
+                    else
+                    {
+                        // If left key is pressed
+                        if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
+                            board.MoveFigureLeft();
+                        // If right key is pressed
+                        if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
+                            board.MoveFigureRight();
+                        // If down key is pressed
+                        if (oldKeyboardState.IsKeyDown(Keys.Down) && (keyboardState.IsKeyUp(Keys.Down)))
+                            board.MoveFigureDown();
+                        // Rotate figure
+                        if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
+                            board.RotateFigure();
+                    }
 
-                    // If left key is pressed
-                    if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
-                        board.MoveFigureLeft();
-                    // If right key is pressed
-                    if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
-                        board.MoveFigureRight();
-                    // If down key is pressed
-                    if (oldKeyboardState.IsKeyDown(Keys.Down) && (keyboardState.IsKeyUp(Keys.Down)))
-                        board.MoveFigureDown();
+                    // Skill
+                    if (_character == Character.Megumin && oldKeyboardState.IsKeyDown(Keys.E))
+                    {
+                        board.Skill();
+                    }   
 
                     // Hard drop
                     if (oldKeyboardState.IsKeyDown(Keys.Space) && (keyboardState.IsKeyUp(Keys.Space)))
                         board.HardDrop();
-
-                    // Rotate figure
-                    if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
-                        board.RotateFigure();
 
                     // Moving figure
                     if (board.Movement >= 1)
