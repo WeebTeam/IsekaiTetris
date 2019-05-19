@@ -66,7 +66,16 @@ namespace Tetris
         public override void LoadContent(ContentManager content)
         {
             //Load 2D textures
-            tetrisBackground = content.Load<Texture2D>("textures/background/back1Refined"); //gameplaybg
+            if (_character == Character.Kazuma)
+                tetrisBackground = content.Load<Texture2D>("textures/background/back1Refined"); //gameplaybg
+            if (_character == Character.Aqua)
+                tetrisBackground = content.Load<Texture2D>("textures/background/back2Refined"); //gameplaybg
+            if (_character == Character.Megumin)
+                tetrisBackground = content.Load<Texture2D>("textures/background/back3Refined"); //gameplaybg
+            if (_character == Character.Darkness)
+                tetrisBackground = content.Load<Texture2D>("textures/background/back5Refined"); //gameplaybg
+
+            //Load 2D textures
             tetrisTextures = content.Load<Texture2D>("textures/tetris"); //the 7 pieces
 
             //top bar
@@ -198,6 +207,9 @@ namespace Tetris
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //draw background
+            spriteBatch.Draw(tetrisBackground, new Vector2(0, 0), Color.White);
+
             //draw board texture
             //vector coords calculated based on resolution of board bg
             spriteBatch.Draw(_boardSingle, new Vector2(262, 78), Color.White);
