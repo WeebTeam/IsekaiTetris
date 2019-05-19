@@ -199,7 +199,6 @@ namespace Tetris
             for (int i = 0; i < _width; i++)
                 for (int j = 0; j < _height; j++)
                     ClearBoardField(i, j);
-
         }
 
         public virtual void FindDynamicFigure()
@@ -496,6 +495,12 @@ namespace Tetris
         {
             _boardFields[i, j] = FieldState.Free;
             _boardColor[i, j] = -1;
+        }
+
+
+        public virtual void Skill()
+        {
+
         }
 
         public virtual void Draw(SpriteBatch sBatch)
