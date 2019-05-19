@@ -12,5 +12,13 @@ namespace Tetris
 
         }
 
+        public override void Skill()
+        {
+            _nextFigures.Clear();
+            _nextFigures.Enqueue(1);
+            _nextFigures.Enqueue(1);
+            _nextFigures.Enqueue(1);
+            _nextFigures.Enqueue(1);
+        }
     }
 }

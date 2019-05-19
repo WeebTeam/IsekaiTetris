@@ -137,7 +137,7 @@ namespace Tetris
                     GameOver();
                 else
                 {
-                    if(_character == Character.Darkness)
+                    if (_character == Character.Darkness)
                     {
                         if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
                             board.MoveFigureLeft();
@@ -168,10 +168,10 @@ namespace Tetris
                     }
 
                     // Skill
-                    if (_character == Character.Megumin && oldKeyboardState.IsKeyDown(Keys.E))
+                    if (oldKeyboardState.IsKeyDown(Keys.E) && (keyboardState.IsKeyUp(Keys.E)))
                     {
                         board.Skill();
-                    }   
+                    }
 
                     // Hard drop
                     if (oldKeyboardState.IsKeyDown(Keys.Space) && (keyboardState.IsKeyUp(Keys.Space)))

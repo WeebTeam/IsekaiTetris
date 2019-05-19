@@ -16,7 +16,6 @@ namespace Tetris
         public override void Skill()
         {
             _showNewBlock = true;
-            _speed = 0.05f;
 
             for (int i = 0; i < _width; i++)
             {
