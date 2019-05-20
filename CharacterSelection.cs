@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Tetris
 {
@@ -16,6 +18,14 @@ namespace Tetris
 
         //fonts
         private SpriteFont gameFont, menuFont;
+
+        //soundEffect
+        private SoundEffect kazumaSE, aquaSE, meguminSE, darknessSE;
+        //countofOccurrence
+        private int kazumaSECount, aquaSECount, meguminSECount, darknessSECount = 0;
+
+        //musics
+        private Song kazumaMusic, aquaMusic, meguminMusic, darknessMusic;
 
         public CharacterSelection(GraphicsDevice graphicsDevice)
         : base(graphicsDevice)
@@ -51,7 +61,19 @@ namespace Tetris
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
             menuFont = content.Load<SpriteFont>("spritefonts/menuFont");
 
-            //load characters
+            // Load musics
+            kazumaMusic = content.Load<Song>("audios/kazuma");
+            aquaMusic = content.Load<Song>("audios/aqua");
+            meguminMusic = content.Load<Song>("audios/megumin");
+            darknessMusic = content.Load<Song>("audios/darkness");
+
+            // Load sound effects
+            kazumaSE = content.Load<SoundEffect>("audios/soundEffects/kazumaSE1");
+            aquaSE = content.Load<SoundEffect>("audios/soundEffects/aquaSE1");
+            meguminSE = content.Load<SoundEffect>("audios/soundEffects/meguminSE1");
+            darknessSE = content.Load<SoundEffect>("audios/soundEffects/darknessSE1");
+
+            // Load characters
             kazuma = new CharacterProfile(new Rectangle(120, 150, 260, 470), kazumaNormal, kazumaHover);
             aqua = new CharacterProfile(new Rectangle(380, 150, 260, 470), aquaNormal, aquaHover);
             megumin = new CharacterProfile(new Rectangle(640, 150, 260, 470), meguminNormal, meguminHover);
@@ -65,6 +87,44 @@ namespace Tetris
         {
         }
 
+        // to make sure the sound effect only run once after selected, not looping
+        public void Effect()
+        {
+
+            if (kazuma.Selected && kazumaSECount == 0)
+            {
+                kazumaSE.Play(1.0f, 0.0f, 0.0f);
+                kazumaSECount = 1;
+                aquaSECount = 0;
+                meguminSECount = 0;
+                darknessSECount = 0;
+            }
+            else if (aqua.Selected && aquaSECount == 0)
+            {
+                aquaSE.Play(1.0f, 0.0f, 0.0f);
+                kazumaSECount = 0;
+                aquaSECount = 1;
+                meguminSECount = 0;
+                darknessSECount = 0;
+            }
+            else if (megumin.Selected && meguminSECount == 0)
+            {
+                meguminSE.Play(1.0f, 0.0f, 0.0f);
+                kazumaSECount = 0;
+                aquaSECount = 0;
+                meguminSECount = 1;
+                darknessSECount = 0;
+            }
+            else if (darkness.Selected && darknessSECount == 0)
+            {
+                darknessSE.Play(1.0f, 0.0f, 0.0f);
+                kazumaSECount = 0;
+                aquaSECount = 0;
+                meguminSECount = 0;
+                darknessSECount = 1;
+            }
+        }
+
         public override void Update(GameTime gameTime)
         {
             // Gets keyboard input
@@ -74,6 +134,10 @@ namespace Tetris
 
             //check if character is selected, then deselects other characters
             kazuma.Update(mouseState);
+
+            //check if it should play the effect or not
+            Effect();
+
             if (kazuma.Selected)
             {
                 aqua.Selected = false;
@@ -104,20 +168,32 @@ namespace Tetris
                 megumin.Selected = false;
                 kazuma.Selected = false;
             }
-
+            
             nextButton.Update(mouseState);
 
             if (nextButton.State == Button.GuiButtonState.Released)
             {
                 //run game
                 if (kazuma.Selected)
+                {
+                    MediaPlayer.Play(kazumaMusic);
                     GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                }
                 if (aqua.Selected)
+                {
+                    MediaPlayer.Play(aquaMusic);
                     GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Aqua));
+                }
                 if (megumin.Selected)
+                {
+                    MediaPlayer.Play(meguminMusic);
                     GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Megumin));
+                }
                 if (darkness.Selected)
+                {
+                    MediaPlayer.Play(darknessMusic);
                     GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Darkness));
+                }
             }
 
             if (keyboardState.IsKeyDown(Keys.Escape))

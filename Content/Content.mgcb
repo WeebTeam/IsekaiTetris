@@ -14,6 +14,72 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin audios/10. 始まりの街.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audios/10. 始まりの街.mp3;audios/kazuma.mp3
+
+#begin audios/18. 知力は低め.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audios/18. 知力は低め.mp3;audios/darkness.mp3
+
+#begin audios/19. 天丼.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audios/19. 天丼.mp3;audios/aqua.mp3
+
+#begin audios/23. 爆裂魔法を操る者.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audios/23. 爆裂魔法を操る者.mp3;audios/megumin.mp3
+
+#begin audios/32. fantastic dreamer (TV Size) -Off Vocal Ver.-.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:audios/32. fantastic dreamer (TV Size) -Off Vocal Ver.-.mp3;audios/fantasticdreamer.mp3
+
+#begin audios/soundEffects/aquaSE1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/aquaSE1.mp3
+
+#begin audios/soundEffects/blessing.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/blessing.mp3
+
+#begin audios/soundEffects/darknessSE1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/darknessSE1.mp3
+
+#begin audios/soundEffects/explosion.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/explosion.mp3
+
+#begin audios/soundEffects/kazumaSE1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/kazumaSE1.mp3
+
+#begin audios/soundEffects/meguminSE1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/meguminSE1.mp3
+
 #begin spritefonts/gameFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -243,6 +309,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:textures/gameplay/topbar.png
+
+#begin textures/mainBack1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/mainBack1.png
+
+#begin textures/mainBack2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/mainBack2.png
 
 #begin textures/pause.png
 /importer:TextureImporter
