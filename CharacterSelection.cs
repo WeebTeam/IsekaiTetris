@@ -81,6 +81,7 @@ namespace Tetris
 
             // Load buttons 
             nextButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Next", Color.White, buttonNone, buttonHover, buttonNone);
+            MediaPlayer.Volume = 0.1f;
         }
 
         public override void UnloadContent()
@@ -198,6 +199,7 @@ namespace Tetris
 
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
+                MediaPlayer.Volume = 0.2f;
                 GameStateManager.Instance.RemoveScreen();
             }
 

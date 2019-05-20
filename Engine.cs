@@ -98,7 +98,6 @@ namespace Tetris
 
             // Load individual characters sound effects
             _meguminInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/explosion"));
-
             _aquaInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/blessing"));
 
             // Load game font
@@ -132,6 +131,12 @@ namespace Tetris
             set { _character = value; }
         }
 
+        public bool Paused
+        {
+            get { return _pause; }
+            set { _pause = value; }
+        }
+
         public override void Update(GameTime gameTime)
         {
             // Gets keyboard input
@@ -141,10 +146,10 @@ namespace Tetris
             // Check pause (if esc is pressed)
             bool pauseKey = (oldKeyboardState.IsKeyUp(Keys.Escape) && (keyboardState.IsKeyDown(Keys.Escape)));
 
-            if (pauseKey)
+            if (pauseKey || _pauseScreen.Unpause)
             {
                 _pause = !_pause;
-                
+                _pauseScreen.Unpause = false;
             }
             if (!_pause)
             {
@@ -215,6 +220,10 @@ namespace Tetris
                     else
                         _board.Movement += _board.Speed;
                 }
+            }
+            else
+            { 
+                //run when paused
             }
             oldKeyboardState = keyboardState;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -7,14 +8,16 @@ namespace Tetris
 {
     public class PauseScreen
     {
-        private Texture2D background, title;
+        private Texture2D background;
+
+        private bool _unpause = false;
 
         //buttons (and button textures)
         private Button resumeButton, settingButton, menuButton, quitButton;
-        private Texture2D buttonNone, buttonPressed, buttonHover;
+        private Texture2D buttonNone, buttonHover;
 
         //fonts
-        private SpriteFont gameFont, menuFont;
+        private SpriteFont gameFont;
 
         public PauseScreen(GraphicsDevice graphicsDevice)
         {
@@ -31,7 +34,12 @@ namespace Tetris
             //Load 2D textures
             background = content.Load<Texture2D>("textures/pause");
 
-            menuFont = content.Load<SpriteFont>("spritefonts/menuFont");
+            //font
+            gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
+
+            //Load button textures
+            buttonNone = content.Load<Texture2D>("textures/button_normal");
+            buttonHover = content.Load<Texture2D>("textures/button_hover");
 
             // Load buttons 
             resumeButton = new Button(new Rectangle(440, 245, 400, 50), gameFont, "Resume Game", Color.White, buttonNone, buttonHover, buttonNone);
@@ -39,6 +47,12 @@ namespace Tetris
             menuButton = new Button(new Rectangle(440, 365, 400, 50), gameFont, "Exit to Menu", Color.White, buttonNone, buttonHover, buttonNone);
             quitButton = new Button(new Rectangle(440, 425, 400, 50), gameFont, "Quit Game", Color.White, buttonNone, buttonHover, buttonNone);
 
+        }
+
+        public bool Unpause
+        {
+            get { return _unpause; }
+            set { _unpause = value; }
         }
 
         public void UnloadContent()
@@ -68,8 +82,8 @@ namespace Tetris
 
             if (resumeButton.State == Button.GuiButtonState.Released)
             {
-                //resume screen, so remove this gamestate
-                //GameStateManager.Instance.RemoveScreen();
+                //resume screen
+                _unpause = true;
             }
             else if (settingButton.State == Button.GuiButtonState.Released)
             {
@@ -81,8 +95,9 @@ namespace Tetris
                 //quit to menu
                 if (ConfirmMenu())
                 {
-                    //remove current pause screen, and then remove the game screen
-                    GameStateManager.Instance.RemoveScreen();
+                    MediaPlayer.Stop();
+                    GameStateManager.Instance.RemoveScreen(); //exit game screen
+                    GameStateManager.Instance.RemoveScreen(); //exit character screen
                 }
             }
             else if (quitButton.State == Button.GuiButtonState.Released)
@@ -95,9 +110,7 @@ namespace Tetris
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
-            spriteBatch.Draw(title, new Vector2(280, 50), Color.White); //draw title/logo
-
+            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
             //draw buttons
             resumeButton.Draw(spriteBatch);
             settingButton.Draw(spriteBatch);

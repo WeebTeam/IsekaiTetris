@@ -12,13 +12,13 @@ namespace Tetris
 
         //buttons (and button textures)
         private Button playButton, scoreButton, settingButton, quitButton;
-        private Texture2D buttonNone, buttonPressed, buttonHover;
+        private Texture2D buttonNone, buttonHover;
 
         //song
         public Song menuMusic;
 
         //fonts
-        private SpriteFont gameFont, menuFont;
+        private SpriteFont gameFont;
 
         public Menu(GraphicsDevice graphicsDevice)
         : base(graphicsDevice)
@@ -43,13 +43,9 @@ namespace Tetris
 
             // Load font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
-            menuFont = content.Load<SpriteFont>("spritefonts/menuFont");
 
             // Load music
             menuMusic = content.Load<Song>("audios/fantasticdreamer");
-            MediaPlayer.Play(menuMusic);
-            MediaPlayer.Volume = 0.2f;
-            MediaPlayer.IsRepeating = true;
 
             // Load buttons 
             playButton = new Button(new Rectangle(75, 400, 400, 50), gameFont, "Start Game", Color.White, buttonNone, buttonHover, buttonNone); //440, 400, 400, 50
@@ -57,18 +53,15 @@ namespace Tetris
             settingButton = new Button(new Rectangle(75, 520, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
             quitButton = new Button(new Rectangle(75, 580, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone);
 
-            /* 1280 x 720
-            buttons are 400 x 50
-            to center them:
+            MediaPlayer.Play(menuMusic);
+            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.IsRepeating = true;
 
-            440 - 400 - 440
-
-
-            */
         }
 
         public override void UnloadContent()
         {
+            MediaPlayer.Stop();
         }
 
         public override void Update(GameTime gameTime)
@@ -83,6 +76,13 @@ namespace Tetris
             scoreButton.Update(mouseState);
             settingButton.Update(mouseState);
             quitButton.Update(mouseState);
+
+            if (MediaPlayer.State != MediaState.Playing) //check if music is playing
+            {
+                MediaPlayer.Play(menuMusic);
+                MediaPlayer.Volume = 0.2f;
+                MediaPlayer.IsRepeating = true;
+            }
 
             if (playButton.State == Button.GuiButtonState.Released)
             {
