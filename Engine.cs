@@ -22,7 +22,7 @@ namespace Tetris
         //character backgrounds (possibly have different ones for single/multiplayer)
         private Texture2D _boardSingle, _topBar;
 
-        private SpriteFont gameFont;
+        private SpriteFont gameFont, timerFont;
         private readonly Rectangle[] _pieces = new Rectangle[7];
 
         // Game
@@ -31,7 +31,7 @@ namespace Tetris
         private bool _pause = false;
         private PauseScreen _pauseScreen;
 
-        public List<SoundEffect> _aquaInGameSE, _meguminInGameSE;
+        public List<SoundEffect> _aquaInGameSE, _meguminInGameSE, _blockSoundEffects;
 
         // Keyboard Input (for debouncing)
         KeyboardState oldKeyboardState = Keyboard.GetState();
@@ -61,6 +61,7 @@ namespace Tetris
             
             _meguminInGameSE = new List<SoundEffect>();
             _aquaInGameSE = new List<SoundEffect>();
+            _blockSoundEffects = new List<SoundEffect>();
         }
 
         public Engine(GraphicsDevice graphicsDevice, Character character) : this(graphicsDevice)
@@ -98,21 +99,44 @@ namespace Tetris
 
             // Load individual characters sound effects
             _meguminInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/explosion"));
+            _meguminInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/meguminSE2"));
             _aquaInGameSE.Add(content.Load<SoundEffect>("audios/soundEffects/blessing"));
 
             // Load game font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
+            timerFont = content.Load<SpriteFont>("spritefonts/timerFont");
+
+            // Load board sound effects
+            _blockSoundEffects.Add(content.Load<SoundEffect>("audios/soundEffects/blockDrop"));
+            //_blockSoundEffects.Add(content.Load<SoundEffect>("audios/soundEffects/enter"));
+            _blockSoundEffects.Add(content.Load<SoundEffect>("audios/soundEffects/pauseMenu"));
+
+            //_board._blockSoundEffects = _blockSoundEffects;
 
             // Create game field
             if (_character == Character.Kazuma)
+            {
                 _board = new KazumaBoard(ref tetrisTextures, _pieces);
+                _board.needSkillCooldown = false;
+            }
             if (_character == Character.Aqua)
+            {
                 _board = new AquaBoard(ref tetrisTextures, _pieces, ref _aquaInGameSE);
+                _board.needSkillCooldown = true;
+            }
             if (_character == Character.Megumin)
+            {
                 _board = new MeguminBoard(ref tetrisTextures, _pieces, ref _meguminInGameSE);
+                _board.needSkillCooldown = true;
+            }
             if (_character == Character.Darkness)
+            {
                 _board = new DarknessBoard(ref tetrisTextures, _pieces);
+                _board.needSkillCooldown = false;
+            }
 
+            _board.font = gameFont;
+            _board.timerFont = timerFont;
 
             _pauseScreen.LoadContent(content);
 
@@ -137,8 +161,19 @@ namespace Tetris
             set { _pause = value; }
         }
 
+        // trying out timer for skill
+        public float _skillCooldown = 15;
+        public float _gameplayTime = 200;
+
         public override void Update(GameTime gameTime)
         {
+            // Timer for skill & possibly game
+            var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // To allow the board to get this cooldown value to be printed out
+            _board._cooldown = _skillCooldown;
+            _board._gameplayTime = _gameplayTime;
+
             // Gets keyboard input
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
@@ -151,8 +186,14 @@ namespace Tetris
                 _pause = !_pause;
                 _pauseScreen.Unpause = false;
             }
+            if(pauseKey)
+                _blockSoundEffects[1].Play(0.2f, 0.0f, 0.0f);
             if (!_pause)
             {
+                // Only deduct the cooldown when it's not pause
+                _skillCooldown -= timer;
+                _gameplayTime -= timer;
+
                 // Find dynamic figure position
                 _board.FindDynamicFigure();
 
@@ -173,12 +214,13 @@ namespace Tetris
                 {
                     if (_character == Character.Darkness) //coz darkness always misses
                     {
+                        // If right key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
                             _board.MoveFigureLeft();
-                        // If right key is pressed
+                        // If left key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
                             _board.MoveFigureRight();
-                        // If down key is pressed
+                        // If up key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
                             _board.MoveFigureDown();
                         // Rotate figure
@@ -202,14 +244,22 @@ namespace Tetris
                     }
 
                     // Skill
-                    if (oldKeyboardState.IsKeyDown(Keys.E) && (keyboardState.IsKeyUp(Keys.E)))
-                    {
-                        _board.Skill();
+                    if (_skillCooldown <= 0) {
+                        if (oldKeyboardState.IsKeyDown(Keys.E) && (keyboardState.IsKeyUp(Keys.E)))
+                        {
+                            _board.Skill();
+                            // Reset the skill cooldown so that it can be used again except Megumin
+                            if (_character != Character.Megumin)
+                                _skillCooldown = 15;
+                        }
                     }
 
                     // Hard drop
                     if (oldKeyboardState.IsKeyDown(Keys.Space) && (keyboardState.IsKeyUp(Keys.Space)))
+                    {
+                        _blockSoundEffects[0].Play(0.2f,0.0f,0.0f);
                         _board.HardDrop();
+                    }
 
                     // Moving figure
                     if (_board.Movement >= 1)

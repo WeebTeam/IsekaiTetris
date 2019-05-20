@@ -48,6 +48,10 @@ namespace Tetris
         protected Queue<int> _nextFigures = new Queue<int>();
         protected Queue<int> _nextFiguresModification = new Queue<int>();
         protected List<SoundEffect> _soundEffects;
+        public SpriteFont font, timerFont;
+        public float _cooldown;
+        public bool needSkillCooldown;
+        public float _gameplayTime;
 
         public virtual BoardPosition BoardPlacement
         {
@@ -667,6 +671,13 @@ namespace Tetris
                     sBatch.Draw(_textures, _absoluteStartPos + relativeStartPos, _rectangles[figure.Current], Color.White);
                 }
             }
+
+            // draws the cooldown of skill if that character needed it
+            if (needSkillCooldown && _cooldown >= 0)
+                sBatch.DrawString(font, _cooldown.ToString("N0"), new Vector2(420, 610), Color.White);
+
+            // draws timer
+            sBatch.DrawString(timerFont, _gameplayTime.ToString("N0"), new Vector2(575, 20), Color.White);
         }
     }
 }

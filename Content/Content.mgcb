@@ -56,11 +56,23 @@
 /processorParam:Quality=Best
 /build:audios/soundEffects/blessing.mp3
 
+#begin audios/soundEffects/blockDrop.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/blockDrop.mp3
+
 #begin audios/soundEffects/darknessSE1.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audios/soundEffects/darknessSE1.mp3
+
+#begin audios/soundEffects/enter.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/enter.mp3
 
 #begin audios/soundEffects/explosion.mp3
 /importer:Mp3Importer
@@ -80,6 +92,18 @@
 /processorParam:Quality=Best
 /build:audios/soundEffects/meguminSE1.mp3
 
+#begin audios/soundEffects/meguminSE2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/meguminSE2.mp3
+
+#begin audios/soundEffects/pauseMenu.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/pauseMenu.mp3
+
 #begin spritefonts/gameFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -93,6 +117,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:spritefonts/menuFont.spritefont
+
+#begin spritefonts/timerFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:spritefonts/timerFont.spritefont
 
 #begin textures/background/back1Refined.png
 /importer:TextureImporter
