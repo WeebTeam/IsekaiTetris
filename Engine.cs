@@ -21,12 +21,13 @@ namespace Tetris
         private Texture2D _boardSingle, _topBar;
 
         private SpriteFont gameFont;
-        private readonly Rectangle[] pieces = new Rectangle[7];
+        private readonly Rectangle[] _pieces = new Rectangle[7];
 
         // Game
-        private Board board;
-        private Score score;
-        private bool pause = false;
+        private Board _board;
+        private Score _score;
+        private bool _pause = false;
+        private PauseScreen _pauseScreen;
 
         // Keyboard Input (for debouncing)
         KeyboardState oldKeyboardState = Keyboard.GetState();
@@ -38,23 +39,26 @@ namespace Tetris
             // every piece
             // used to generate the actual pieces in game
             // O figure
-            pieces[0] = new Rectangle(312, 0, 24, 24);
+            _pieces[0] = new Rectangle(312, 0, 24, 24);
             // I figure
-            pieces[1] = new Rectangle(0, 24, 24, 24);
+            _pieces[1] = new Rectangle(0, 24, 24, 24);
             // J figure
-            pieces[2] = new Rectangle(120, 0, 24, 24);
+            _pieces[2] = new Rectangle(120, 0, 24, 24);
             // L figure
-            pieces[3] = new Rectangle(216, 24, 24, 24);
+            _pieces[3] = new Rectangle(216, 24, 24, 24);
             // S figure
-            pieces[4] = new Rectangle(48, 96, 24, 24);
+            _pieces[4] = new Rectangle(48, 96, 24, 24);
             // Z figure
-            pieces[5] = new Rectangle(240, 72, 24, 24);
+            _pieces[5] = new Rectangle(240, 72, 24, 24);
             // T figure
-            pieces[6] = new Rectangle(144, 96, 24, 24);
+            _pieces[6] = new Rectangle(144, 96, 24, 24);
+
+            _pauseScreen = new PauseScreen(graphicsDevice);
         }
 
         public Engine(GraphicsDevice graphicsDevice, Character character) : this(graphicsDevice)
         {
+            
             _character = character;
         }
 
@@ -80,17 +84,18 @@ namespace Tetris
 
             // Create game field
             if (_character == Character.Kazuma)
-                board = new KazumaBoard(ref tetrisTextures, pieces);
+                _board = new KazumaBoard(ref tetrisTextures, _pieces);
             if (_character == Character.Aqua)
-                board = new AquaBoard(ref tetrisTextures, pieces);
+                _board = new AquaBoard(ref tetrisTextures, _pieces);
             if (_character == Character.Megumin)
-                board = new MeguminBoard(ref tetrisTextures, pieces);
+                _board = new MeguminBoard(ref tetrisTextures, _pieces);
             if (_character == Character.Darkness)
-                board = new DarknessBoard(ref tetrisTextures, pieces);
+                _board = new DarknessBoard(ref tetrisTextures, _pieces);
 
 
+            _pauseScreen.LoadContent(content);
 
-            board.Initialize(); // init the board
+            _board.Initialize(); // init the board
 
         }
 
@@ -111,19 +116,21 @@ namespace Tetris
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
 
-            // Check pause
-            bool pauseKey = (oldKeyboardState.IsKeyDown(Keys.P) && (keyboardState.IsKeyUp(Keys.P)));
+            // Check pause (if esc is pressed)
+            bool pauseKey = (oldKeyboardState.IsKeyUp(Keys.Escape) && (keyboardState.IsKeyDown(Keys.Escape)));
 
             if (pauseKey)
-                pause = !pause;
-
-            if (!pause)
+            {
+                _pause = !_pause;
+                
+            }
+            if (!_pause)
             {
                 // Find dynamic figure position
-                board.FindDynamicFigure();
+                _board.FindDynamicFigure();
 
                 // Increase player score
-                int lines = board.DestroyLines();
+                int lines = _board.DestroyLines();
                 //if (lines > 0)
                 //{
                 //    score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
@@ -133,61 +140,63 @@ namespace Tetris
                 //score.Level = (int)(10 * board.Speed);
 
                 // Create new shape in game
-                if (!board.CreateNewFigure())
+                if (!_board.CreateNewFigure())
                     GameOver();
                 else
                 {
-                    if (_character == Character.Darkness)
+                    if (_character == Character.Darkness) //coz darkness always misses
                     {
                         if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
-                            board.MoveFigureLeft();
+                            _board.MoveFigureLeft();
                         // If right key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
-                            board.MoveFigureRight();
+                            _board.MoveFigureRight();
                         // If down key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
-                            board.MoveFigureDown();
+                            _board.MoveFigureDown();
                         // Rotate figure
                         if (oldKeyboardState.IsKeyDown(Keys.Down) && (keyboardState.IsKeyUp(Keys.Down)))
-                            board.RotateFigure();
+                            _board.RotateFigure();
                     }
                     else
                     {
                         // If left key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Left) && (keyboardState.IsKeyUp(Keys.Left)))
-                            board.MoveFigureLeft();
+                            _board.MoveFigureLeft();
                         // If right key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
-                            board.MoveFigureRight();
+                            _board.MoveFigureRight();
                         // If down key is pressed
                         if (oldKeyboardState.IsKeyDown(Keys.Down) && (keyboardState.IsKeyUp(Keys.Down)))
-                            board.MoveFigureDown();
+                            _board.MoveFigureDown();
                         // Rotate figure
                         if (oldKeyboardState.IsKeyDown(Keys.Up) && (keyboardState.IsKeyUp(Keys.Up)))
-                            board.RotateFigure();
+                            _board.RotateFigure();
                     }
 
                     // Skill
                     if (oldKeyboardState.IsKeyDown(Keys.E) && (keyboardState.IsKeyUp(Keys.E)))
                     {
-                        board.Skill();
+                        _board.Skill();
                     }
 
                     // Hard drop
                     if (oldKeyboardState.IsKeyDown(Keys.Space) && (keyboardState.IsKeyUp(Keys.Space)))
-                        board.HardDrop();
+                        _board.HardDrop();
 
                     // Moving figure
-                    if (board.Movement >= 1)
+                    if (_board.Movement >= 1)
                     {
-                        board.Movement = 0;
-                        board.MoveFigureDown();
+                        _board.Movement = 0;
+                        _board.MoveFigureDown();
                     }
                     else
-                        board.Movement += board.Speed;
+                        _board.Movement += _board.Speed;
                 }
             }
             oldKeyboardState = keyboardState;
+
+            _pauseScreen.Update(gameTime);
         }
 
         public void GameOver()
@@ -205,8 +214,13 @@ namespace Tetris
             //draw top bar (MUST BE after board texture)
             spriteBatch.Draw(_topBar, new Vector2(112, 0), Color.White);
 
-            board.Draw(spriteBatch);
+            _board.Draw(spriteBatch);
             //score.Draw(spriteBatch);
+
+            if (_pause)
+            {
+                _pauseScreen.Draw(spriteBatch);
+            }
         }
     }
 }

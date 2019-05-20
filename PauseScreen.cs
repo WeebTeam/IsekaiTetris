@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
-    public class PauseScreen : GameState
+    public class PauseScreen
     {
         private Texture2D background, title;
 
@@ -17,17 +17,15 @@ namespace Tetris
         private SpriteFont gameFont, menuFont;
 
         public PauseScreen(GraphicsDevice graphicsDevice)
-        : base(graphicsDevice)
         {
-            _graphicsDevice = graphicsDevice;
         }
 
-        public override void Initialize()
+        public void Initialize()
         {
 
         }
 
-        public override void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
 
             //Load 2D textures
@@ -43,7 +41,7 @@ namespace Tetris
 
         }
 
-        public override void UnloadContent()
+        public void UnloadContent()
         {
         }
 
@@ -57,7 +55,7 @@ namespace Tetris
             return true;
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             // Gets keyboard input
             KeyboardState keyboardState = Keyboard.GetState();
@@ -71,7 +69,7 @@ namespace Tetris
             if (resumeButton.State == Button.GuiButtonState.Released)
             {
                 //resume screen, so remove this gamestate
-                GameStateManager.Instance.RemoveScreen();
+                //GameStateManager.Instance.RemoveScreen();
             }
             else if (settingButton.State == Button.GuiButtonState.Released)
             {
@@ -85,7 +83,6 @@ namespace Tetris
                 {
                     //remove current pause screen, and then remove the game screen
                     GameStateManager.Instance.RemoveScreen();
-                    GameStateManager.Instance.RemoveScreen();
                 }
             }
             else if (quitButton.State == Button.GuiButtonState.Released)
@@ -96,7 +93,7 @@ namespace Tetris
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
 
             spriteBatch.Draw(title, new Vector2(280, 50), Color.White); //draw title/logo
