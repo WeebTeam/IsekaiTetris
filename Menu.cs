@@ -103,13 +103,8 @@ namespace Tetris
             else if (scoreButton.State == Button.GuiButtonState.Released)
             {
                 //load high score
-                
+                GameStateManager.Instance.AddScreen(new Scoreboard(_graphicsDevice));
             }
-           // else if (playButton.State == Button.GuiButtonState.Released)
-            //{
-                //open settings
-
-           // }
             else if (quitButton.State == Button.GuiButtonState.Released)
             {
                 //quit game

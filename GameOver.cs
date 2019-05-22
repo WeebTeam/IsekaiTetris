@@ -12,7 +12,7 @@ namespace Tetris
 
         private bool _playagain = false;
         private Board _board;
-        private Score _score;
+        private GameScore _score;
 
         //buttons (and button textures)
         private Button playAgainButton, menuButton, quitButton;
@@ -21,7 +21,7 @@ namespace Tetris
         //fonts
         private SpriteFont gameFont;
 
-        public GameOver(GraphicsDevice graphicsDevice, ref Score score)
+        public GameOver(GraphicsDevice graphicsDevice, ref GameScore score)
         {
             _score = score;
         }
@@ -69,7 +69,7 @@ namespace Tetris
             get { return _board; }
         }
 
-        public virtual Score Score
+        public virtual GameScore Score
         {
             set { _score = value; }
             get { return _score; }
@@ -98,7 +98,6 @@ namespace Tetris
             _playagain = false;
 
             playAgainButton.Update(mouseState);
-            //settingButton.Update(mouseState);
             menuButton.Update(mouseState);
             quitButton.Update(mouseState);
 

@@ -12,7 +12,6 @@ namespace Tetris
         // Instance of the game state manager     
         private static GameStateManager _instance;
         private ContentManager _content;
-        private SpriteBatch _spriteBatch;
         private bool _quit = false;
 
         // Stack for the screens     
@@ -58,7 +57,7 @@ namespace Tetris
                     _screens.Peek().LoadContent(_content);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception
             }
@@ -76,7 +75,7 @@ namespace Tetris
                     var screen = _screens.Peek();
                     _screens.Pop();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Log the exception
                 }
@@ -103,7 +102,7 @@ namespace Tetris
                 ClearScreens();
                 AddScreen(screen);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception
             }
@@ -122,7 +121,7 @@ namespace Tetris
                     _screens.Peek().Update(gameTime);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -141,7 +140,7 @@ namespace Tetris
                     _screens.Peek().Draw(spriteBatch);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.Error(ex);
             }

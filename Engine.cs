@@ -27,7 +27,7 @@ namespace Tetris
 
         // Game
         private Board _board;
-        private Score _score;
+        private GameScore _score;
         private bool _pause = false;
         private PauseScreen _pauseScreen;
         public bool _gameover = false;
@@ -66,7 +66,7 @@ namespace Tetris
             _aquaInGameSE = new List<SoundEffect>();
             _blockSoundEffects = new List<SoundEffect>();
 
-            _score = new Score(gameFont);
+            _score = new GameScore(gameFont);
             _gameoverScreen = new GameOver(graphicsDevice, ref _score);
         }
 
@@ -304,7 +304,7 @@ namespace Tetris
                 _board.Initialize();
                 _gameplayTime = 200;
                 _skillCooldown = 15;
-                _score.Initialize();
+                //_score.Initialize();
                 _gameover = false;
                 _showgameover = false;
             }
