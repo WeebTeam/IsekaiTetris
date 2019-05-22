@@ -6,26 +6,29 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
-    public class PauseScreen
+    public class GameOver
     {
         private Texture2D background;
 
-        private bool _unpause = false;
+        private bool _playagain = false;
+        private Board _board;
+        private Score _score;
 
         //buttons (and button textures)
-        private Button resumeButton, menuButton, quitButton;
+        private Button playAgainButton, menuButton, quitButton;
         private Texture2D buttonNone, buttonHover;
 
         //fonts
         private SpriteFont gameFont;
 
-        public PauseScreen(GraphicsDevice graphicsDevice)
+        public GameOver(GraphicsDevice graphicsDevice, ref Score score)
         {
+            _score = score;
         }
 
         public void Initialize()
         {
-
+            
         }
 
         public void LoadContent(ContentManager content)
@@ -42,17 +45,34 @@ namespace Tetris
             buttonHover = content.Load<Texture2D>("textures/button_hover");
 
             // Load buttons 
-            resumeButton = new Button(new Rectangle(440, 245, 400, 50), gameFont, "Resume Game", Color.White, buttonNone, buttonHover, buttonNone);
+            playAgainButton = new Button(new Rectangle(440, 365, 400, 50), gameFont, "Play Again", Color.White, buttonNone, buttonHover, buttonNone); //245
             //settingButton = new Button(new Rectangle(440, 305, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
-            menuButton = new Button(new Rectangle(440, 305, 400, 50), gameFont, "Exit to Menu", Color.White, buttonNone, buttonHover, buttonNone);
-            quitButton = new Button(new Rectangle(440, 365, 400, 50), gameFont, "Quit Game", Color.White, buttonNone, buttonHover, buttonNone);
+            menuButton = new Button(new Rectangle(440, 425, 400, 50), gameFont, "Back To Menu", Color.White, buttonNone, buttonHover, buttonNone); //305
+            quitButton = new Button(new Rectangle(440, 485, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone); //365
 
         }
 
-        public bool Unpause
+        public virtual bool PlayAgain
         {
-            get { return _unpause; }
-            set { _unpause = value; }
+            set { _playagain = value; }
+            get { return _playagain; }
+        }
+
+        public bool ConfirmedPlayAgain()
+        {
+            return true;
+        }
+
+        public virtual Board Board
+        {
+            set { _board = value; }
+            get { return _board; }
+        }
+
+        public virtual Score Score
+        {
+            set { _score = value; }
+            get { return _score; }
         }
 
         public void UnloadContent()
@@ -71,32 +91,27 @@ namespace Tetris
 
         public void Update(GameTime gameTime)
         {
-            _unpause = false;
-
             // Gets keyboard input
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
 
-            resumeButton.Update(mouseState);
+            _playagain = false;
+
+            playAgainButton.Update(mouseState);
             //settingButton.Update(mouseState);
             menuButton.Update(mouseState);
             quitButton.Update(mouseState);
 
-            if (resumeButton.State == Button.GuiButtonState.Released)
+            if (playAgainButton.State == Button.GuiButtonState.Released)
             {
-                //resume screen
-                _unpause = true;
+                _playagain = true;
             }
-           // else if (settingButton.State == Button.GuiButtonState.Released)
-            //{
-                //go to setting
-
-           //}
             else if (menuButton.State == Button.GuiButtonState.Released)
             {
                 //quit to menu
                 if (ConfirmMenu())
                 {
+                    //play another sound
                     MediaPlayer.Stop();
                     GameStateManager.Instance.RemoveScreen(); //exit game screen
                     GameStateManager.Instance.RemoveScreen(); //exit character screen
@@ -113,9 +128,11 @@ namespace Tetris
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+
+            spriteBatch.DrawString(_board.timerFont, "Score: " + _score.Value.ToString(), new Vector2(510, 100), Color.White);
+
             //draw buttons
-            resumeButton.Draw(spriteBatch);
-           // settingButton.Draw(spriteBatch);
+            playAgainButton.Draw(spriteBatch);
             menuButton.Draw(spriteBatch);
             quitButton.Draw(spriteBatch);
         }

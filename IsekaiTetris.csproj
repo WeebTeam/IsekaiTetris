@@ -50,6 +50,7 @@
     <Compile Include="Character.cs" />
     <Compile Include="CharacterSelection.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="GameOver.cs" />
     <Compile Include="GameState\GameState.cs" />
     <Compile Include="GameState\GameStateManager.cs" />
     <Compile Include="GameState\IGameState.cs" />

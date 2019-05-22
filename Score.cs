@@ -12,8 +12,8 @@ namespace Tetris
 		protected SpriteFont font;
 
 		// Counters
-		protected int value;
-		protected int level;
+		protected int value = 0;
+		protected int level = 0;
 		protected int recordScore = 0;
 		protected string recordPlayer = "Player 1";
 
@@ -30,6 +30,7 @@ namespace Tetris
 		{
 			value = 0;
 			level = 1;
+            recordScore = 0;
 		}
 
 		public int Value {
@@ -37,10 +38,10 @@ namespace Tetris
 			get { return value; }
 		}
 
-		public int Level {
-			set { level = value; }
-			get { return level; }
-		}
+		//public int Level {
+		//	set { level = value; }
+		//	get { return level; }
+		//}
 
 		public int RecordScore {
 			set { recordScore = value; }
@@ -58,9 +59,11 @@ namespace Tetris
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		public void Draw (SpriteBatch sBatch)
 		{
-			sBatch.DrawString (font, "Score:\n" + value + "\nLevel: " + level, new Vector2 (1.5f * 24, 3 * 24), Color.Green);
+            //sBatch.DrawString(font, "you suck", new Vector2(0, 0), Color.Green);
 
-			sBatch.DrawString (font, "Record:\n" + recordPlayer + "\n" + recordScore, new Vector2 (1.5f * 24, 13 * 24), Color.Orange);
-		}
+            //sBatch.DrawString (font, "Score:\n" + value + "\nLevel: " + level, new Vector2 (0,0), Color.Green); // 1.5f * 24, 3 * 24
+
+            //sBatch.DrawString (font, "Record:\n" + recordPlayer + "\n" + recordScore, new Vector2 (0,10), Color.Orange); //1.5f * 24, 13 * 24
+        }
 	}
 }

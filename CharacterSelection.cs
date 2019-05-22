@@ -14,7 +14,8 @@ namespace Tetris
         //buttons (and button textures)
         private Button nextButton;
         private CharacterProfile kazuma, aqua, megumin, darkness;
-        private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover;
+        private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover, title;
+        private Texture2D musicEnabled, musicDisabled;
 
         //fonts
         private SpriteFont gameFont, menuFont;
@@ -42,7 +43,8 @@ namespace Tetris
         {
 
             //Load 2D textures
-            //background = content.Load<Texture2D>("textures/mainmenubg");
+            background = content.Load<Texture2D>("textures/characterMenu");
+            title = content.Load<Texture2D>("textures/characterTitle");
 
             //Load button textures
             kazumaNormal = content.Load<Texture2D>("textures/character/kazumaButton");
@@ -56,6 +58,9 @@ namespace Tetris
 
             buttonNone = content.Load<Texture2D>("textures/button_normal");
             buttonHover = content.Load<Texture2D>("textures/button_hover");
+
+            //musicEnabled = content.Load<Texture2D>("textures/music");
+            //musicDisabled = content.Load<Texture2D>("textures/no_music");
 
             // Load font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
@@ -91,7 +96,6 @@ namespace Tetris
         // to make sure the sound effect only run once after selected, not looping
         public void Effect()
         {
-
             if (kazuma.Selected && kazumaSECount == 0)
             {
                 kazumaSE.Play(1.0f, 0.0f, 0.0f);
@@ -136,7 +140,7 @@ namespace Tetris
             //check if character is selected, then deselects other characters
             kazuma.Update(mouseState);
 
-            //check if it should play the effect or not
+            //check if it should play the sound effect or not
             Effect();
 
             if (kazuma.Selected)
@@ -207,8 +211,8 @@ namespace Tetris
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            //spriteBatch.DrawString(menuFont, "Main Menu", new Vector2(200, 100), Color.Black);
+            spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            spriteBatch.Draw(title, new Rectangle(440, 0, 400, 200), Color.White);
 
             kazuma.Draw(spriteBatch);
             aqua.Draw(spriteBatch);

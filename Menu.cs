@@ -11,8 +11,11 @@ namespace Tetris
         private Texture2D background, title;
 
         //buttons (and button textures)
-        private Button playButton, scoreButton, settingButton, quitButton;
+        private Button playButton, scoreButton, quitButton, musicEnabledButton, musicDisabledButton;
         private Texture2D buttonNone, buttonHover;
+        private Texture2D musicEnabled, musicDisabled;
+
+        public int musicOn = 1;
 
         //song
         public Song menuMusic;
@@ -41,6 +44,9 @@ namespace Tetris
             buttonNone = content.Load<Texture2D>("textures/button_normal");
             buttonHover = content.Load<Texture2D>("textures/button_hover");
 
+            musicEnabled = content.Load<Texture2D>("textures/music");
+            musicDisabled = content.Load<Texture2D>("textures/no_music");
+
             // Load font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
 
@@ -50,13 +56,15 @@ namespace Tetris
             // Load buttons 
             playButton = new Button(new Rectangle(75, 400, 400, 50), gameFont, "Start Game", Color.White, buttonNone, buttonHover, buttonNone); //440, 400, 400, 50
             scoreButton = new Button(new Rectangle(75, 460, 400, 50), gameFont, "High Score", Color.White, buttonNone, buttonHover, buttonNone);
-            settingButton = new Button(new Rectangle(75, 520, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
-            quitButton = new Button(new Rectangle(75, 580, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone);
+            //settingButton = new Button(new Rectangle(75, 520, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
+            quitButton = new Button(new Rectangle(75, 520, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone);
+
+            musicEnabledButton = new Button(new Rectangle(1230,10,32,32), musicEnabled, musicEnabled, musicEnabled);
+            musicDisabledButton = new Button(new Rectangle(1200, 10, 32, 32), musicDisabled, musicDisabled, musicDisabled);
 
             MediaPlayer.Play(menuMusic);
             MediaPlayer.Volume = 0.2f;
             MediaPlayer.IsRepeating = true;
-
         }
 
         public override void UnloadContent()
@@ -74,8 +82,11 @@ namespace Tetris
             //menu input checking?
             playButton.Update(mouseState);
             scoreButton.Update(mouseState);
-            settingButton.Update(mouseState);
+            //settingButton.Update(mouseState);
             quitButton.Update(mouseState);
+
+            musicEnabledButton.Update(mouseState);
+            musicDisabledButton.Update(mouseState);
 
             if (MediaPlayer.State != MediaState.Playing) //check if music is playing
             {
@@ -94,15 +105,26 @@ namespace Tetris
                 //load high score
                 
             }
-            else if (playButton.State == Button.GuiButtonState.Released)
-            {
+           // else if (playButton.State == Button.GuiButtonState.Released)
+            //{
                 //open settings
 
-            }
+           // }
             else if (quitButton.State == Button.GuiButtonState.Released)
             {
                 //quit game
                 GameStateManager.Instance.QuitGame = true;
+            }
+
+            if (musicEnabledButton.State == Button.GuiButtonState.Released)
+            {
+                musicOn = 0;
+                MediaPlayer.Resume();
+            }
+            else if (musicDisabledButton.State == Button.GuiButtonState.Released)
+            {
+                musicOn = 1;
+                MediaPlayer.Pause();
             }
         }
 
@@ -115,8 +137,17 @@ namespace Tetris
             //draw buttons
             playButton.Draw(spriteBatch);
             scoreButton.Draw(spriteBatch);
-            settingButton.Draw(spriteBatch);
+            //settingButton.Draw(spriteBatch);
             quitButton.Draw(spriteBatch);
+
+            //if (musicOn == 0)
+            //{
+               // musicEnabledButton.Draw(spriteBatch);
+            //}
+            //else if (musicOn == 1)
+            //{
+               // musicDisabledButton.Draw(spriteBatch);
+            //}
         }
     }
 }

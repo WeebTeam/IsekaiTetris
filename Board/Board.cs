@@ -42,7 +42,7 @@ namespace Tetris
         protected int _dynamicFigureModificationNumber;
         protected int _dynamicFigureColor;
         protected bool _blockLine;
-        protected bool _showNewBlock;
+        public bool _showNewBlock;
         protected float _movement;
         protected float _speed;
         protected Queue<int> _nextFigures = new Queue<int>();
