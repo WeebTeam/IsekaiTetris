@@ -31,13 +31,19 @@ namespace Tetris
         }
 
 
-        // Sets the content manager
+        /// <summary>
+        /// Sets the content manager
+        /// </summary>
+        /// <param name="content"></param>
         public void SetContent(ContentManager content)
         {
             _content = content;
         }
 
-        // Adds a new screen to the stack 
+        /// <summary>
+        /// Adds a new screen to the stack 
+        /// </summary>
+        /// <param name="screen"></param>
         public void AddScreen(GameState screen)
         {
             try
@@ -58,7 +64,9 @@ namespace Tetris
             }
         }
 
-        // Removes the top screen from the stack
+        /// <summary>
+        /// Removes the top screen from the stack
+        /// </summary>
         public void RemoveScreen()
         {
             if (_screens.Count > 0)
@@ -84,7 +92,10 @@ namespace Tetris
             }
         }
 
-        // Removes all screens from the stack and adds a new one 
+        /// <summary>
+        /// Removes all screens from the stack and adds a new one 
+        /// </summary>
+        /// <param name="screen"></param>
         public void ChangeScreen(GameState screen)
         {
             try
@@ -98,7 +109,10 @@ namespace Tetris
             }
         }
 
-        // Updates the top screen. 
+        /// <summary>
+        /// Updates the top screen. 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             try
@@ -114,7 +128,10 @@ namespace Tetris
             }
         }
 
-        // Renders the top screen.
+        /// <summary>
+        /// Renders the top screen.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             try
@@ -130,7 +147,9 @@ namespace Tetris
             }
         }
 
-        // Unloads the content from the screen
+        /// <summary>
+        /// Unloads the content from the screen
+        /// </summary>
         public void UnloadContent()
         {
             foreach (GameState state in _screens)
@@ -139,23 +158,13 @@ namespace Tetris
             }
         }
 
-        public bool QuitGame //let gamestates quit the game
+        /// <summary>
+        /// Mark the game to be quit
+        /// </summary>
+        public bool QuitGame
         {
             get { return _quit; }
             set { _quit = value; }
         }
-
-        public SpriteBatch SpriteBatch //let gamestates access the spritebatch (remove if not needed)
-        {
-            get
-            {
-                return _spriteBatch;
-            }
-            set
-            {
-                _spriteBatch = value;
-            }
-        }
-
     }
 }
