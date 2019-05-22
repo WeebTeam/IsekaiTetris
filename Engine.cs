@@ -169,10 +169,9 @@ namespace Tetris
             set { _pause = value; }
         }
         
-        // trying out timer for skill
+        // timer for skill and game
         public float _skillCooldown = 15;
         public float _gameplayTime = 200;
-        //private int _pointNeeded;
 
         public override void Update(GameTime gameTime)
         {
@@ -207,7 +206,6 @@ namespace Tetris
                     // Only deduct the cooldown when it's not pause
                     _skillCooldown -= timer;
                     _gameplayTime -= timer;
-                    //_pointNeeded = 200;
 
                     // Find dynamic figure position
                     _board.FindDynamicFigure();
@@ -216,20 +214,27 @@ namespace Tetris
                     int lines = _board.DestroyLines();
                     if (lines > 0)
                     {
-                        _score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
+                        if (_character != Character.Darkness)
+                            _score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
+                        else
+                            _score.Value += (int)((5.0f / 2.0f) * lines * (lines + 7));
                     }
 
                     if (lines >= 4)
                         _board.Speed += 0.005f;
-
-                    //if(_score.Value >= _pointNeeded)
-                    //_score.Level ++;
 
                     // Create new shape in game
                     if (!_board.CreateNewFigure())
                     {
                         _gameover = true;
                         _showgameover = true;
+                        _gameoverScreen._lose = true;
+                    }
+                    else if (_gameplayTime <= 0)
+                    {
+                        _gameover = true;
+                        _showgameover = true;
+                        _gameoverScreen._win = true;
                     }
                     else
                     {

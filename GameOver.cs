@@ -10,13 +10,16 @@ namespace Tetris
     {
         private Texture2D background;
 
+        public bool _lose;
+        public bool _win;
+
         private bool _playagain = false;
         private Board _board;
         private Score _score;
 
         //buttons (and button textures)
         private Button playAgainButton, menuButton, quitButton;
-        private Texture2D buttonNone, buttonHover;
+        private Texture2D buttonNone, buttonHover, gameoverImg, congraImg;
 
         //fonts
         private SpriteFont gameFont;
@@ -36,6 +39,8 @@ namespace Tetris
 
             //Load 2D textures
             background = content.Load<Texture2D>("textures/pause");
+            gameoverImg = content.Load<Texture2D>("textures/gameoverImg");
+            congraImg = content.Load<Texture2D>("textures/congraImg");
 
             //font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
@@ -45,11 +50,17 @@ namespace Tetris
             buttonHover = content.Load<Texture2D>("textures/button_hover");
 
             // Load buttons 
-            playAgainButton = new Button(new Rectangle(440, 365, 400, 50), gameFont, "Play Again", Color.White, buttonNone, buttonHover, buttonNone); //245
+            playAgainButton = new Button(new Rectangle(440, 425, 400, 50), gameFont, "Play Again", Color.White, buttonNone, buttonHover, buttonNone); //245
             //settingButton = new Button(new Rectangle(440, 305, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
-            menuButton = new Button(new Rectangle(440, 425, 400, 50), gameFont, "Back To Menu", Color.White, buttonNone, buttonHover, buttonNone); //305
-            quitButton = new Button(new Rectangle(440, 485, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone); //365
+            menuButton = new Button(new Rectangle(440, 485, 400, 50), gameFont, "Back To Menu", Color.White, buttonNone, buttonHover, buttonNone); //305
+            quitButton = new Button(new Rectangle(440, 545, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone); //365
 
+        }
+
+        public virtual bool Lose
+        {
+            set { _lose = value; }
+            get { return _lose; }
         }
 
         public virtual bool PlayAgain
@@ -128,8 +139,13 @@ namespace Tetris
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+            
+            if(_lose)
+                spriteBatch.Draw(gameoverImg, new Rectangle(410, 100, 450, 350), Color.White);
+            else if (_win)
+                spriteBatch.Draw(congraImg, new Rectangle(330, 20, 650, 400), Color.White);
 
-            spriteBatch.DrawString(_board.timerFont, "Score: " + _score.Value.ToString(), new Vector2(510, 100), Color.White);
+            spriteBatch.DrawString(_board.timerFont, "Score: " + _score.Value.ToString(), new Vector2(490, 120), Color.White);
 
             //draw buttons
             playAgainButton.Draw(spriteBatch);
