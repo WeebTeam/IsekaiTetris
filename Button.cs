@@ -21,13 +21,18 @@ namespace Tetris
             Released
         }
 
-        public Color _textColor { get; set; }
-
+        private Color _textColor;
         protected Rectangle _rectangle;
         protected GuiButtonState _state;
 
         protected string _buttonText = null;
         protected SpriteFont _buttonFont = null;
+
+        public Color TextColor
+        {
+            get { return _textColor; }
+            set { _textColor = value; }
+        }
 
         public virtual GuiButtonState State
         {
@@ -35,9 +40,17 @@ namespace Tetris
             set { _state = value; } // you can throw some events here if you'd like
         }
 
+        public Dictionary<GuiButtonState, Texture2D> Textures
+        {
+            get { return _textures; }
+            set { _textures = value; }
+        }
+
         protected Dictionary<GuiButtonState, Texture2D> _textures;
 
-        protected Button() { }
+        public Button(Rectangle rect) : this(rect, null, null, null, null)
+        {
+        }
 
         //released texture same as hover texture
         public Button(Rectangle rect, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture)
@@ -63,7 +76,7 @@ namespace Tetris
         }
 
         //with text
-        public Button(Rectangle rect, SpriteFont font, string text, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture) 
+        public Button(Rectangle rect, SpriteFont font, string text, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture)
             : this(rect, noneTexture, hoverTexture, pressedTexture)
         {
             _buttonText = text;
@@ -71,7 +84,7 @@ namespace Tetris
         }
 
         //with text, text color
-        public Button(Rectangle rect, SpriteFont font, string text, Color textColor, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture):
+        public Button(Rectangle rect, SpriteFont font, string text, Color textColor, Texture2D noneTexture, Texture2D hoverTexture, Texture2D pressedTexture) :
             this(rect, font, text, noneTexture, hoverTexture, pressedTexture)
         {
             _textColor = textColor;
@@ -108,7 +121,7 @@ namespace Tetris
 
                 s.DrawString(_buttonFont, _buttonText, center, _textColor);
             }
-            
+
         }
 
     }
