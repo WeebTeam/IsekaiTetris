@@ -44,11 +44,23 @@
 /processorParam:Quality=Best
 /build:audios/32. fantastic dreamer (TV Size) -Off Vocal Ver.-.mp3;audios/fantasticdreamer.mp3
 
+#begin audios/soundEffects/aquaLose.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/aquaLose.mp3
+
 #begin audios/soundEffects/aquaSE1.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audios/soundEffects/aquaSE1.mp3
+
+#begin audios/soundEffects/aquaWin.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/aquaWin.mp3
 
 #begin audios/soundEffects/blessing.mp3
 /importer:Mp3Importer
@@ -62,11 +74,23 @@
 /processorParam:Quality=Best
 /build:audios/soundEffects/blockDrop.mp3
 
+#begin audios/soundEffects/darknessLose.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/darknessLose.mp3
+
 #begin audios/soundEffects/darknessSE1.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audios/soundEffects/darknessSE1.mp3
+
+#begin audios/soundEffects/darknessWin.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/darknessWin.mp3
 
 #begin audios/soundEffects/enter.mp3
 /importer:Mp3Importer
@@ -80,11 +104,29 @@
 /processorParam:Quality=Best
 /build:audios/soundEffects/explosion.mp3
 
+#begin audios/soundEffects/kazumaLose2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/kazumaLose2.mp3;audios/soundEffects/kazumaLose.mp3
+
 #begin audios/soundEffects/kazumaSE1.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audios/soundEffects/kazumaSE1.mp3
+
+#begin audios/soundEffects/kazumaWin.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/kazumaWin.mp3
+
+#begin audios/soundEffects/meguminLose.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/meguminLose.mp3
 
 #begin audios/soundEffects/meguminSE1.mp3
 /importer:Mp3Importer
@@ -98,18 +140,17 @@
 /processorParam:Quality=Best
 /build:audios/soundEffects/meguminSE2.mp3
 
+#begin audios/soundEffects/meguminWin.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:audios/soundEffects/meguminWin.mp3
+
 #begin audios/soundEffects/pauseMenu.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:audios/soundEffects/pauseMenu.mp3
-
-#begin spritefonts/scoreFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:spritefonts/scoreFont.spritefont;spritefonts/scoreFont.spritefont
 
 #begin spritefonts/gameFont.spritefont
 /importer:FontDescriptionImporter
@@ -124,6 +165,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:spritefonts/menuFont.spritefont
+
+#begin spritefonts/scoreFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:spritefonts/scoreFont.spritefont
 
 #begin spritefonts/timerFont.spritefont
 /importer:FontDescriptionImporter
@@ -360,18 +408,6 @@
 /processorParam:TextureFormat=Color
 /build:textures/gameoverImg.png
 
-#begin textures/gameoverImg.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:textures/gameoverImg.png
-
 #begin textures/gameplay/board_single.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -467,6 +503,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:textures/pause.png
+
+#begin textures/scoreboard.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/scoreboard.png
 
 #begin textures/tetris.png
 /importer:TextureImporter

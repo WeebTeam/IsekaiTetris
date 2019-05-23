@@ -44,7 +44,7 @@ namespace Tetris
             //Load 2D textures
             background = content.Load<Texture2D>("textures/characterMenu");
             backgroundshade = content.Load<Texture2D>("textures/pause");
-            title = content.Load<Texture2D>("textures/characterTitle");
+            title = content.Load<Texture2D>("textures/scoreboard");
 
             //Load button textures
             buttonNone = content.Load<Texture2D>("textures/button_normal");

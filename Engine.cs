@@ -89,7 +89,7 @@ namespace Tetris
             if (_character == Character.Aqua)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back2Refined"); //gameplaybg
             if (_character == Character.Megumin)
-                tetrisBackground = content.Load<Texture2D>("textures/background/back3Refined"); //gameplaybg
+                tetrisBackground = content.Load<Texture2D>("textures/background/back4Refined"); //gameplaybg
             if (_character == Character.Darkness)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back5Refined"); //gameplaybg
 
@@ -140,9 +140,12 @@ namespace Tetris
                 _board = new DarknessBoard(ref tetrisTextures, _pieces);
                 _board.needSkillCooldown = false;
             }
-
+            
+            //put the font as given to the board's font
             _board.font = gameFont;
             _board.timerFont = timerFont;
+
+            _gameoverScreen._character = _character;
 
             _pauseScreen.LoadContent(content);
 
@@ -312,6 +315,12 @@ namespace Tetris
                 //_score.Initialize();
                 _gameover = false;
                 _showgameover = false;
+                _gameoverScreen.kazumaSECount = 0;
+                _gameoverScreen.aquaSECount = 0;
+                _gameoverScreen.meguminSECount = 0;
+                _gameoverScreen.darknessSECount = 0;
+                _gameoverScreen._lose = false;
+                _gameoverScreen._win = false;
             }
 
 
