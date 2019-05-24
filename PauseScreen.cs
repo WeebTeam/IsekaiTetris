@@ -99,6 +99,7 @@ namespace Tetris
                 {
                     MediaPlayer.Stop();
                     GameStateManager.Instance.RemoveScreen(); //exit game screen
+                    GameStateManager.Instance.RemoveScreen(); //exit instruction screen
                     GameStateManager.Instance.RemoveScreen(); //exit character screen
                 }
             }

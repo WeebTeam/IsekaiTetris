@@ -181,23 +181,27 @@ namespace Tetris
                 //run game
                 if (kazuma.Selected)
                 {
-                    MediaPlayer.Play(kazumaMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                    //MediaPlayer.Play(kazumaMusic);
+                    //GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Kazuma));
                 }
                 if (aqua.Selected)
                 {
-                    MediaPlayer.Play(aquaMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Aqua));
+                    //MediaPlayer.Play(aquaMusic);
+                    //GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Aqua));
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Aqua));
                 }
                 if (megumin.Selected)
                 {
-                    MediaPlayer.Play(meguminMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Megumin));
+                    // MediaPlayer.Play(meguminMusic);
+                    // GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Megumin));
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Megumin));
                 }
                 if (darkness.Selected)
                 {
-                    MediaPlayer.Play(darknessMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Darkness));
+                    // MediaPlayer.Play(darknessMusic);
+                    //GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Darkness));
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Darkness));
                 }
             }
 

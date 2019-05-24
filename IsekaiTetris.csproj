@@ -59,6 +59,7 @@
     <Compile Include="GameState\GameState.cs" />
     <Compile Include="GameState\GameStateManager.cs" />
     <Compile Include="GameState\IGameState.cs" />
+    <Compile Include="InstructionScreen.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="PauseScreen.cs" />
     <Compile Include="Program.cs" />
