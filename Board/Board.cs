@@ -24,6 +24,7 @@ namespace Tetris
             Dynamic //moving block?
         };
 
+        protected Rectangle _topBar = new Rectangle(112, 0, 1056, 106); //bad way of doing this as topbar might change in engine, but dis a hack idc
         protected Vector2 _absoluteStartPos = new Vector2(262, 78); //set start x, y position to draw the board
         protected BoardPosition _boardPosition;
         protected Texture2D _textures;
@@ -676,8 +677,16 @@ namespace Tetris
             if (needSkillCooldown && _cooldown >= 0)
                 sBatch.DrawString(font, _cooldown.ToString("N0"), new Vector2(420, 610), Color.White);
 
+            String timerCount = _gameplayTime.ToString("N0");
+
+            Vector2 timerArea = timerFont.MeasureString(timerCount); //vector of the area the text will take
+            Vector2 center = _topBar.Center.ToVector2();
+
+            center.X -= timerArea.X / 2;
+            center.Y -= timerArea.Y / 2;
+
             // draws timer
-            sBatch.DrawString(timerFont, _gameplayTime.ToString("N0"), new Vector2(575, 20), Color.White);
+            sBatch.DrawString(timerFont, timerCount, center, Color.White);
         }
     }
 }

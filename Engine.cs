@@ -353,7 +353,7 @@ namespace Tetris
             _board.Draw(spriteBatch);
             //_score.Draw(spriteBatch);
 
-            spriteBatch.DrawString(gameFont, "SCORE", new Vector2(140,30), Color.White);
+            spriteBatch.DrawString(gameFont, "SCORE", new Vector2(150,30), Color.White);
             spriteBatch.DrawString(gameFont, _score.Value.ToString(), new Vector2(170, 60), Color.White);
 
             if (_pause)

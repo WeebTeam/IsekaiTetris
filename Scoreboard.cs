@@ -20,7 +20,7 @@ namespace Tetris
         private Texture2D musicEnabled, musicDisabled;
 
         //fonts
-        private SpriteFont gameFont, scoreFont;
+        private SpriteFont scoreFont;
 
         //filename
         private string _scoreFile = "score.json";
@@ -36,7 +36,7 @@ namespace Tetris
 
         public override void Initialize()
         {
-            
+
         }
 
         public override void LoadContent(ContentManager content)
@@ -54,16 +54,15 @@ namespace Tetris
             musicDisabled = content.Load<Texture2D>("textures/no_music");
 
             // Load font
-            gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
             scoreFont = content.Load<SpriteFont>("spritefonts/scoreFont");
 
             // Load buttons 
-            backButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Back", Color.White, buttonNone, buttonHover, buttonNone); //440, 400, 400, 50
+            backButton = new Button(new Rectangle(440, 640, 400, 50), scoreFont, "Back", Color.White, buttonNone, buttonHover, buttonNone); //440, 400, 400, 50
 
             LoadScore();
         }
 
-        private void LoadScore()
+        public void LoadScore()
         {
             // load score
 
@@ -84,7 +83,7 @@ namespace Tetris
             }
         }
 
-        private void SaveScore()
+        public void SaveScore()
         {
             //save to file;
             _score.Add(new Score("player 1", 1020, Character.Kazuma));
@@ -120,13 +119,17 @@ namespace Tetris
 
             spriteBatch.Draw(title, new Rectangle(440, 0, 400, 200), Color.White);
 
-            spriteBatch.DrawString(gameFont, "Rank    Name    Score    Character", new Vector2(200, 150), Color.White);
-            for (int x = 1; x <= 10; x++)
+            spriteBatch.DrawString(scoreFont, "Name", new Vector2(280, 150), Color.White);
+            spriteBatch.DrawString(scoreFont, "Score", new Vector2(500, 150), Color.White);
+            spriteBatch.DrawString(scoreFont, "Character", new Vector2(750, 150), Color.White);
+            for (int x = 0; x < _score.Count; x++)
             {
                 try
                 {
-                    Score s = _score[x - 1];
-                    spriteBatch.DrawString(scoreFont, s.Name, new Vector2(200, 200 + 10 * x), Color.White);
+                    Score s = _score[x];
+                    spriteBatch.DrawString(scoreFont, s.Name, new Vector2(280, 200 + 30 * x), Color.White);
+                    spriteBatch.DrawString(scoreFont, "" + s.Point, new Vector2(500, 200 + 30 * x), Color.White);
+                    spriteBatch.DrawString(scoreFont, "" + s.Character, new Vector2(750, 200 + 30 * x), Color.White);
                 }
                 catch (Exception)
                 {

@@ -159,6 +159,9 @@
 /processorParam:TextureFormat=Compressed
 /build:spritefonts/gameFont.spritefont
 
+#begin spritefonts/grobold.ttf
+/copy:spritefonts/grobold.ttf
+
 #begin spritefonts/menuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

@@ -64,7 +64,6 @@ namespace Tetris
 
             //Load buttons 
             playAgainButton = new Button(new Rectangle(440, 425, 400, 50), gameFont, "Play Again", Color.White, buttonNone, buttonHover, buttonNone); //245
-            //settingButton = new Button(new Rectangle(440, 305, 400, 50), gameFont, "Settings", Color.White, buttonNone, buttonHover, buttonNone);
             menuButton = new Button(new Rectangle(440, 485, 400, 50), gameFont, "Back To Menu", Color.White, buttonNone, buttonHover, buttonNone); //305
             quitButton = new Button(new Rectangle(440, 545, 400, 50), gameFont, "Quit", Color.White, buttonNone, buttonHover, buttonNone); //365
 
@@ -226,7 +225,15 @@ namespace Tetris
 
             Effect();
 
-            spriteBatch.DrawString(_board.timerFont, "Score: " + _score.Value.ToString(), new Vector2(490, 120), Color.White);
+            string finalScore = "Score: " + _score.Value.ToString();
+
+            Vector2 textArea = _board.timerFont.MeasureString(finalScore); //vector of the area the text will take
+            Vector2 center = new Rectangle(0,0,1280,720).Center.ToVector2();
+
+            center.X -= textArea.X / 2;
+            center.Y = 30;
+
+            spriteBatch.DrawString(_board.timerFont, finalScore, center, Color.Pink);
 
             //draw buttons
             playAgainButton.Draw(spriteBatch);

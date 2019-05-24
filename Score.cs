@@ -20,16 +20,19 @@ namespace Tetris
         public string Name
         {
             get { return _name; }
+            set { _name = value; }
         }
 
         public int Point
         {
             get { return _point; }
+            set { _point = value; }
         }
 
         public Character Character
         {
             get { return _character; }
+            set { _character = value; }
         }
     }
 }
