@@ -14,7 +14,9 @@ namespace Tetris
     /// </summary>
     public class Engine : GameState
     {
-        private Character _character;
+        //private Character _character;
+
+        private Scoreboard scoreboard;
 
         // Graphics
         private Texture2D tetrisBackground, tetrisTextures;
@@ -27,7 +29,10 @@ namespace Tetris
 
         // Game
         private Board _board;
-        private GameScore _score;
+        //private GameScore _score;
+
+        private Score _player;
+
         private bool _pause = false;
         private PauseScreen _pauseScreen;
         public bool _gameover = false;
@@ -66,14 +71,21 @@ namespace Tetris
             _aquaInGameSE = new List<SoundEffect>();
             _blockSoundEffects = new List<SoundEffect>();
 
-            _score = new GameScore(gameFont);
-            _gameoverScreen = new GameOver(graphicsDevice, ref _score);
+            //_score = new GameScore(gameFont);
+            //_gameoverScreen = new GameOver(graphicsDevice, ref _score);
         }
 
-        public Engine(GraphicsDevice graphicsDevice, Character character) : this(graphicsDevice)
-        {
+        //public Engine(GraphicsDevice graphicsDevice, Character character) : this(graphicsDevice)
+        //{
             
-            _character = character;
+        //    _character = character;
+        //}
+
+        public Engine(GraphicsDevice graphicsDevice, Score player) : this(graphicsDevice)
+        {
+            _player = player;
+            
+            _gameoverScreen = new GameOver(graphicsDevice, ref _player);
         }
 
         public override void Initialize()
@@ -84,13 +96,13 @@ namespace Tetris
         public override void LoadContent(ContentManager content)
         {
             //Load backgrounds
-            if (_character == Character.Kazuma)
+            if (_player.Character == Character.Kazuma)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back1Refined"); //gameplaybg
-            if (_character == Character.Aqua)
+            if (_player.Character == Character.Aqua)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back2Refined"); //gameplaybg
-            if (_character == Character.Megumin)
+            if (_player.Character == Character.Megumin)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back4Refined"); //gameplaybg
-            if (_character == Character.Darkness)
+            if (_player.Character == Character.Darkness)
                 tetrisBackground = content.Load<Texture2D>("textures/background/back5Refined"); //gameplaybg
 
             //Load 2D textures
@@ -120,22 +132,22 @@ namespace Tetris
             //_board._blockSoundEffects = _blockSoundEffects;
 
             // Create game field
-            if (_character == Character.Kazuma)
+            if (_player.Character == Character.Kazuma)
             {
                 _board = new KazumaBoard(ref tetrisTextures, _pieces);
                 _board.needSkillCooldown = false;
             }
-            if (_character == Character.Aqua)
+            if (_player.Character == Character.Aqua)
             {
                 _board = new AquaBoard(ref tetrisTextures, _pieces, ref _aquaInGameSE);
                 _board.needSkillCooldown = true;
             }
-            if (_character == Character.Megumin)
+            if (_player.Character == Character.Megumin)
             {
                 _board = new MeguminBoard(ref tetrisTextures, _pieces, ref _meguminInGameSE);
                 _board.needSkillCooldown = true;
             }
-            if (_character == Character.Darkness)
+            if (_player.Character == Character.Darkness)
             {
                 _board = new DarknessBoard(ref tetrisTextures, _pieces);
                 _board.needSkillCooldown = false;
@@ -145,7 +157,7 @@ namespace Tetris
             _board.font = gameFont;
             _board.timerFont = timerFont;
 
-            _gameoverScreen._character = _character;
+            _gameoverScreen._character = _player.Character;
 
             _pauseScreen.LoadContent(content);
 
@@ -162,8 +174,8 @@ namespace Tetris
 
         public Character PlayingWith
         {
-            get { return _character; }
-            set { _character = value; }
+            get { return _player.Character; }
+            set { _player.Character = value; }
         }
 
         public bool Paused
@@ -217,10 +229,10 @@ namespace Tetris
                     int lines = _board.DestroyLines();
                     if (lines > 0)
                     {
-                        if (_character != Character.Darkness)
-                            _score.Value += (int)((5.0f / 2.0f) * lines * (lines + 3));
+                        if (_player.Character != Character.Darkness)
+                            _player.Point += (int)((5.0f / 2.0f) * lines * (lines + 3));
                         else
-                            _score.Value += (int)((5.0f / 2.0f) * lines * (lines + 7));
+                            _player.Point += (int)((5.0f / 2.0f) * lines * (lines + 7));
                     }
 
                     if (lines >= 4)
@@ -238,10 +250,11 @@ namespace Tetris
                         _gameover = true;
                         _showgameover = true;
                         _gameoverScreen._win = true;
+                        scoreboard.SaveScore(_player);
                     }
                     else
                     {
-                        if (_character == Character.Darkness) //coz darkness always misses
+                        if (_player.Character == Character.Darkness) //coz darkness always misses
                         {
                             // If right key is pressed
                             if (oldKeyboardState.IsKeyDown(Keys.Right) && (keyboardState.IsKeyUp(Keys.Right)))
@@ -279,7 +292,7 @@ namespace Tetris
                             {
                                 _board.Skill();
                                 // Reset the skill cooldown so that it can be used again except Megumin
-                                if (_character != Character.Megumin)
+                                if (_player.Character != Character.Megumin)
                                     _skillCooldown = 15;
                             }
                         }
@@ -321,6 +334,7 @@ namespace Tetris
                 _gameoverScreen.darknessSECount = 0;
                 _gameoverScreen._lose = false;
                 _gameoverScreen._win = false;
+                _player.Point = 0;
             }
 
 
@@ -354,7 +368,7 @@ namespace Tetris
             //_score.Draw(spriteBatch);
 
             spriteBatch.DrawString(gameFont, "SCORE", new Vector2(150,30), Color.White);
-            spriteBatch.DrawString(gameFont, _score.Value.ToString(), new Vector2(170, 60), Color.White);
+            spriteBatch.DrawString(gameFont, _player.Point.ToString(), new Vector2(170, 60), Color.White);
 
             if (_pause)
             {

@@ -5,7 +5,7 @@ namespace Tetris
     public class Score
     {
         private string _name;
-        private int _point;
+        public int _point;
         private Character _character;
 
         public Score() { }

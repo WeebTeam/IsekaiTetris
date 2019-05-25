@@ -14,8 +14,10 @@ namespace Tetris
         //buttons (and button textures)
         private Button nextButton;
         private CharacterProfile kazuma, aqua, megumin, darkness;
-        private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover, title;
+        private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover, title, nameField;
         private Texture2D musicEnabled, musicDisabled;
+
+        private KeyboardHandler kbHandler;
 
         //fonts
         private SpriteFont gameFont, menuFont;
@@ -27,6 +29,9 @@ namespace Tetris
 
         //musics
         private Song kazumaMusic, aquaMusic, meguminMusic, darknessMusic;
+        
+        private Score player;
+
 
         public CharacterSelection(GraphicsDevice graphicsDevice)
         : base(graphicsDevice)
@@ -36,7 +41,7 @@ namespace Tetris
 
         public override void Initialize()
         {
-
+            kbHandler = new KeyboardHandler();
         }
 
         public override void LoadContent(ContentManager content)
@@ -58,6 +63,8 @@ namespace Tetris
 
             buttonNone = content.Load<Texture2D>("textures/button_normal");
             buttonHover = content.Load<Texture2D>("textures/button_hover");
+
+            nameField = content.Load<Texture2D>("textures/name");
 
             //musicEnabled = content.Load<Texture2D>("textures/music");
             //musicDisabled = content.Load<Texture2D>("textures/no_music");
@@ -85,7 +92,7 @@ namespace Tetris
             darkness = new CharacterProfile(new Rectangle(900, 150, 260, 470), darknessNormal, darknessHover);
 
             // Load buttons 
-            nextButton = new Button(new Rectangle(440, 640, 400, 50), gameFont, "Next", Color.White, buttonNone, buttonHover, buttonNone);
+            nextButton = new Button(new Rectangle(760, 640, 400, 50), gameFont, "Next", Color.White, buttonNone, buttonHover, buttonNone);
             MediaPlayer.Volume = 0.1f;
         }
 
@@ -137,6 +144,8 @@ namespace Tetris
             MouseState mouseState = Mouse.GetState();
             //if (keyboardState.IsKeyDown(Keys.Escape))  this.Exit();
 
+            kbHandler.Update(gameTime);
+
             //check if character is selected, then deselects other characters
             kazuma.Update(mouseState);
 
@@ -176,32 +185,28 @@ namespace Tetris
             
             nextButton.Update(mouseState);
 
-            if (nextButton.State == Button.GuiButtonState.Released)
+            if (nextButton.State == Button.GuiButtonState.Released && kbHandler.Name != string.Empty)
             {
                 //run game
                 if (kazuma.Selected)
                 {
-                    //MediaPlayer.Play(kazumaMusic);
-                    //GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
-                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Kazuma));
+                    player = new Score(kbHandler.Name, 0, Character.Kazuma);
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, ref player));
                 }
                 if (aqua.Selected)
                 {
-                    //MediaPlayer.Play(aquaMusic);
-                    //GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Aqua));
-                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Aqua));
+                    player = new Score(kbHandler.Name, 0, Character.Aqua);
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, ref player));
                 }
                 if (megumin.Selected)
                 {
-                    // MediaPlayer.Play(meguminMusic);
-                    // GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Megumin));
-                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Megumin));
+                    player = new Score(kbHandler.Name, 0, Character.Megumin);
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, ref player));
                 }
                 if (darkness.Selected)
                 {
-                    // MediaPlayer.Play(darknessMusic);
-                    //GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Darkness));
-                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, Character.Darkness));
+                    player = new Score(kbHandler.Name, 0, Character.Darkness);
+                    GameStateManager.Instance.AddScreen(new InstructionScreen(_graphicsDevice, ref player));
                 }
             }
 
@@ -218,10 +223,14 @@ namespace Tetris
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.Draw(title, new Rectangle(440, 0, 400, 200), Color.White);
 
+            spriteBatch.Draw(nameField, new Rectangle(120, 615, 400 ,100), Color.White);
+
             kazuma.Draw(spriteBatch);
             aqua.Draw(spriteBatch);
             megumin.Draw(spriteBatch);
             darkness.Draw(spriteBatch);
+
+            spriteBatch.DrawString(gameFont, kbHandler.Name, new Vector2(230, 658), Color.Orange);
 
             nextButton.Draw(spriteBatch);
         }

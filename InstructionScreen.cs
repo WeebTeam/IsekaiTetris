@@ -28,10 +28,12 @@ namespace Tetris
 
         public Character _character;
 
-        public InstructionScreen(GraphicsDevice graphicsDevice, Character character) : base(graphicsDevice)
+        public Score _player;
+
+        public InstructionScreen(GraphicsDevice graphicsDevice, ref Score player) : base(graphicsDevice)
         {
             //_characterProfile = characterProfile;
-            _character = character;
+            _player = player;
         }
 
         public Character Character
@@ -91,22 +93,22 @@ namespace Tetris
                 if (_character == Character.Kazuma)
                 {
                     MediaPlayer.Play(kazumaMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Kazuma));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
                 if (_character == Character.Aqua)
                 {
                     MediaPlayer.Play(aquaMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Aqua));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
                 if (_character == Character.Megumin)
                 {
                     MediaPlayer.Play(meguminMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Megumin));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
                 if (_character == Character.Darkness)
                 {
                     MediaPlayer.Play(darknessMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, Character.Darkness));
+                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
             }
         }

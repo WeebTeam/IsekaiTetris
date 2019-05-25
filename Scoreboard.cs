@@ -83,12 +83,13 @@ namespace Tetris
             }
         }
 
-        public void SaveScore()
+        public void SaveScore(Score player)
         {
             //save to file;
             _score.Add(new Score("player 1", 1020, Character.Kazuma));
             _score.Add(new Score("player 2", 3232, Character.Megumin));
             _score.Add(new Score("player 3", 1020, Character.Darkness));
+            _score.Add(player);
             File.WriteAllText(_scoreFile, JsonConvert.SerializeObject(_score));
         }
 

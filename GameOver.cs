@@ -17,7 +17,7 @@ namespace Tetris
 
         private bool _playagain = false;
         private Board _board;
-        private GameScore _score;
+        private Score _player;
         public Character _character;
 
         //buttons (and button textures)
@@ -32,9 +32,9 @@ namespace Tetris
         //fonts
         private SpriteFont gameFont;
 
-        public GameOver(GraphicsDevice graphicsDevice, ref GameScore score)
+        public GameOver(GraphicsDevice graphicsDevice, ref Score player)
         {
-            _score = score;
+            _player = player;
 
             kazumaSE = new List<SoundEffect>();
             aquaSE = new List<SoundEffect>();
@@ -105,10 +105,10 @@ namespace Tetris
             get { return _board; }
         }
 
-        public virtual GameScore Score
+        public virtual Score Player
         {
-            set { _score = value; }
-            get { return _score; }
+            set { _player = value; }
+            get { return _player; }
         }
 
         public void UnloadContent()
@@ -226,7 +226,7 @@ namespace Tetris
 
             Effect();
 
-            string finalScore = "Score: " + _score.Value.ToString();
+            string finalScore = "Score: " + _player.Point;
 
             Vector2 textArea = _board.timerFont.MeasureString(finalScore); //vector of the area the text will take
             Vector2 center = new Rectangle(0,0,1280,720).Center.ToVector2();
