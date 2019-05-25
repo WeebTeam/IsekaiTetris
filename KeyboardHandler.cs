@@ -71,7 +71,7 @@ namespace Tetris
                 {
                     //do nothing
                 }
-                else
+                else if (key >= Keys.A && key <= Keys.Z)
                 {
                     //enter name
                     name += key.ToString();
