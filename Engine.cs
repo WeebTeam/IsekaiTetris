@@ -14,11 +14,7 @@ namespace Tetris
     /// </summary>
     public class Engine : GameState
     {
-        //private Character _character;
-
-        private Scoreboard scoreboard;
-
-        // Graphics
+       // Graphics
         private Texture2D tetrisBackground, tetrisTextures;
 
         //character backgrounds (possibly have different ones for single/multiplayer)
@@ -129,8 +125,6 @@ namespace Tetris
             //_blockSoundEffects.Add(content.Load<SoundEffect>("audios/soundEffects/enter"));
             _blockSoundEffects.Add(content.Load<SoundEffect>("audios/soundEffects/pauseMenu"));
 
-            //_board._blockSoundEffects = _blockSoundEffects;
-
             // Create game field
             if (_player.Character == Character.Kazuma)
             {
@@ -238,19 +232,20 @@ namespace Tetris
                     if (lines >= 4)
                         _board.Speed += 0.005f;
 
-                    // Create new shape in game
+                    // Create new shape in game, if we cant, it means the the board is full, game over
                     if (!_board.CreateNewFigure())
                     {
                         _gameover = true;
                         _showgameover = true;
                         _gameoverScreen._lose = true;
                     }
+                    //if they survive the time limit
                     else if (_gameplayTime <= 0)
                     {
                         _gameover = true;
                         _showgameover = true;
                         _gameoverScreen._win = true;
-                        scoreboard.SaveScore(_player);
+                        Scoreboard.SaveScore(_player);
                     }
                     else
                     {

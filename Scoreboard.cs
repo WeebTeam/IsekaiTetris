@@ -23,10 +23,10 @@ namespace Tetris
         private SpriteFont scoreFont;
 
         //filename
-        private string _scoreFile = "score.json";
+        private static string _scoreFile = "score.json";
 
         //score
-        private List<Score> _score;
+        private static List<Score> _score;
 
         public Scoreboard(GraphicsDevice graphicsDevice)
         : base(graphicsDevice)
@@ -62,7 +62,7 @@ namespace Tetris
             LoadScore();
         }
 
-        public void LoadScore()
+        public static void LoadScore()
         {
             // load score
 
@@ -83,13 +83,32 @@ namespace Tetris
             }
         }
 
-        public void SaveScore(Score player)
+
+        public static void SaveScore(Score playerScore)
         {
+            //load score lol
+            LoadScore();
+
             //save to file;
-            _score.Add(new Score("player 1", 1020, Character.Kazuma));
-            _score.Add(new Score("player 2", 3232, Character.Megumin));
-            _score.Add(new Score("player 3", 1020, Character.Darkness));
-            _score.Add(player);
+            if (_score.Count >= 10)
+            {
+                //sort the list
+                _score.Sort();
+
+                //if new score is more than lowest score
+                if (playerScore.Point > _score[9].Point)
+                {
+                    _score.RemoveAt(9);
+                    _score.Add(playerScore);
+
+                    //sort again
+                    _score.Sort();
+                }
+            }
+            //just add if scorefile has less than 10 scores
+            else _score.Add(playerScore);
+
+            //save to file
             File.WriteAllText(_scoreFile, JsonConvert.SerializeObject(_score));
         }
 
