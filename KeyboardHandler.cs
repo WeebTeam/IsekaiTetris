@@ -22,6 +22,12 @@ namespace Tetris
             lastPressedKeys = new Keys[0];
         }
 
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
+
         public string Name
         {
             get { return name; }
@@ -56,10 +62,10 @@ namespace Tetris
 
         }
 
-        private void OnKeyDown(Keys key)
+        public void OnKeyDown(Keys key)
         {
             //amount of characters to be entered to name
-            if (count <= 18)
+            if (count < 15)
             {
                 if (key == Keys.Back && name.Length > 0)
                 {

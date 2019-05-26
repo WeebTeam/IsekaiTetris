@@ -69,6 +69,8 @@
     <Compile Include="Scoreboard.cs" />
     <Compile Include="Tetris.cs" />
     <Compile Include="Unit Tests\TestButton.cs" />
+    <Compile Include="Unit Tests\TestKeyboardHandler.cs" />
+    <Compile Include="Unit Tests\TestScore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
