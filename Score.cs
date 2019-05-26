@@ -1,8 +1,9 @@
+using System;
 
 namespace Tetris
 {
 
-    public class Score
+    public class Score : IComparable
     {
         private string _name;
         private int _point;
@@ -33,6 +34,18 @@ namespace Tetris
         {
             get { return _character; }
             set { _character = value; }
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is Score)
+            {
+                Score other = (Score)obj;
+
+                return other.Point - this.Point;
+            }
+            else
+                return 0;
         }
     }
 }
