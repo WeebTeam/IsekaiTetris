@@ -183,6 +183,30 @@
 /processorParam:TextureFormat=Compressed
 /build:spritefonts/timerFont.spritefont
 
+#begin textures/aquaE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/aquaE.png
+
+#begin textures/aquaNoE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/aquaNoE.png
+
 #begin textures/background/back1Refined.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -399,6 +423,42 @@
 /processorParam:TextureFormat=Color
 /build:textures/congratulations.png;textures/congraImg.png
 
+#begin textures/darknessNoE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/darknessNoE.png
+
+#begin textures/gameoverAqua.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/gameoverAqua.png
+
+#begin textures/gameoverDarkness.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/gameoverDarkness.png
+
 #begin textures/gameoverImg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -409,7 +469,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:textures/gameoverImg.png
+/build:textures/gameoverImg.png;textures/gameoverMegumin.png
+
+#begin textures/gameoverKazuma.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/gameoverKazuma.png
 
 #begin textures/gameplay/board_single.png
 /importer:TextureImporter
@@ -471,6 +543,18 @@
 /processorParam:TextureFormat=Color
 /build:textures/instructionBack.png
 
+#begin textures/kazumaNoE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/kazumaNoE.png
+
 #begin textures/mainBack1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -494,6 +578,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:textures/mainBack2.png
+
+#begin textures/meguminE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/meguminE.png
+
+#begin textures/meguminNoE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/meguminNoE.png
 
 #begin textures/music.png
 /importer:TextureImporter

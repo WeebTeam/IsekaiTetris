@@ -26,20 +26,12 @@ namespace Tetris
         //musics
         private Song kazumaMusic, aquaMusic, meguminMusic, darknessMusic;
 
-        public Character _character;
-
         public Score _player;
 
         public InstructionScreen(GraphicsDevice graphicsDevice, ref Score player) : base(graphicsDevice)
         {
             //_characterProfile = characterProfile;
             _player = player;
-        }
-
-        public Character Character
-        {
-            get { return _character; }
-            set { _character = value; }
         }
 
         public CharacterProfile CharacterProfile
@@ -90,26 +82,24 @@ namespace Tetris
             if (nextButton.State == Button.GuiButtonState.Released)
             {
                 //run game
-                if (_character == Character.Kazuma)
+                if (_player.Character == Character.Kazuma)
                 {
                     MediaPlayer.Play(kazumaMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
-                if (_character == Character.Aqua)
+                if (_player.Character == Character.Aqua)
                 {
                     MediaPlayer.Play(aquaMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
-                if (_character == Character.Megumin)
+                if (_player.Character == Character.Megumin)
                 {
                     MediaPlayer.Play(meguminMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
-                if (_character == Character.Darkness)
+                if (_player.Character == Character.Darkness)
                 {
                     MediaPlayer.Play(darknessMusic);
-                    GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
                 }
+
+                GameStateManager.Instance.AddScreen(new Engine(_graphicsDevice, _player));
             }
         }
 

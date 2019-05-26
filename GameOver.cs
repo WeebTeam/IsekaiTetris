@@ -52,7 +52,16 @@ namespace Tetris
 
             //Load 2D textures
             background = content.Load<Texture2D>("textures/pause");
-            gameoverImg = content.Load<Texture2D>("textures/gameoverImg");
+            
+            if(_player.Character == Character.Kazuma)
+                gameoverImg = content.Load<Texture2D>("textures/gameoverKazuma");
+            else if (_player.Character == Character.Aqua)
+                gameoverImg = content.Load<Texture2D>("textures/gameoverAqua");
+            else if (_player.Character == Character.Megumin)
+                gameoverImg = content.Load<Texture2D>("textures/gameoverMegumin");
+            else if (_player.Character == Character.Darkness)
+                gameoverImg = content.Load<Texture2D>("textures/gameoverDarkness");
+
             congraImg = content.Load<Texture2D>("textures/congraImg");
 
             //font
@@ -167,12 +176,12 @@ namespace Tetris
             if (_lose) {
                 if (_character == Character.Kazuma && kazumaSECount == 0)
                 {
-                    kazumaSE[1].Play();
+                    kazumaSE[1].Play(0.3f, 0.0f, 0.0f);
                     kazumaSECount = 1;
                 }
                 else if (_character == Character.Aqua && aquaSECount == 0)
                 {
-                    aquaSE[1].Play();
+                    aquaSE[1].Play(0.3f, 0.0f, 0.0f);
                     aquaSECount = 1;
                 }
                 else if (_character == Character.Megumin && meguminSECount == 0)
@@ -190,7 +199,7 @@ namespace Tetris
             {
                 if (_character == Character.Kazuma && kazumaSECount == 0)
                 {
-                    kazumaSE[0].Play();
+                    kazumaSE[0].Play(0.3f, 0.0f, 0.0f);
                     kazumaSECount = 1;
                 }
                 else if (_character == Character.Aqua && aquaSECount == 0)

@@ -675,7 +675,7 @@ namespace Tetris
 
             // draws the cooldown of skill if that character needed it
             if (needSkillCooldown && _cooldown >= 0)
-                sBatch.DrawString(font, _cooldown.ToString("N0"), new Vector2(420, 610), Color.White);
+                sBatch.DrawString(font, _cooldown.ToString("N0"), new Vector2(420, 610), Color.Black);
 
             String timerCount = _gameplayTime.ToString("N0");
 

@@ -19,9 +19,12 @@ namespace Tetris
 
         //character backgrounds (possibly have different ones for single/multiplayer)
         private Texture2D _boardSingle, _topBar;
+        private Texture2D skillReady, skillNotReady;
 
         private SpriteFont gameFont, timerFont;
         private readonly Rectangle[] _pieces = new Rectangle[7];
+
+        private bool _meguminShowNoSkill = false;
 
         // Game
         private Board _board;
@@ -93,13 +96,29 @@ namespace Tetris
         {
             //Load backgrounds
             if (_player.Character == Character.Kazuma)
+            {
                 tetrisBackground = content.Load<Texture2D>("textures/background/back1Refined"); //gameplaybg
+                skillReady = content.Load<Texture2D>("textures/kazumaNoE");
+                skillNotReady = skillReady;
+            }
             if (_player.Character == Character.Aqua)
+            {
                 tetrisBackground = content.Load<Texture2D>("textures/background/back2Refined"); //gameplaybg
+                skillReady = content.Load<Texture2D>("textures/aquaE");
+                skillNotReady = content.Load<Texture2D>("textures/aquaNoE");
+            }
             if (_player.Character == Character.Megumin)
+            {
                 tetrisBackground = content.Load<Texture2D>("textures/background/back4Refined"); //gameplaybg
+                skillReady = content.Load<Texture2D>("textures/meguminE");
+                skillNotReady = content.Load<Texture2D>("textures/meguminNoE");
+            }
             if (_player.Character == Character.Darkness)
+            {
                 tetrisBackground = content.Load<Texture2D>("textures/background/back5Refined"); //gameplaybg
+                skillReady = content.Load<Texture2D>("textures/darknessNoE");
+                skillNotReady = skillReady;
+            }
 
             //Load 2D textures
             tetrisTextures = content.Load<Texture2D>("textures/tetris"); //the 7 pieces
@@ -289,6 +308,8 @@ namespace Tetris
                                 // Reset the skill cooldown so that it can be used again except Megumin
                                 if (_player.Character != Character.Megumin)
                                     _skillCooldown = 15;
+                                else
+                                    _meguminShowNoSkill = true;
                             }
                         }
 
@@ -359,11 +380,21 @@ namespace Tetris
             //draw top bar (MUST BE after board texture)
             spriteBatch.Draw(_topBar, new Vector2(112, 0), Color.White);
 
+            if (_skillCooldown > 0 || _meguminShowNoSkill)
+            {
+                spriteBatch.Draw(skillNotReady, new Rectangle(404, 596, 59, 59), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(skillReady, new Rectangle(404, 596, 59, 59), Color.White);
+            }
+
             _board.Draw(spriteBatch);
             //_score.Draw(spriteBatch);
 
             spriteBatch.DrawString(gameFont, "SCORE", new Vector2(150,30), Color.White);
             spriteBatch.DrawString(gameFont, _player.Point.ToString(), new Vector2(170, 60), Color.White);
+            
 
             if (_pause)
             {
