@@ -15,7 +15,6 @@ namespace Tetris
         private Button nextButton;
         private CharacterProfile kazuma, aqua, megumin, darkness;
         private Texture2D kazumaNormal, kazumaHover, aquaNormal, aquaHover, meguminNormal, meguminHover, darknessNormal, darknessHover, buttonNone, buttonHover, title, nameField;
-        private Texture2D musicEnabled, musicDisabled;
 
         private KeyboardHandler kbHandler;
 
@@ -65,9 +64,6 @@ namespace Tetris
             buttonHover = content.Load<Texture2D>("textures/button_hover");
 
             nameField = content.Load<Texture2D>("textures/name");
-
-            //musicEnabled = content.Load<Texture2D>("textures/music");
-            //musicDisabled = content.Load<Texture2D>("textures/no_music");
 
             // Load font
             gameFont = content.Load<SpriteFont>("spritefonts/gameFont");
@@ -142,7 +138,6 @@ namespace Tetris
             // Gets keyboard input
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
-            //if (keyboardState.IsKeyDown(Keys.Escape))  this.Exit();
 
             kbHandler.Update(gameTime);
 
